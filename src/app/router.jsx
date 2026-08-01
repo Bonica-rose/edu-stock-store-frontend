@@ -1,10 +1,60 @@
 import { createBrowserRouter } from "react-router-dom";
 
-const Placeholder = ({ title }) => <div className="p-6 text-xl">{title}</div>;
+import MainLayout from "@/layouts/MainLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
+
+import PublicRoute from "@/routes/PublicRoute";
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import ForcePasswordChangeRoute from "@/routes/ForcePasswordChangeRoute";
+
+import LoginPage from "@/features/auth/pages/LoginPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
+
+import DashboardPage from "@/features/dashboard/pages/DashboardPage";
+
+import LandingPage from "@/features/landing/pages/LandingPage";
+
+import ProfilePage from "@/features/profile/pages/ProfilePage";
+import SettingsPage from "@/features/settings/pages/SettingsPage";
+import ChangePasswordPage from "@/features/settings/pages/ChangePasswordPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Placeholder title="Landing Page" />,
+        element: <MainLayout />,
+        children: [
+            { index: true, element: <LandingPage />,},
+
+            {
+                element: <PublicRoute />,
+                children: [
+                    { path: "login", element: <LoginPage />,},
+                    { path: "forgot-password", element: <ForgotPasswordPage />, },
+                    { path: "reset-password", element: <ResetPasswordPage />, },
+                ],
+            },
+
+            {
+                path: "edu",
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        element: <ForcePasswordChangeRoute />,
+                        children: [
+                            {
+                                element: <DashboardLayout />,
+                                children: [
+                                    { path: "dashboard", element: <DashboardPage />, },
+                                    { path: "profile", element: <ProfilePage />, },
+                                    { path: "settings", element: <SettingsPage />, },
+                                    { path: "change-password", element: <ChangePasswordPage />, },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
     },
 ]);
