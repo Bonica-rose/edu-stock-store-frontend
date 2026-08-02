@@ -16,8 +16,9 @@ import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import LandingPage from "@/features/landing/pages/LandingPage";
 
 import ProfilePage from "@/features/profile/pages/ProfilePage";
+import ChangePasswordPage from "@/features/profile/pages/ChangePasswordPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
-import ChangePasswordPage from "@/features/settings/pages/ChangePasswordPage";
+
 
 export const router = createBrowserRouter([
     {

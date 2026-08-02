@@ -13,7 +13,7 @@ export default function DashboardLayout() {
             <div className="flex flex-1 flex-col">
                 <Header />
 
-                <main className="flex-1 p-6 bg-muted/20">
+                <main className="flex-1 p-6 bg-muted/80">
                     <Breadcrumb />
 
                     <Outlet />

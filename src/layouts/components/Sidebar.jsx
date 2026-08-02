@@ -18,7 +18,7 @@ export default function Sidebar() {
       {/* Desktop */}
       <aside
         className={`hidden border-r bg-background transition-all duration-300 lg:block ${
-          collapsed ? "w-16" : "w-64"
+          collapsed ? "w-16" : "w-60"
         }`}
       >
         <SidebarContent collapsed={collapsed} />
@@ -34,7 +34,7 @@ export default function Sidebar() {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 border-r bg-background transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 overflow-x-auto left-0 z-50 w-60 border-r bg-background transition-transform duration-300 lg:hidden ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

@@ -1,4 +1,4 @@
-import { Bell, Menu, UserCircle } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     toggleSidebar,
@@ -30,7 +30,7 @@ export default function Header() {
                 <Menu size={16} />
             </button>
 
-            <div>
+            <div className="hidden items-center gap-2 lg:flex">
                 <h1 className="text-lg font-semibold">Dashboard</h1>
             </div>
             </div>

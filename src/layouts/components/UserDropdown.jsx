@@ -34,8 +34,8 @@ export default function UserDropdown() {
 
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-2 rounded-sm border px-3 py-2 hover:bg-muted">
+        <DropdownMenuTrigger> {/* removed asChild from here & changed button to span */}
+          <span className="flex items-center gap-2 rounded-sm border px-3 py-2 hover:bg-muted">
             <UserCircle size={32} />
 
             <div className="text-left">
@@ -45,7 +45,7 @@ export default function UserDropdown() {
 
               <p className="text-xs text-muted-foreground">{user?.role}</p>
             </div>
-          </button>
+          </span>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-56 rounded-sm">

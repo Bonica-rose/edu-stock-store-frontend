@@ -10,6 +10,7 @@ export default function MainLayout() {
     const { isInitialized, loading } = useSelector((state) => state.auth);
 
     useEffect(() => {
+        console.log("MainLayout");
         if (!isInitialized && !loading.currentUser) {
         dispatch(fetchCurrentUser());
         }
