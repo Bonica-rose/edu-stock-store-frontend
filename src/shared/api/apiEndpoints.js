@@ -8,6 +8,11 @@ const API_ENDPOINTS = {
         RESET_PASSWORD: "/auth/reset-password",
     },
 
+    PROFILE: {
+        FETCH: "/auth/me",
+        UPDATE: "users/profile",
+    },
+
     USERS: {
         LIST: "/users",
         CREATE: "/users",
@@ -25,6 +30,8 @@ const API_ENDPOINTS = {
         UPDATE: (id) => `/branches/${id}`,
         DELETE: (id) => `/branches/${id}`,
     },
+
+    SETTINGS: "/settings",
 };
 
 export default API_ENDPOINTS;

@@ -61,9 +61,9 @@ export default function LoginForm() {
     return (
         <Card className="w-full max-w-md p-3 shadow-md">
             <CardHeader className="text-center">
-            <CardTitle className="text-lg font-semibold">Sign In</CardTitle>
+            <CardTitle className="text-xl font-semibold">Sign In</CardTitle>
 
-            <CardDescription className="text-sm text-muted-foreground">
+            <CardDescription className="text-[13px] text-muted-foreground">
                 Enter your email and password to continue.
             </CardDescription>
             </CardHeader>
