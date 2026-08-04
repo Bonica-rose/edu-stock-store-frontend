@@ -18,6 +18,10 @@ const API_ENDPOINTS = {
         ACTIVITY: "users/profile/activity",
     },
 
+    DASHBOARD: {
+        GET_DASHBOARD: "/dashboard"
+    },
+
     USERS: {
         LIST: "/users",
         CREATE: "/users",
