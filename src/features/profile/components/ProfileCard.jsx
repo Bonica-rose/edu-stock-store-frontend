@@ -38,13 +38,10 @@ export default function ProfileCard() {
       </CardHeader>
 
       <CardContent>
-        <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
-
           <EditProfileForm
             isEditing={isEditing}
             onCancel={() => setIsEditing(false)}
           />
-        </div>
       </CardContent>
     </Card>
   );

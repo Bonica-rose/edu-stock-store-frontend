@@ -1,4 +1,9 @@
 const API_ENDPOINTS = {
+    SETUP: {
+        INITIALIZE: "/setup",
+        STATUS: "/setup/status",
+    },
+
     AUTH: {
         LOGIN: "/auth/login",
         LOGOUT: "/auth/logout",
@@ -9,8 +14,8 @@ const API_ENDPOINTS = {
     },
 
     PROFILE: {
-        FETCH: "/auth/me",
         UPDATE: "users/profile",
+        ACTIVITY: "users/profile/activity",
     },
 
     USERS: {

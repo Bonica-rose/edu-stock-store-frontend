@@ -108,7 +108,8 @@ export default function InventorySettingsCard() {
               <Input
                 id="lowStockQuantityThreshold"
                 type="number"
-                className="rounded-sm"
+                className={`rounded-sm text-[15px] placeholder:text-sm  
+                ${errors.lowStockQuantityThreshold ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
                 {...register("lowStockQuantityThreshold")}
               />
@@ -128,7 +129,8 @@ export default function InventorySettingsCard() {
               <Input
                 id="predictionAlertDays"
                 type="number"
-                className="rounded-sm"
+                className={`rounded-sm text-[15px] placeholder:text-sm  
+                  ${errors.predictionAlertDays ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
                 {...register("predictionAlertDays")}
               />
@@ -148,7 +150,8 @@ export default function InventorySettingsCard() {
               <Input
                 id="predictionHistoryDays"
                 type="number"
-                className="rounded-sm"
+                className={`rounded-sm text-[15px] placeholder:text-sm  
+                  ${errors.predictionHistoryDays ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
                 {...register("predictionHistoryDays")}
               />

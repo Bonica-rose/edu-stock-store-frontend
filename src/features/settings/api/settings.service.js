@@ -9,12 +9,7 @@ const getSettings = async () => {
 const updateSettings = async (settingsData) => {
     const response = await api.patch(
         API_ENDPOINTS.SETTINGS,
-        settingsData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }
+        settingsData
     );
     return response.data;
 };

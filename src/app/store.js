@@ -4,6 +4,7 @@ import authReducer from '@/features/auth/redux/authSlice';
 import uiReducer from "@/features/ui/redux/uiSlice";
 import settingsReducer from "@/features/settings/redux/settingsSlice";
 import profileReducer from "@/features/profile/redux/profileSlice";
+import setupReducer from "@/features/setup/redux/setupSlice";
 
 export const store = configureStore({
     reducer: {
@@ -11,5 +12,6 @@ export const store = configureStore({
         ui: uiReducer,
         settings: settingsReducer,
         profile: profileReducer,
+        setup: setupReducer,
     },
 });

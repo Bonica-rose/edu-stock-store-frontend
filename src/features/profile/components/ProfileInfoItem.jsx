@@ -10,19 +10,25 @@ export default function ProfileInfoItem({
   type = "text",
   placeholder = "",
 }) {
+  const inputProps = register
+    ? register
+    : {
+        defaultValue: value ?? "",
+      };
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 w-full">
       <Label>{label}</Label>
 
       <Input
         type={type}
-        defaultValue={value}
         placeholder={placeholder}
         readOnly={readOnly}
-        {...(register || {})}
-        className={`rounded-sm ${
-          readOnly ? "bg-muted text-muted-foreground" : ""
-        }`}
+        {...inputProps}
+        className={`w-full rounded-sm text-[15px]
+          ${readOnly ? "bg-muted text-muted-foreground" : ""}
+          ${error ? "border-destructive" : ""}
+        `}
       />
 
       {error && <p className="text-sm text-destructive">{error}</p>}

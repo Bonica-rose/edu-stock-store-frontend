@@ -7,6 +7,8 @@ import SystemSettingsCard from "../components/SystemSettingsCard";
 
 import { fetchSettings } from "../redux/settingsThunks";
 
+import PageHeader from "@/shared/components/PageHeader";
+
 export default function SettingsPage() {
     const dispatch = useDispatch();
 
@@ -16,13 +18,10 @@ export default function SettingsPage() {
 
     return (
         <div className="space-y-5">
-            <div>
-                <h1 className="text-xl font-semibold">System Settings</h1>
-
-                <p className="text-sm text-muted-foreground">
-                    Configure application settings.
-                </p>
-            </div>
+            <PageHeader
+                title="System Settings"
+                description="Configure application settings."
+            />
 
             <CompanySettingsCard />
             <InventorySettingsCard />

@@ -145,8 +145,8 @@ export default function CompanySettingsCard() {
         </CardHeader>
 
         <CardContent className="space-y-6">
+          
           {/* Logo */}
-
           <div className="flex flex-col items-center gap-4">
             <Avatar className="h-24 w-24 rounded-sm">
               <AvatarImage src={logoPreview} />
@@ -175,7 +175,6 @@ export default function CompanySettingsCard() {
           </div>
 
           {/* Company Name */}
-
           <div className="space-y-2">
             <Label htmlFor="companyName">
               Company Name <span className="text-destructive">*</span>
@@ -183,7 +182,8 @@ export default function CompanySettingsCard() {
 
             <Input
               id="companyName"
-              className="rounded-sm"
+              className={`rounded-sm text-[15px] placeholder:text-sm  
+                ${errors.companyName ? "border-destructive" : ""}`}
               readOnly={!isEditing}
               {...register("companyName")}
             />
@@ -194,7 +194,6 @@ export default function CompanySettingsCard() {
           </div>
 
           {/* Email + Phone */}
-
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="companyEmail">Company Email</Label>
@@ -202,7 +201,8 @@ export default function CompanySettingsCard() {
               <Input
                 id="companyEmail"
                 type="email"
-                className="rounded-sm"
+                className={`rounded-sm text-[15px] placeholder:text-sm  
+                  ${errors.companyEmail ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
                 {...register("companyEmail")}
               />
@@ -217,7 +217,8 @@ export default function CompanySettingsCard() {
 
               <Input
                 id="companyPhone"
-                className="rounded-sm"
+                className={`rounded-sm text-[15px] placeholder:text-sm  
+                  ${errors.companyPhone ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
                 {...register("companyPhone")}
               />
@@ -229,13 +230,13 @@ export default function CompanySettingsCard() {
           </div>
 
           {/* Address */}
-
           <div className="space-y-2">
             <Label htmlFor="companyAddress">Company Address</Label>
 
             <Input
               id="companyAddress"
-              className="rounded-sm"
+              className={`rounded-sm text-[15px] placeholder:text-sm  
+                ${errors.companyAddress ? "border-destructive" : ""}`}
               readOnly={!isEditing}
               {...register("companyAddress")}
             />

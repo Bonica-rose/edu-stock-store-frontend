@@ -8,7 +8,7 @@ import {
 const initialState = {
     user: null,
     isAuthenticated: false,
-    isInitialized: false,
+    isInitialized: false, // auth check finished?
 
     loading: {
         login: false,
@@ -35,6 +35,10 @@ const authSlice = createSlice({
 
         resetAuthState() {
             return initialState;
+        },
+
+        setCurrentUser(state, action) {
+            state.user = action.payload;
         },
     },
 
@@ -117,7 +121,9 @@ const authSlice = createSlice({
 
 export const {
     clearAuthError,
+    clearAuthMessage,
     resetAuthState,
+    setCurrentUser
 } = authSlice.actions;
 
 export default authSlice.reducer;

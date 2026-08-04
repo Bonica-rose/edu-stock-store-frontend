@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import dasboardPreview from "@/assets/images/dashboard-preview.png";
 
-const Hero = () => {
+const Hero = ({ onGetStarted }) => {
   return (
     <section
       id="about"
@@ -21,13 +21,13 @@ const Hero = () => {
           across multiple branches through one centralized platform.
         </p>
 
-        <Link
-          to="/login"
+        <button
+          onClick={onGetStarted}
           className="inline-flex items-center gap-2 rounded-xl bg-blue-900 px-8 py-4 font-semibold text-white transition hover:bg-blue-800"
         >
-          Login to Your Account
+          Explore Edu Stock&Store
           <ArrowRight size={18} />
-        </Link>
+        </button>
       </div>
 
       <div className="hidden justify-center lg:flex">

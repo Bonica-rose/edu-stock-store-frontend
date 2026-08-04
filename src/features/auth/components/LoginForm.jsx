@@ -43,7 +43,7 @@ export default function LoginForm() {
             toast.success(result.payload.message);
 
             if (result.payload.data.mustChangePassword) {
-                navigate("/change-password",{
+                navigate("/edu/change-password",{
                     replace: true,
                 });
             } else {

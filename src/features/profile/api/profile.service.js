@@ -1,27 +1,25 @@
 import api from "@/shared/api/axios";
 import API_ENDPOINTS from "@/shared/api/apiEndpoints";
 
-const getProfile = async () => {
-    const response = await api.get(API_ENDPOINTS.PROFILE.FETCH);
+const getProfileActivity = async () => {
+    const response = await api.get(
+        API_ENDPOINTS.PROFILE.ACTIVITY
+    );
+
     return response.data;
 };
 
 const updateProfile = async (profileData) => {
     const response = await api.patch(
         API_ENDPOINTS.PROFILE.UPDATE,
-        profileData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }
+        profileData
     );
 
     return response.data;
 };
 
 const changePassword = async (passwordData) => {
-    const response = await api.post(
+    const response = await api.patch(
         API_ENDPOINTS.AUTH.CHANGE_PASSWORD,
         passwordData
     );
@@ -30,7 +28,7 @@ const changePassword = async (passwordData) => {
 };
 
 export default {
-    getProfile,
     updateProfile,
     changePassword,
+    getProfileActivity,
 };

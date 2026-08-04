@@ -1,15 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import profileService from "../api/profile.service";
 
-export const fetchProfile = createAsyncThunk(
-    "profile/fetchProfile",
+export const fetchProfileActivity = createAsyncThunk(
+    "profile/fetchProfileActivity",
     async (_, thunkAPI) => {
         try {
-            return await profileService.getProfile();
+            return await profileService.getProfileActivity();
         } catch (error) {
-            return thunkAPI.rejectWithValue(
-                error.response?.data
-            );
+            return thunkAPI.rejectWithValue(error.response?.data);
         }
     }
 );

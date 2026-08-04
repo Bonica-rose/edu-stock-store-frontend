@@ -24,13 +24,17 @@ export const profileSchema = yup.object({
 
     phone: yup
         .string()
-        .nullable()
+        .trim()
         .matches(
             /^[6-9]\d{9}$/,
-            "Enter a valid 10-digit phone number."
-        ),
+            {
+                message: "Enter a valid 10-digit phone number.",
+                excludeEmptyString: true,
+            }
+        )
+        .notRequired(),
 
     profileImage: yup
-        .string()
+        .mixed()
         .nullable(),
 });

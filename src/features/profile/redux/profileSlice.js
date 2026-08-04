@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    fetchProfile,
+    fetchProfileActivity,
     updateProfile,
     changePassword,
 } from "./profileThunks";
 
 const initialState = {
-    profile: null,
+    activity: [],
 
     loading: {
-        fetch: false,
         update: false,
         changePassword: false,
+        activity: false,
     },
 
     error: null,
@@ -34,20 +34,6 @@ const profileSlice = createSlice({
     extraReducers: (builder) => {
         builder
 
-            // Fetch Profile
-            .addCase(fetchProfile.pending, (state) => {
-                state.loading.fetch = true;
-                state.error = null;
-            })
-            .addCase(fetchProfile.fulfilled, (state, action) => {
-                state.loading.fetch = false;
-                state.profile = action.payload.data;
-            })
-            .addCase(fetchProfile.rejected, (state, action) => {
-                state.loading.fetch = false;
-                state.error = action.payload?.message;
-            })
-
             // Update Profile
             .addCase(updateProfile.pending, (state) => {
                 state.loading.update = true;
@@ -55,11 +41,23 @@ const profileSlice = createSlice({
             })
             .addCase(updateProfile.fulfilled, (state, action) => {
                 state.loading.update = false;
-                state.profile = action.payload.data;
                 state.message = action.payload.message;
             })
             .addCase(updateProfile.rejected, (state, action) => {
                 state.loading.update = false;
+                state.error = action.payload?.message;
+            })
+
+            // Fetch Current User Recent Activity
+            .addCase(fetchProfileActivity.pending, (state) => {
+                state.loading.activity = true;
+            })
+            .addCase(fetchProfileActivity.fulfilled, (state, action) => {
+                state.loading.activity = false;
+                state.activity = action.payload.data;
+            })
+            .addCase(fetchProfileActivity.rejected, (state, action) => {
+                state.loading.activity = false;
                 state.error = action.payload?.message;
             })
 
