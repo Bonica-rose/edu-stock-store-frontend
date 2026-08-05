@@ -6,6 +6,7 @@ import settingsReducer from "@/features/settings/redux/settingsSlice";
 import profileReducer from "@/features/profile/redux/profileSlice";
 import setupReducer from "@/features/setup/redux/setupSlice";
 import dashboardReducer from "@/features/dashboard/redux/dashboardSlice";
+import userReducer from "@/features/user/redux/userSlice";
 
 export const store = configureStore({
     reducer: {
@@ -15,5 +16,6 @@ export const store = configureStore({
         profile: profileReducer,
         setup: setupReducer,
         dashboard: dashboardReducer,
+        user: userReducer,
     },
 });

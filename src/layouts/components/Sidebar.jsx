@@ -17,7 +17,7 @@ export default function Sidebar() {
     <>
       {/* Desktop */}
       <aside
-        className={`hidden border-r bg-background transition-all duration-300 lg:block ${
+        className={`hidden shrink-0 border-r bg-background transition-all duration-300 lg:block ${
           collapsed ? "w-16" : "w-60"
         }`}
       >

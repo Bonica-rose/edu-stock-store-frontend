@@ -46,85 +46,82 @@ export default function ChangePasswordForm() {
     };
 
     return (
-        <Card className="max-w-2xl">
-            <CardHeader>
-                <CardTitle>Change Password</CardTitle>
-            </CardHeader>
+      <Card className="max-w-2xl">
+        <CardHeader>
+          <CardTitle>Change Password</CardTitle>
+        </CardHeader>
 
-            <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                {/* Current Password */}
-                <div className="space-y-2">
-                    <Label htmlFor="currentPassword">Current Password</Label>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Current Password */}
+            <div className="space-y-2">
+              <Label htmlFor="currentPassword">Current Password</Label>
 
-                    <PasswordInput
-                        id="currentPassword"
-                        register={register("currentPassword")}
-                        error={errors.currentPassword}
-                    />
+              <PasswordInput
+                id="currentPassword"
+                register={register("currentPassword")}
+                error={errors.currentPassword}
+              />
 
-                    {errors.currentPassword && (
-                        <p className="text-sm text-destructive">
-                        {errors.currentPassword.message}
-                        </p>
-                    )}
-                </div>
+              {errors.currentPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.currentPassword.message}
+                </p>
+              )}
+            </div>
 
-                {/* New Password */}
-                <div className="space-y-2">
-                    <Label htmlFor="newPassword">New Password</Label>
+            {/* New Password */}
+            <div className="space-y-2">
+              <Label htmlFor="newPassword">New Password</Label>
 
-                    <PasswordInput
-                        id="newPassword"
-                        register={register("newPassword")}
-                        error={errors.newPassword}
-                    />
-                    {errors.newPassword && (
-                        <p className="text-sm text-destructive">
-                        {errors.newPassword.message}
-                        </p>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                        Password must contain:
-                    </p>
+              <PasswordInput
+                id="newPassword"
+                register={register("newPassword")}
+                error={errors.newPassword}
+              />
+              {errors.newPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.newPassword.message}
+                </p>
+              )}
+              <p className="text-[13px] text-muted-foreground">
+                Password must contain:
+              </p>
 
-                    <ul className="ml-5 list-disc text-xs text-muted-foreground">
-                        <li>Minimum 8 characters</li>
-                        <li>One uppercase letter</li>
-                        <li>One lowercase letter</li>
-                        <li>One number</li>
-                        <li>One special character</li>
-                    </ul>
-                </div>
+              <ul className="ml-5 list-disc text-[13px] text-muted-foreground">
+                <li>Minimum 8 characters</li>
+                <li>One uppercase letter</li>
+                <li>One lowercase letter</li>
+                <li>One number</li>
+                <li>One special character</li>
+              </ul>
+            </div>
 
-                {/* Confirm Password */}
-                <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+            {/* Confirm Password */}
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
 
-                    <PasswordInput
-                        id="confirmPassword"
-                        register={register("confirmPassword")}
-                        error={errors.confirmPassword}
-                        disablePaste
-                    />
+              <PasswordInput
+                id="confirmPassword"
+                register={register("confirmPassword")}
+                error={errors.confirmPassword}
+                disablePaste
+              />
 
-                    {errors.confirmPassword && (
-                        <p className="text-sm text-destructive">
-                        {errors.confirmPassword.message}
-                        </p>
-                    )}
-                </div>
+              {errors.confirmPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
 
-                <div className="flex justify-end">
-                    <Button
-                        type="submit"
-                        disabled={loading.changePassword}
-                    >
-                        {loading.changePassword ? "Changing..." : "Change Password"}
-                    </Button>
-                </div>
-            </form>
-            </CardContent>
-        </Card>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={loading.changePassword}>
+                {loading.changePassword ? "Changing..." : "Change Password"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     );
 }

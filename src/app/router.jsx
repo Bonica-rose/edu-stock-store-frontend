@@ -23,7 +23,9 @@ import ProfilePage from "@/features/profile/pages/ProfilePage";
 import ChangePasswordPage from "@/features/profile/pages/ChangePasswordPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import SetupPage from "@/features/setup/pages/SetupPage";
-
+import UsersPage from "@/features/user/pages/UsersPage";
+import CreateUserPage from "@/features/user/pages/CreateUserPage";
+import EditUserPage from "@/features/user/pages/EditUserPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +59,9 @@ export const router = createBrowserRouter([
                   { path: "profile", element: <ProfilePage /> },
                   { path: "settings", element: <SettingsPage /> },
                   { path: "change-password", element: <ChangePasswordPage /> },
+                  { path: "users", element: <UsersPage /> },
+                  { path: "users/new", element: <CreateUserPage /> },
+                  { path: "users/:id/edit", element: <EditUserPage /> },
                 ],
               },
             ],

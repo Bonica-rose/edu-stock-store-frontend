@@ -24,7 +24,7 @@ export default function SidebarContent({ collapsed, onItemClick }) {
 
                 <div className="leading-tight">
                 <h1 className="text-lg font-bold">
-                    <span className="text-blue-900">Edu</span>{" "}
+                    <span className="text-blue-950">Edu</span>{" "}
                     <span className="text-blue-900">Stock</span>
                     <span className="text-slate-900">&</span>
                     <span className="text-green-700">Store</span>
