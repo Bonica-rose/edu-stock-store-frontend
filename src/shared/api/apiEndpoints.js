@@ -22,12 +22,13 @@ const API_ENDPOINTS = {
         GET_DASHBOARD: "/dashboard"
     },
 
-    USERS: {
+    USER: {
         LIST: "/users",
         CREATE: "/users",
-        DETAILS: (id) => `/users/${id}`,
+        GET: (id) => `/users/${id}`,
         UPDATE: (id) => `/users/${id}`,
         DELETE: (id) => `/users/${id}`,
+        CHANGE_STATUS: (id) => `/users/${id}/status`,
     },
 
     // axios.get("/users") ==> axios.get(API_ENDPOINTS.USERS.LIST)
