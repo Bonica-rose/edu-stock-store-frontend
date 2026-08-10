@@ -33,6 +33,7 @@ const getUserById = async (id) => {
 };
 
 const createUser = async (userData) => {
+    console.log("userService", userData);
     const response = await api.post(
         API_ENDPOINTS.USER.CREATE,
         userData

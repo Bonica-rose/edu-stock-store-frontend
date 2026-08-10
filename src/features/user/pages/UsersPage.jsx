@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchUsers } from "../redux/userThunks";
+import { fetchUsers, deleteUser, changeUserStatus } from "../redux/userThunks";
 
 import UserTable from "../components/UserTable";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
+import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 
 import RoleFilter from "@/shared/components/filters/RoleFilter";
 import { ROLE_ARRAY } from "@/shared/constants/roles";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function UsersPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { users, pagination, loading, error } = useSelector((state) => state.user);
-
-    console.log(users);
 
     const [query, setQuery] = useState({
         page: 1,
@@ -27,6 +27,9 @@ export default function UsersPage() {
         role: "all",
         branch: "all",
     });
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openStatus, setOpenStatus] = useState(false);
 
     useEffect(() => {
         dispatch(fetchUsers(query));
@@ -43,16 +46,57 @@ export default function UsersPage() {
     const handleEdit = (user) => {
         navigate(`/edu/users/${user._id}/edit`);
     };
-
+  
     const handleStatusChange = (user) => {
-        console.log("Status", user);
-        // dispatch(changeUserStatus(...))
+      setSelectedUser(user);
+      setOpenStatus(true);
     };
 
-    const handleDelete = (user) => {
-        console.log("Delete", user);
-        // open confirmation dialog
+    const confirmStatusChange = async () => {
+      try {
+        await dispatch(
+          changeUserStatus({
+            id: selectedUser._id,
+            isActive: !selectedUser.isActive,
+          }),
+        ).unwrap();
+
+        toast.success(
+          `User ${
+            selectedUser.isActive ? "deactivated" : "activated"
+          } successfully`,
+        );
+
+        setOpenStatus(false);
+        setSelectedUser(null);
+
+        dispatch(fetchUsers(query));
+      } catch (error) {
+        toast.error(error.message || "Failed to change status");
+      }
     };
+  
+    const handleDelete = (user) => {
+      setSelectedUser(user);
+      setOpenDelete(true);
+    };
+  
+  const confirmDelete = async () => {
+    if (!selectedUser) return;
+
+    try {
+      await dispatch(deleteUser(selectedUser._id)).unwrap();
+
+      toast.success("User deleted successfully");
+
+      setOpenDelete(false);
+      setSelectedUser(null);
+
+      dispatch(fetchUsers(query));
+    } catch (error) {
+      toast.error(error.message || "Failed to delete user");
+    }
+  };
 
     return (
       <div className="bg-white rounded-lg border border-muted p-3">
@@ -108,6 +152,39 @@ export default function UsersPage() {
             }
           />
         </div>
+
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete User"
+          description={
+            selectedUser
+              ? `Are you sure you want to delete ${selectedUser.firstName} ${selectedUser.lastName}? This action cannot be undone.`
+              : ""
+          }
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
+        />
+
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={selectedUser?.isActive ? "Deactivate User" : "Activate User"}
+          description={
+            selectedUser?.isActive
+              ? `Are you sure you want to deactivate ${selectedUser?.firstName} ${selectedUser?.lastName}? They will no longer be able to sign in.`
+              : `Are you sure you want to activate ${selectedUser?.firstName} ${selectedUser?.lastName}?`
+          }
+          confirmText={selectedUser?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          onConfirm={confirmStatusChange}
+          loadingText={
+            selectedUser?.isActive ? "Deactivating" : "Activating..."
+          }
+        />
       </div>
     );
 }

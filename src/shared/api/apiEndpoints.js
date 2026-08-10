@@ -31,6 +31,14 @@ const API_ENDPOINTS = {
         CHANGE_STATUS: (id) => `/users/${id}/status`,
     },
 
+    BRANCH: {
+        LIST: "/branches",
+        CREATE: "/branches",
+        GET: (id) => `/branches/${id}`,
+        UPDATE: (id) => `/branches/${id}`,
+        CHANGE_STATUS: (id) => `/branches/${id}/status`,
+    },
+
     // axios.get("/users") ==> axios.get(API_ENDPOINTS.USERS.LIST)
 
     BRANCHES: {
