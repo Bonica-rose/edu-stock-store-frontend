@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
 
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -73,16 +74,20 @@ export default function UserForm({
     try {
       await onSubmit(data);
     } catch (error) {
-      if (error.errors) {
+      if (error.errors?.length) {
         error.errors.forEach((err) => {
           setError(err.path, {
             type: "server",
             message: err.msg,
           });
         });
+        return;
       }
 
-      throw error;
+      const errorMsg =
+        mode === "create" ? "Failed to create user" : "Failed to update user";
+
+      toast.error(error?.message ?? errorMsg);
     }
   };
 

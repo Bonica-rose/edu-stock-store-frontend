@@ -7,7 +7,7 @@ import UserForm from "../components/UserForm";
 
 import { fetchUserById, updateUser } from "../redux/userThunks";
 
-// import { fetchBranches } from "@/features/branches/redux/branchThunks";
+import { fetchBranches } from "../../branch/redux/branchThunks";
 import { ROLE_OPTIONS } from "@/shared/constants/roles";
 
 import { ArrowLeft } from "lucide-react";
@@ -20,38 +20,30 @@ export default function EditUserPage() {
 
   const user = useSelector((state) => state.user.user);
   const loading = useSelector((state) => state.user.loading);
-  // const branches = useSelector((state) => state.branch.branches);
-  const branches = [
-    {
-      _id: "6a715a7cbbac34ebacd78c60",
-      branchName: "Head Office",
-      branchCode: "HO",
-    },
-  ];
+  const branches = useSelector((state) => state.branch.branches);
+  // const branches = [
+  //   {
+  //     _id: "6a715a7cbbac34ebacd78c60",
+  //     branchName: "Head Office",
+  //     branchCode: "HO",
+  //   },
+  // ];
 
   useEffect(() => {
     dispatch(fetchUserById(id));
-    // dispatch(fetchBranches());
+    dispatch(fetchBranches());
   }, [dispatch, id]);
 
   const handleUpdateUser = async (data) => {
-    console.log(data);
-    try {
-      await dispatch(
-        updateUser({
-          id,
-          userData: data,
-        }),
-      ).unwrap();
+    await dispatch(
+      updateUser({
+        id,
+        userData: data,
+      }),
+    ).unwrap();
 
-      toast.success("User updated successfully");
-
-      navigate("/edu/users");
-    } catch (error) {
-        toast.error(
-          error.message ?? error.errors?.[0]?.msg ?? "Failed to update user",
-        );
-    }
+    toast.success("User updated successfully");
+    navigate("/edu/users");
   };
 
   return (

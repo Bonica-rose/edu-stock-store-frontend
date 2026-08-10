@@ -1,4 +1,4 @@
-import { MoreHorizontal, Pencil, Power, Trash2, Eye } from "lucide-react";
+import { MoreHorizontal, Pencil, Power, Eye } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -7,12 +7,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function UserActions({
-  user,
+export default function BranchActions({
+  branch,
   onView,
   onEdit,
   onStatusChange,
-  onDelete,
 }) {
   return (
     <DropdownMenu>
@@ -22,34 +21,23 @@ export default function UserActions({
 
       <DropdownMenuContent align="end">
         {onView && (
-          <DropdownMenuItem onClick={() => onView(user)}>
+          <DropdownMenuItem onClick={() => onView(branch)}>
             <Eye className="mr-2 h-4 w-4" />
             View
           </DropdownMenuItem>
         )}
 
         {onEdit && (
-          <DropdownMenuItem onClick={() => onEdit(user)}>
+          <DropdownMenuItem onClick={() => onEdit(branch)}>
             <Pencil className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
         )}
 
         {onStatusChange && (
-          <DropdownMenuItem onClick={() => onStatusChange(user)}>
+          <DropdownMenuItem onClick={() => onStatusChange(branch)}>
             <Power className="mr-2 h-4 w-4" />
-
-            {user.isActive ? "Deactivate" : "Activate"}
-          </DropdownMenuItem>
-        )}
-
-        {onDelete && (
-          <DropdownMenuItem
-            onClick={() => onDelete(user)}
-            className="text-destructive focus:text-destructive"
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
+            {branch.isActive ? "Deactivate" : "Activate"}
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

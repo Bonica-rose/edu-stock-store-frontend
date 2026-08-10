@@ -21,11 +21,18 @@ import LandingPage from "@/features/landing/pages/LandingPage";
 
 import ProfilePage from "@/features/profile/pages/ProfilePage";
 import ChangePasswordPage from "@/features/profile/pages/ChangePasswordPage";
+
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 import SetupPage from "@/features/setup/pages/SetupPage";
+
 import UsersPage from "@/features/user/pages/UsersPage";
 import CreateUserPage from "@/features/user/pages/CreateUserPage";
 import EditUserPage from "@/features/user/pages/EditUserPage";
+
+import BranchListPage from "@/features/branch/pages/BranchListPage";
+import CreateBranchPage from "@/features/branch/pages/CreateBranchPage";
+import EditBranchPage from "@/features/branch/pages/EditBranchPage";
+import ViewBranchPage from "@/features/branch/pages/ViewBranchPage";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +69,10 @@ export const router = createBrowserRouter([
                   { path: "users", element: <UsersPage /> },
                   { path: "users/new", element: <CreateUserPage /> },
                   { path: "users/:id/edit", element: <EditUserPage /> },
+                  { path: "branches", element: <BranchListPage /> },
+                  { path: "branches/new", element: <CreateBranchPage /> },
+                  { path: "branches/:id/edit", element: <EditBranchPage /> },
+                  { path: "branches/:id", element: <ViewBranchPage /> },
                 ],
               },
             ],
