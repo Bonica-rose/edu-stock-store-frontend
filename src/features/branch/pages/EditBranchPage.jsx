@@ -9,6 +9,8 @@ import BranchForm from "../components/BranchForm";
 import { fetchBranchById, updateBranch } from "../redux/branchThunks";
 import { ROLES } from "@/shared/constants/roles"
 import { fetchUsers } from "@/features/user/redux/userThunks";
+import PageHeader from "@/shared/components/PageHeader";
+import Loader from "@/shared/components/Loader";
 
 export default function EditBranchPage() {
   const { id } = useParams();
@@ -19,6 +21,7 @@ export default function EditBranchPage() {
   const branch = useSelector((state) => state.branch.branch);
   const loading = useSelector((state) => state.branch.loading);  
   const managers = useSelector((state) => state.user.users);
+  const userLoading = useSelector((state) => state.user.loading);  
 
   useEffect(() => {
     dispatch(fetchBranchById(id));
@@ -34,43 +37,43 @@ export default function EditBranchPage() {
   }, [dispatch, id]);
 
   const handleUpdateBranch = async (data) => {
-    try {
-      const { branchCode, ...branchData } = data;
-      await dispatch(
-        updateBranch({
-          id,
-          branchData,
-        }),
-      ).unwrap();
+    const { branchCode, ...branchData } = data;
+    await dispatch(
+      updateBranch({
+        id,
+        branchData,
+      }),
+    ).unwrap();
 
-      toast.success("Branch updated successfully");
-
-      navigate("/edu/branches");
-    } catch (error) {
-      toast.error(error.message || "Failed to update branch");
-    }
+    toast.success("Branch updated successfully");
+    navigate("/edu/branches");
   };
+
+  if (loading.branch || userLoading.users) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold">Edit Branch</h1>
-
-          <p className="text-sm text-muted-foreground">
-            Update branch information
-          </p>
-        </div>
-
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={() => navigate("/edu/branches")}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Branches
-        </Button>
-      </div>
+      <PageHeader
+        title="Edit Branch"
+        description="Update branch information"
+        action={
+          <Button
+            type="button"
+            variant="secondary"
+            className={`text-gray-500`}
+            onClick={() => navigate("/edu/branches")}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 text-gray-500" />
+            Back to Branches
+          </Button>
+        }
+      />
 
       <BranchForm
         mode="edit"

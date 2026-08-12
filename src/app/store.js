@@ -8,6 +8,7 @@ import setupReducer from "@/features/setup/redux/setupSlice";
 import dashboardReducer from "@/features/dashboard/redux/dashboardSlice";
 import userReducer from "@/features/user/redux/userSlice";
 import branchReducer from "@/features/branch/redux/branchSlice";
+import categoryReducer from "@/features/category/redux/categorySlice";
 
 export const store = configureStore({
     reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
         dashboard: dashboardReducer,
         user: userReducer,
         branch: branchReducer,
+        category: categoryReducer,
     },
 });
