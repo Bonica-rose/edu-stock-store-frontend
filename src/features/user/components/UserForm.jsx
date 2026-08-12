@@ -103,79 +103,80 @@ export default function UserForm({
         <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="firstName">
                 First Name <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="firstName"
                 {...register("firstName")}
                 placeholder="Enter first name"
-                className={`${errors.firstName ? "border-destructive" : ""}`}
+                aria-invalid={!!errors.firstName}
               />
 
-              <FieldError>{errors.firstName?.message}</FieldError>
+              {errors.firstName && <FieldError errors={[errors.firstName]} />}
             </Field>
 
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="lastName">
                 Last Name <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="lastName"
                 {...register("lastName")}
                 placeholder="Enter last name"
-                className={`${errors.lastName ? "border-destructive" : ""}`}
+                aria-invalid={!!errors.lastName}
               />
 
-              <FieldError>{errors.lastName?.message}</FieldError>
+              {errors.lastName && <FieldError errors={[errors.lastName]} />}
             </Field>
           </div>
 
           <Field>
-            <FieldLabel>
+            <FieldLabel htmlFor="email">
               Email <span className="text-destructive">*</span>
             </FieldLabel>
 
             <Input
+              id="email"
               type="email"
               {...register("email")}
               placeholder="Enter email"
-              className={`${errors.email ? "border-destructive" : ""}`}
+              aria-invalid={!!errors.email}
             />
 
-            <FieldError>{errors.email?.message}</FieldError>
+            {errors.email && <FieldError errors={[errors.email]} />}
           </Field>
 
           <Field>
-            <FieldLabel>
-              Phone <span className="text-destructive">*</span>
+            <FieldLabel htmlFor="phone">
+              Phone
             </FieldLabel>
 
             <Input
+              id="phone"
               {...register("phone")}
               placeholder="Enter phone number"
-              className={`${errors.phone ? "border-destructive" : ""}`}
+              aria-invalid={!!errors.phone}
             />
 
-            <FieldError>{errors.phone?.message}</FieldError>
+            {errors.phone && <FieldError errors={[errors.phone]} />}
           </Field>
 
           <Field>
-            <FieldLabel>
+            <FieldLabel htmlFor="role">
               Role <span className="text-destructive">*</span>
             </FieldLabel>
             <Select
+              id="role"
               value={selectedRole}
               onValueChange={(value) =>
                 setValue("role", value, { shouldValidate: true })
               }
-              className={`${errors.role ? "border-destructive" : ""}`}
             >
-              <SelectTrigger>
-                <SelectValue>
-                  {roles.find((r) => r.value === selectedRole)?.label ??
-                    "Select role"}
-                </SelectValue>
+              <SelectTrigger aria-invalid={!!errors.role}>
+                <SelectValue placeholder="Select role" />
               </SelectTrigger>
 
               <SelectContent>
@@ -186,22 +187,22 @@ export default function UserForm({
                 ))}
               </SelectContent>
             </Select>
-            <FieldError>{errors.role?.message}</FieldError>
+            {errors.role && <FieldError errors={[errors.role]} />}
           </Field>
 
           <Field>
-            <FieldLabel>
+            <FieldLabel htmlFor="branch">
               Branch <span className="text-destructive">*</span>
             </FieldLabel>
 
             <Select
+              id="branch"
               value={selectedBranch}
               onValueChange={(value) =>
                 setValue("branch", value, { shouldValidate: true })
               }
-              className={`${errors.branch ? "border-destructive" : ""}`}
             >
-              <SelectTrigger>
+              <SelectTrigger aria-invalid={!!errors.branch}>
                 <SelectValue>
                   {branches.find((b) => b._id === selectedBranch)?.branchName ??
                     "Select branch"}
@@ -217,13 +218,13 @@ export default function UserForm({
               </SelectContent>
             </Select>
 
-            <FieldError>{errors.branch?.message}</FieldError>
+            {errors.branch && <FieldError errors={[errors.branch]} />}
           </Field>
 
           {mode === "create" && (
             <>
               <Field>
-                <FieldLabel>
+                <FieldLabel htmlFor="password">
                   Password <span className="text-destructive">*</span>
                 </FieldLabel>
 
@@ -234,7 +235,7 @@ export default function UserForm({
                   placeholder="Enter password"
                 />
 
-                <FieldError>{errors.password?.message}</FieldError>
+                {errors.password && <FieldError errors={[errors.password]} />}
                 <p className="text-[13px] text-muted-foreground">
                   Password must contain:
                 </p>

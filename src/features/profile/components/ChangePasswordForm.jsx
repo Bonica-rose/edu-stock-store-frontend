@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 import PasswordInput from "@/shared/components/PasswordInput";
+import { KeySquare } from "lucide-react";
 
 export default function ChangePasswordForm() {
     const dispatch = useDispatch();
@@ -117,7 +118,17 @@ export default function ChangePasswordForm() {
 
             <div className="flex justify-end">
               <Button type="submit" disabled={loading.changePassword}>
-                {loading.changePassword ? "Changing..." : "Change Password"}
+                {loading.changePassword ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Changing...
+                  </>
+                ) : (
+                  <>
+                      <KeySquare />
+                      Change Password
+                  </>
+                )}
               </Button>
             </div>
           </form>

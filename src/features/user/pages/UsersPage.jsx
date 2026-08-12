@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchUsers, deleteUser, changeUserStatus } from "../redux/userThunks";
+import { fetchBranches } from "../../branch/redux/branchThunks";
 
 import UserTable from "../components/UserTable";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
@@ -13,12 +14,14 @@ import RoleFilter from "@/shared/components/filters/RoleFilter";
 import { ROLE_ARRAY } from "@/shared/constants/roles";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import BranchFilter from "@/shared/components/filters/BranchFilter";
 
 export default function UsersPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { users, pagination, loading, error } = useSelector((state) => state.user);
+  const { users, pagination, loading } = useSelector((state) => state.user);  
+  const branches = useSelector((state) => state.branch.branches);
 
     const [query, setQuery] = useState({
         page: 1,
@@ -33,7 +36,11 @@ export default function UsersPage() {
 
     useEffect(() => {
         dispatch(fetchUsers(query));
-    }, [dispatch, query]);   
+    }, [dispatch, query]);  
+  
+    useEffect(() => {
+      dispatch(fetchBranches());
+    }, [dispatch]);
 
     const handleCreateUser = () => {
         navigate(`/edu/users/new`);
@@ -112,6 +119,17 @@ export default function UsersPage() {
             }
             searchPlaceholder="Search users..."
           >
+            <BranchFilter
+              value={query.branch}
+              branches={branches}
+              onChange={(branch) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  branch,
+                  page: 1,
+                }))
+              }
+            />
             <RoleFilter
               value={query.role}
               roles={ROLE_ARRAY}

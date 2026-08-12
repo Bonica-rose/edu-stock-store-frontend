@@ -7,10 +7,15 @@ import {
 } from "@/components/ui/select";
 
 export default function BranchFilter({ value, onChange, branches = [] }) {
+  const selectedBranch = branches.find((branch) => branch._id === value);
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-52">
-        <SelectValue placeholder="All Branches" />
+        <SelectValue>
+          {value === "all"
+            ? "All Branches"
+            : (selectedBranch?.branchName ?? "All Branches")}
+        </SelectValue>
       </SelectTrigger>
 
       <SelectContent>

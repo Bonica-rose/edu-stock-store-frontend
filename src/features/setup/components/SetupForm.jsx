@@ -209,20 +209,20 @@ export default function SetupForm() {
 
 function FormInput({label, register, error, type = "text", placeholder = "" }) {
     return (
-        <div className="space-y-2">
-            <Label>
-                {label}
-                <span className="text-destructive">*</span>
-            </Label>
+      <div className="space-y-2">
+        <Label>
+          {label}
+          <span className="text-destructive">*</span>
+        </Label>
 
-            <Input
-                type={type}
-                placeholder={placeholder}
-                {...register}
-                className={`${error ? "border-destructive" : ""}`}
-            />
+        <Input
+          type={type}
+          placeholder={placeholder}
+          {...register}
+          aria-invalid={!!error}
+        />
 
-            {error && <p className="text-sm text-destructive">{error}</p>}
-        </div>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+      </div>
     );
 }

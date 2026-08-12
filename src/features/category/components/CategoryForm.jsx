@@ -98,7 +98,9 @@ export default function CategoryForm({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">
-          {initialData ? "Edit Category Information" : "Add Category Information"}
+          {initialData
+            ? "Edit Category Information"
+            : "Add Category Information"}
         </CardTitle>
       </CardHeader>
 
@@ -106,14 +108,15 @@ export default function CategoryForm({
         <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
           {/* Category Name */}
           <Field>
-            <FieldLabel>
+            <FieldLabel htmlFor="categoryName">
               Category Name <span className="text-destructive">*</span>
             </FieldLabel>
 
             <Input
+              id="categoryName"
               {...register("categoryName")}
               placeholder="Enter category name"
-              className={errors.categoryName ? "border-destructive" : ""}
+              aria-invalid={!!errors.categoryName}
             />
 
             <FieldError>{errors.categoryName?.message}</FieldError>
@@ -121,17 +124,18 @@ export default function CategoryForm({
 
           {/* Category Code */}
           <Field>
-            <FieldLabel>
-              Category Code <span className="text-destructive">*</span>
-            </FieldLabel>
+            <FieldLabel htmlFor="categoryCode">Category Code</FieldLabel>
 
             <Input
+              id="categoryCode"
               {...register("categoryCode")}
               placeholder="Enter category code"
-              className={errors.categoryCode ? "border-destructive" : ""}
+              aria-invalid={!!errors.categoryCode}
             />
 
-            <FieldError>{errors.categoryCode?.message}</FieldError>
+            {errors.categoryCode && (
+              <FieldError errors={[errors.categoryCode]} />
+            )}
 
             <p className="text-[13px] text-muted-foreground">
               Use letters, numbers, hyphens or underscores.
@@ -140,11 +144,12 @@ export default function CategoryForm({
 
           {/* Category Type */}
           <Field>
-            <FieldLabel>
+            <FieldLabel htmlFor="type">
               Category Type <span className="text-destructive">*</span>
             </FieldLabel>
 
             <Select
+              id="type"
               value={selectedType}
               onValueChange={(value) =>
                 setValue("type", value, {
@@ -153,9 +158,7 @@ export default function CategoryForm({
                 })
               }
             >
-              <SelectTrigger
-                className={errors.type ? "border-destructive" : ""}
-              >
+              <SelectTrigger aria-invalid={!!errors.type}>
                 <SelectValue placeholder="Select category type">
                   {categoryTypes.find((type) => type.value === selectedType)
                     ?.label ?? "Select category type"}
@@ -176,13 +179,14 @@ export default function CategoryForm({
 
           {/* Description */}
           <Field>
-            <FieldLabel>Description</FieldLabel>
+            <FieldLabel htmlFor="description">Description</FieldLabel>
 
             <Textarea
+              id="description"
               {...register("description")}
               placeholder="Enter category description"
               rows={4}
-              className={errors.description ? "border-destructive" : ""}
+              aria-invalid={!!errors.description}
             />
 
             <FieldError>{errors.description?.message}</FieldError>

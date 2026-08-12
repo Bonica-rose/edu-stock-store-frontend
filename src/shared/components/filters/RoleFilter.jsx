@@ -9,8 +9,12 @@ import {
 export default function RoleFilter({ value, onChange, roles = [] }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-52">
-        <SelectValue placeholder="All Roles" />
+      <SelectTrigger className="w-48">
+        <SelectValue>
+          {value === "all"
+            ? "All Roles"
+            : (roles.find((role) => role === value) ?? "All Roles")}
+        </SelectValue>
       </SelectTrigger>
 
       <SelectContent>

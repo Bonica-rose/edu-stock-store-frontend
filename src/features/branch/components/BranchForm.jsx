@@ -98,113 +98,120 @@ export default function BranchForm({
         <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
           <div className="grid grid-cols-2 gap-4">
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="branchCode">
                 Branch Code <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="branchCode"
                 {...register("branchCode")}
                 disabled={mode === "edit"}
                 placeholder="Enter branch code"
-                className={errors.branchCode ? "border-destructive" : ""}
+                aria-invalid={!!errors.branchCode}
               />
 
-              <FieldError>{errors.branchCode?.message}</FieldError>
+              {errors.branchCode && <FieldError errors={[errors.branchCode]} />}
             </Field>
 
-            <Field>
+            <Field htmlFor="branchName">
               <FieldLabel>
                 Branch Name <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="branchName"
                 {...register("branchName")}
                 placeholder="Enter branch name"
-                className={errors.branchName ? "border-destructive" : ""}
+                aria-invalid={!!errors.branchName}
               />
 
-              <FieldError>{errors.branchName?.message}</FieldError>
+              {errors.branchName && <FieldError errors={[errors.branchName]} />}
             </Field>
 
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="city">
                 City <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="city"
                 {...register("city")}
                 placeholder="Enter city"
-                className={errors.city ? "border-destructive" : ""}
+                aria-invalid={!!errors.city}
               />
 
-              <FieldError>{errors.city?.message}</FieldError>
+              {errors.city && <FieldError errors={[errors.city]} />}
             </Field>
 
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="state">
                 State <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="state"
                 {...register("state")}
                 placeholder="Enter state"
-                className={errors.state ? "border-destructive" : ""}
+                aria-invalid={!!errors.state}
               />
 
-              <FieldError>{errors.state?.message}</FieldError>
+              {errors.state && <FieldError errors={[errors.state]} />}
             </Field>
 
             <Field>
-              <FieldLabel>
+              <FieldLabel htmlFor="country">
                 Country <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="country"
                 {...register("country")}
                 placeholder="Enter country"
-                className={errors.country ? "border-destructive" : ""}
+                aria-invalid={!!errors.country}
               />
 
-              <FieldError>{errors.country?.message}</FieldError>
+              {errors.country && <FieldError errors={[errors.country]} />}
             </Field>
 
             <Field>
-              <FieldLabel>Phone</FieldLabel>
+              <FieldLabel htmlFor="phone">Phone</FieldLabel>
 
               <Input
                 {...register("phone")}
                 placeholder="Enter phone"
-                className={errors.phone ? "border-destructive" : ""}
+                aria-invalid={!!errors.phone}
               />
 
-              <FieldError>{errors.phone?.message}</FieldError>
+              {errors.phone && <FieldError errors={[errors.phone]} />}
             </Field>
 
             <Field className="col-span-2">
-              <FieldLabel>Email</FieldLabel>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
 
               <Input
+                id="email"
                 type="email"
                 {...register("email")}
                 placeholder="Enter email"
-                className={errors.email ? "border-destructive" : ""}
+                aria-invalid={!!errors.email}
               />
 
-              <FieldError>{errors.email?.message}</FieldError>
+              {errors.email && <FieldError errors={[errors.email]} />}
             </Field>
 
             <Field className="col-span-2">
-              <FieldLabel>
+              <FieldLabel htmlFor="address">
                 Address <span className="text-destructive">*</span>
               </FieldLabel>
 
               <Input
+                id="address"
                 {...register("address")}
                 placeholder="Enter address"
-                className={errors.address ? "border-destructive" : ""}
+                aria-invalid={!!errors.address}
               />
 
-              <FieldError>{errors.address?.message}</FieldError>
+              {errors.address && <FieldError errors={[errors.address]} />}
             </Field>
 
             {mode === "edit" && (
