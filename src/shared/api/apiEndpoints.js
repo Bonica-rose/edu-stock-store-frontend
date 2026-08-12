@@ -19,7 +19,7 @@ const API_ENDPOINTS = {
     },
 
     DASHBOARD: {
-        GET_DASHBOARD: "/dashboard"
+        GET_DASHBOARD: "/dashboard",
     },
 
     USER: {
@@ -39,14 +39,13 @@ const API_ENDPOINTS = {
         CHANGE_STATUS: (id) => `/branches/${id}/status`,
     },
 
-    // axios.get("/users") ==> axios.get(API_ENDPOINTS.USERS.LIST)
-
-    BRANCHES: {
-        LIST: "/branches",
-        CREATE: "/branches",
-        DETAILS: (id) => `/branches/${id}`,
-        UPDATE: (id) => `/branches/${id}`,
-        DELETE: (id) => `/branches/${id}`,
+    CATEGORY: {
+        LIST: "/categories",
+        CREATE: "/categories",
+        GET: (id) => `/categories/${id}`,
+        UPDATE: (id) => `/categories/${id}`,
+        DELETE: (id) => `/categories/${id}`,
+        CHANGE_STATUS: (id) => `/categories/${id}/status`,
     },
 
     SETTINGS: "/settings",

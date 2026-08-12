@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 
 import { fetchBranchById } from "../redux/branchThunks";
 import BranchDetails from "../components/BranchDetails";
+import PageHeader from "@/shared/components/PageHeader";
+import Loader from "@/shared/components/Loader";
 
 export default function ViewBranchPage() {
     const { id } = useParams();
@@ -25,17 +27,11 @@ export default function ViewBranchPage() {
         navigate("/edu/branches");
     };
 
-    const handleEdit = () => {
-        navigate(`/edu/branches/${id}/edit`);
-    };
-
     if (loading.branch) {
         return (
-        <div className="flex items-center justify-center py-10">
-            <p className="text-sm text-muted-foreground">
-            Loading branch details...
-            </p>
-        </div>
+            <div>
+            <Loader />
+            </div>
         );
     }
 
@@ -43,18 +39,18 @@ export default function ViewBranchPage() {
         return (
         <div className="space-y-4">
             <div>
-            <h1 className="text-xl font-semibold">Branch Details</h1>
-            <p className="text-sm text-destructive">{error}</p>
+                <h1 className="text-xl font-semibold">Branch Details</h1>
+                <p className="text-sm text-destructive">{error}</p>
             </div>
 
             <Button
-            type="button"
-            variant="secondary"
-            className="text-gray-500"
-            onClick={handleBack}
+                type="button"
+                variant="secondary"
+                className="text-gray-500"
+                onClick={handleBack}
             >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Branches
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Branches
             </Button>
         </div>
         );
@@ -64,36 +60,10 @@ export default function ViewBranchPage() {
         return (
             <div className="space-y-4">
                 <div>
-                <h1 className="text-xl font-semibold">Branch Details</h1>
-                <p className="text-sm text-muted-foreground">Branch not found.</p>
+                    <h1 className="text-xl font-semibold">Branch Details</h1>
+                    <p className="text-sm text-muted-foreground">Branch not found.</p>
                 </div>
 
-                <Button
-                type="button"
-                variant="secondary"
-                className="text-gray-500"
-                onClick={handleBack}
-                >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Branches
-                </Button>
-            </div>
-        );
-    }
-
-    return (
-        <div className="space-y-3">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                <h1 className="text-xl font-semibold">Branch Details</h1>
-
-                <p className="text-sm text-muted-foreground">
-                    View branch information
-                </p>
-                </div>
-
-                <div className="flex items-center gap-2">
                 <Button
                     type="button"
                     variant="secondary"
@@ -103,13 +73,40 @@ export default function ViewBranchPage() {
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Branches
                 </Button>
-
-                <Button type="button" onClick={handleEdit} className="rounded-lg">
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit Branch
-                </Button>
-                </div>
             </div>
+        );
+    }
+
+    return (
+        <div className="space-y-3">
+
+            {/* Page Header */}
+            <PageHeader
+                title="Branch Details"
+                description="View branch information"
+                action={
+                    <div className="flex items-center gap-2">
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            className="text-gray-500"
+                            onClick={() => navigate("/edu/branches")}
+                        >
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Back to Branches
+                        </Button>
+
+                        <Button
+                            type="button"
+                            onClick={() => navigate(`/edu/branches/${id}/edit`)}
+                            className="rounded-lg"
+                        >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            Edit Branch
+                        </Button>
+                    </div>
+                }
+            />
 
             {/* Branch Details */}
             <BranchDetails branch={branch} />

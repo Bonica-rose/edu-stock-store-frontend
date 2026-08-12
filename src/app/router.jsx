@@ -34,6 +34,10 @@ import CreateBranchPage from "@/features/branch/pages/CreateBranchPage";
 import EditBranchPage from "@/features/branch/pages/EditBranchPage";
 import ViewBranchPage from "@/features/branch/pages/ViewBranchPage";
 
+import CategoryListPage from "@/features/category/pages/CategoryListPage";
+import CreateCategoryPage from "@/features/category/pages/CreateCategoryPage";
+import EditCategoryPage from "@/features/category/pages/EditCategoryPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -73,6 +77,12 @@ export const router = createBrowserRouter([
                   { path: "branches/new", element: <CreateBranchPage /> },
                   { path: "branches/:id/edit", element: <EditBranchPage /> },
                   { path: "branches/:id", element: <ViewBranchPage /> },
+                  { path: "categories", element: <CategoryListPage /> },
+                  { path: "categories/new", element: <CreateCategoryPage /> },
+                  {
+                    path: "categories/:id/edit",
+                    element: <EditCategoryPage />,
+                  },
                 ],
               },
             ],

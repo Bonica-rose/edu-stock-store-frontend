@@ -75,7 +75,12 @@ export default function BranchForm({
         return;
       }
 
-      toast.error(error.message || "Something went wrong");
+      const errorMsg =
+        mode === "create"
+          ? "Failed to create branch"
+          : "Failed to update branch";
+
+      toast.error(error.message ?? errorMsg);
     }
   };
 
