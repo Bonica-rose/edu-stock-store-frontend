@@ -14,7 +14,7 @@ export default function ProfileCard() {
   return (
     <Card className="rounded-sm">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Personal Information</CardTitle>
+        <CardTitle className={`text-blue-900`}>Personal Information</CardTitle>
 
         {!isEditing ? (
           <Button
@@ -38,10 +38,10 @@ export default function ProfileCard() {
       </CardHeader>
 
       <CardContent>
-          <EditProfileForm
-            isEditing={isEditing}
-            onCancel={() => setIsEditing(false)}
-          />
+        <EditProfileForm
+          isEditing={isEditing}
+          onCancel={() => setIsEditing(false)}
+        />
       </CardContent>
     </Card>
   );

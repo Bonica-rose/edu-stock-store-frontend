@@ -48,6 +48,30 @@ const API_ENDPOINTS = {
         CHANGE_STATUS: (id) => `/categories/${id}/status`,
     },
 
+    VENDOR: {
+        LIST: "/vendors",
+        CREATE: "/vendors",
+        GET: (id) => `/vendors/${id}`,
+        UPDATE: (id) => `/vendors/${id}`,
+        CHANGE_STATUS: (id) => `/vendors/${id}/status`,
+        DELETE: (id) => `/vendors/${id}`,
+    },
+
+    PURCHASE: {
+        LIST: "/purchases",
+        CREATE: "/purchases",
+        GET: (id) => `/purchases/${id}`,
+    },
+
+    INVENTORY: {
+        LIST: "/inventory",
+        CREATE: "/inventory",
+        GET: (id) => `/inventory/${id}`,
+        UPDATE: (id) => `/inventory/${id}`,
+        CHANGE_STATUS: (id) => `/inventory/${id}/status`,
+        DELETE: (id) => `/inventory/${id}`,
+    },
+
     SETTINGS: "/settings",
 };
 

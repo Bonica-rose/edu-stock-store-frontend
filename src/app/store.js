@@ -9,6 +9,9 @@ import dashboardReducer from "@/features/dashboard/redux/dashboardSlice";
 import userReducer from "@/features/user/redux/userSlice";
 import branchReducer from "@/features/branch/redux/branchSlice";
 import categoryReducer from "@/features/category/redux/categorySlice";
+import vendorReducer from "@/features/vendor/redux/vendorSlice";
+import purchaseReducer from "@/features/purchase/redux/purchaseSlice";
+import inventoryReducer from "@/features/inventory/redux/inventorySlice";
 
 export const store = configureStore({
     reducer: {
@@ -21,5 +24,8 @@ export const store = configureStore({
         user: userReducer,
         branch: branchReducer,
         category: categoryReducer,
+        vendor: vendorReducer,
+        purchase: purchaseReducer,
+        inventory: inventoryReducer,
     },
 });

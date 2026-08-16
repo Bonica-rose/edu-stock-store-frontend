@@ -8,11 +8,13 @@ export default function TableToolbar({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <TableSearch
-        value={search}
-        onChange={onSearchChange}
-        placeholder={searchPlaceholder}
-      />
+      {onSearchChange && (
+        <TableSearch
+          value={search}
+          onChange={onSearchChange}
+          placeholder={searchPlaceholder}
+        />
+      )}
 
       <div className="flex items-center gap-2">{children}</div>
     </div>

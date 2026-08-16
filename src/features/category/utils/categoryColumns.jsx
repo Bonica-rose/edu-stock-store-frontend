@@ -48,7 +48,7 @@ export const getCategoryColumns = ({ onView, onEdit, onStatusChange, onDelete })
       <TableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => (
-      <Badge variant={row.original.isActive ? "default" : "secondary"}>
+      <Badge variant={row.original.isActive ? "active" : "inactive"}>
         {row.original.isActive ? "Active" : "Inactive"}
       </Badge>
     ),

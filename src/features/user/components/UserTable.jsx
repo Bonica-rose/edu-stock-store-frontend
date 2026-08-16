@@ -16,5 +16,5 @@ export default function UserTable({
     onStatusChange,
     onDelete,
   });
-  return <DataTable columns={columns} data={users} loading={loading} />;
+  return <DataTable columns={columns} data={users ?? []} loading={loading} />;
 }

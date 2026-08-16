@@ -107,7 +107,7 @@ export default function CompanySettingsCard() {
     <Card className="rounded-sm">
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Company Information</CardTitle>
+          <CardTitle className={`text-blue-900`}>Company Information</CardTitle>
 
           {!isEditing ? (
             <Button

@@ -41,7 +41,7 @@ export const getUserColumns = ({ onView, onEdit, onStatusChange, onDelete }) => 
     ),
 
     cell: ({ row }) => (
-      <Badge variant={row.original.isActive ? "default" : "secondary"}>
+      <Badge variant={row.original.isActive ? "active" : "inactive"}>
         {row.original.isActive ? "Active" : "Inactive"}
       </Badge>
     ),

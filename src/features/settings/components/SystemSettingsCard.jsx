@@ -73,144 +73,144 @@ export default function SystemSettingsCard() {
     };
 
     return (
-        <Card className="rounded-sm">
-            <form onSubmit={handleSubmit(onSubmit)}>
-            <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>System Settings</CardTitle>
+      <Card className="rounded-sm">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className={`text-blue-900`}>System Settings</CardTitle>
 
-                {!isEditing ? (
+            {!isEditing ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-sm"
+                onClick={() => setIsEditing(true)}
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </Button>
+            ) : (
+              <div className="flex gap-2">
                 <Button
-                    type="button"
-                    variant="outline"
-                    className="rounded-sm"
-                    onClick={() => setIsEditing(true)}
+                  type="button"
+                  variant="outline"
+                  className="rounded-sm"
+                  onClick={handleCancel}
                 >
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit
+                  <X className="mr-2 h-4 w-4" />
+                  Cancel
                 </Button>
-                ) : (
-                <div className="flex gap-2">
-                    <Button
-                    type="button"
-                    variant="outline"
-                    className="rounded-sm"
-                    onClick={handleCancel}
-                    >
-                    <X className="mr-2 h-4 w-4" />
-                    Cancel
-                    </Button>
 
-                    <Button
-                    type="submit"
-                    className="rounded-sm"
-                    disabled={loading.update}
-                    >
-                    <Save className="mr-2 h-4 w-4" />
+                <Button
+                  type="submit"
+                  className="rounded-sm"
+                  disabled={loading.update}
+                >
+                  <Save className="mr-2 h-4 w-4" />
 
-                    {loading.update ? "Saving..." : "Save Changes"}
-                    </Button>
-                </div>
-                )}
-            </CardHeader>
+                  {loading.update ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
+            )}
+          </CardHeader>
 
-            <CardContent className="mt-5 space-y-5">
-                <div className="grid gap-4 md:grid-cols-3">                        
-                    {/* Currency */}
-                    <div className="space-y-2">
-                        <Label>
-                        Currency <span className="text-destructive">*</span>
-                        </Label>
+          <CardContent className="mt-5 space-y-5">
+            <div className="grid gap-4 md:grid-cols-3">
+              {/* Currency */}
+              <div className="space-y-2">
+                <Label>
+                  Currency <span className="text-destructive">*</span>
+                </Label>
 
-                        <Input
-                        readOnly={!isEditing}
-                        className="rounded-sm"
-                        {...register("defaultCurrency")}
-                        />
+                <Input
+                  readOnly={!isEditing}
+                  className="rounded-sm"
+                  {...register("defaultCurrency")}
+                />
 
-                        <p className="text-sm text-destructive">
-                        {errors.defaultCurrency?.message}
-                        </p>
-                    </div>
+                <p className="text-sm text-destructive">
+                  {errors.defaultCurrency?.message}
+                </p>
+              </div>
 
-                    {/* Timezone */}
-                    <div className="space-y-2">
-                        <Label>
-                        Timezone <span className="text-destructive">*</span>
-                        </Label>
+              {/* Timezone */}
+              <div className="space-y-2">
+                <Label>
+                  Timezone <span className="text-destructive">*</span>
+                </Label>
 
-                        <Input
-                        readOnly={!isEditing}
-                        className="rounded-sm"
-                        {...register("timezone")}
-                        />
+                <Input
+                  readOnly={!isEditing}
+                  className="rounded-sm"
+                  {...register("timezone")}
+                />
 
-                        <p className="text-sm text-destructive">
-                        {errors.timezone?.message}
-                        </p>
-                    </div>
+                <p className="text-sm text-destructive">
+                  {errors.timezone?.message}
+                </p>
+              </div>
 
-                    {/* Date Format */}
-                    <div className="space-y-2">
-                        <Label>
-                        Date Format <span className="text-destructive">*</span>
-                        </Label>
-
-                        <Controller
-                        control={control}
-                        name="dateFormat"
-                        render={({ field }) => (
-                            <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            disabled={!isEditing}
-                            >
-                            <SelectTrigger className="rounded-sm">
-                                <SelectValue />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-
-                                <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-
-                                <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
-                            </SelectContent>
-                            </Select>
-                        )}
-                        />
-
-                        <p className="text-sm text-destructive">
-                        {errors.dateFormat?.message}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Maintenance */}
-                <div className="flex items-center justify-between rounded-sm border p-4">
-                <div>
-                    <Label>
-                    Maintenance Mode <span className="text-destructive">*</span>
-                    </Label>
-
-                    <p className="text-sm text-muted-foreground">
-                    Enable maintenance mode for the application.
-                    </p>
-                </div>
+              {/* Date Format */}
+              <div className="space-y-2">
+                <Label>
+                  Date Format <span className="text-destructive">*</span>
+                </Label>
 
                 <Controller
-                    control={control}
-                    name="isMaintenanceMode"
-                    render={({ field }) => (
-                    <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        disabled={!isEditing}
-                    />
-                    )}
+                  control={control}
+                  name="dateFormat"
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={!isEditing}
+                    >
+                      <SelectTrigger className="rounded-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+
+                        <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+
+                        <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
-                </div>
-            </CardContent>
-            </form>
-        </Card>
+
+                <p className="text-sm text-destructive">
+                  {errors.dateFormat?.message}
+                </p>
+              </div>
+            </div>
+
+            {/* Maintenance */}
+            <div className="flex items-center justify-between rounded-sm border p-4">
+              <div>
+                <Label>
+                  Maintenance Mode <span className="text-destructive">*</span>
+                </Label>
+
+                <p className="text-sm text-muted-foreground">
+                  Enable maintenance mode for the application.
+                </p>
+              </div>
+
+              <Controller
+                control={control}
+                name="isMaintenanceMode"
+                render={({ field }) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={!isEditing}
+                  />
+                )}
+              />
+            </div>
+          </CardContent>
+        </form>
+      </Card>
     );
 }

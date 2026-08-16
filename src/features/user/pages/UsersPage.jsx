@@ -117,7 +117,7 @@ export default function UsersPage() {
                 page: 1,
               }))
             }
-            searchPlaceholder="Search users..."
+            searchPlaceholder="Search users by ID, name, email, ..."
           >
             <BranchFilter
               value={query.branch}

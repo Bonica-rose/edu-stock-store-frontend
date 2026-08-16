@@ -17,7 +17,7 @@ export default function SettingsPage() {
     }, [dispatch]);
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-4">
             <PageHeader
                 title="System Settings"
                 description="Configure application settings."

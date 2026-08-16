@@ -30,7 +30,7 @@ export default function CategoryListPage() {
 
   const [query, setQuery] = useState({
     page: 1,
-    limit: 10,
+    limit: 5,
     search: "",
     type: "all",
     isActive: "all",
@@ -103,7 +103,7 @@ export default function CategoryListPage() {
       <div className="space-y-4">
         <TableToolbar
           search={query.search}
-          searchPlaceholder="Search categories..."
+          searchPlaceholder="Search categories by code, name, ..."
           onSearchChange={(value) =>
             setQuery((prev) => ({ ...prev, search: value, page: 1 }))
           }

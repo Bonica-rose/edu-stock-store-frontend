@@ -1,8 +1,8 @@
 export default function PageHeader({ title, description, action }) {
     return (
-        <div className="flex items-center justify-between">      
-            <div>        
-                <h1 className="text-xl font-semibold">{title}</h1>
+        <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
                 {description && (
                     <p className="text-sm text-muted-foreground"> {description} </p>
                 )}

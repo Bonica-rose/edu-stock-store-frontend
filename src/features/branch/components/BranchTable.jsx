@@ -15,5 +15,5 @@ export default function BranchTable({
     onStatusChange,
   });
 
-  return <DataTable columns={columns} data={branches} loading={loading} />;
+  return <DataTable columns={columns} data={branches ?? []} loading={loading} />;
 }

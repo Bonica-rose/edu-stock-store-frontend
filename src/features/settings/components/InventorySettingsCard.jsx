@@ -60,7 +60,7 @@ export default function InventorySettingsCard() {
     <Card className="rounded-sm">
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Inventory Settings</CardTitle>
+          <CardTitle className={`text-blue-900`}>Inventory Settings</CardTitle>
 
           {!isEditing ? (
             <Button

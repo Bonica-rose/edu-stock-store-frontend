@@ -89,7 +89,7 @@ export default function BranchListPage() {
       <div className="space-y-4">
         <TableToolbar
           search={query.search}
-          searchPlaceholder="Search branches..."
+          searchPlaceholder="Search branches by code, name, city, state, ..."
           onSearchChange={(value) =>
             setQuery((prev) => ({
               ...prev,

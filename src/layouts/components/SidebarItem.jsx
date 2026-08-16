@@ -5,17 +5,18 @@ export default function SidebarItem({ item, collapsed, onItemClick }) {
 
     return (
         <NavLink
-        to={item.path}
-        onClick={onItemClick}
-        className={({ isActive }) =>
+            to={item.path}
+            onClick={onItemClick}
+            title={collapsed ? item.label : ""}
+            className={({ isActive }) =>
             `flex w-full items-center rounded-sm px-3 py-2 text-sm transition-colors ${
-            isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
             } ${collapsed ? "justify-center" : "gap-3"}`
-        }
+            }
         >
-        <Icon size={18} />
+            <Icon size={18} />
 
-        {!collapsed && <span>{item.label}</span>}
+            {!collapsed && <span>{item.label}</span>}
         </NavLink>
     );
 }

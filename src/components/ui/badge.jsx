@@ -19,13 +19,17 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        active:
+          "text-lime-100 border-lime-800 bg-lime-800 hover:bg-lime-800/90",
+        inactive:
+          "border-transparent bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 function Badge({
   className,
