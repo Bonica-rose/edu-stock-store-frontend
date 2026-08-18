@@ -57,9 +57,9 @@ export default function useInventoryFormOptions() {
         vendors,
         branches,
 
-    loading:
-        categoryLoading.categories ||
-        vendorLoading.vendors ||
-        branchLoading.branches,
+        loading:
+            categoryLoading.categories ||
+            vendorLoading.vendors ||
+            branchLoading.branches,
     };
 }

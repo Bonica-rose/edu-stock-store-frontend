@@ -12,6 +12,7 @@ import categoryReducer from "@/features/category/redux/categorySlice";
 import vendorReducer from "@/features/vendor/redux/vendorSlice";
 import purchaseReducer from "@/features/purchase/redux/purchaseSlice";
 import inventoryReducer from "@/features/inventory/redux/inventorySlice";
+import stockMovementReducer from "@/features/stockMovement/redux/stockMovementSlice";
 
 export const store = configureStore({
     reducer: {
@@ -27,5 +28,6 @@ export const store = configureStore({
         vendor: vendorReducer,
         purchase: purchaseReducer,
         inventory: inventoryReducer,
+        stockMovement: stockMovementReducer,
     },
 });

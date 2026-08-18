@@ -72,6 +72,15 @@ const API_ENDPOINTS = {
         DELETE: (id) => `/inventory/${id}`,
     },
 
+    STOCK_MOVEMENT: {
+        LIST: "/stock-movements",
+        GET: (id) => `/stock-movements/${id}`,
+        STOCK_IN: "/stock-movements/stock-in",
+        STOCK_OUT: "/stock-movements/stock-out",
+        TRANSFER: "/stock-movements/transfer",
+        ADJUSTMENT: "/stock-movements/adjustment",
+    },
+
     SETTINGS: "/settings",
 };
 
