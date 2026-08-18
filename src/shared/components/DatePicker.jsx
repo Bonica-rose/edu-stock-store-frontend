@@ -1,4 +1,4 @@
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ const formatDisplayDate = (value) => {
   }
 
   const [year, month, day] = value.split("-").map(Number);
-
   const date = new Date(year, month - 1, day);
 
   return new Intl.DateTimeFormat("en-GB", {
@@ -54,7 +53,13 @@ export default function DatePicker({
   disabled = false,
 }) {
   const [open, setOpen] = useState(false);
+
   const selectedDate = parseDate(value);
+
+  const handleClear = () => {
+    onChange("");
+    setOpen(false);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -69,12 +74,13 @@ export default function DatePicker({
             }`}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
+
             {value ? formatDisplayDate(value) : placeholder}
           </Button>
         }
       />
 
-      <PopoverContent align="start" className="w-auto px-2 py-1">
+      <PopoverContent align="start" className="w-auto px-2 py-2">
         <Calendar
           mode="single"
           selected={selectedDate}
@@ -86,6 +92,21 @@ export default function DatePicker({
           startMonth={new Date(2020, 0)}
           endMonth={new Date(2030, 11)}
         />
+
+        {value && (
+          <div className="border-t pt-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="w-full justify-center text-red-500 hover:text-red-600"
+              onClick={handleClear}
+            >
+              <X className="mr-2 h-4 w-4" />
+              Clear date
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );

@@ -52,6 +52,13 @@ import CreateInventoryPage from "@/features/inventory/pages/CreateInventoryPage"
 import EditInventoryPage from "@/features/inventory/pages/EditInventoryPage";
 import ViewInventoryPage from "@/features/inventory/pages/ViewInventoryPage";
 
+import StockMovementListPage from "@/features/stockMovement/pages/StockMovementListPage";
+import ViewStockMovementPage from "@/features/stockMovement/pages/ViewStockMovementPage";
+import StockInPage from "@/features/stockMovement/pages/StockInPage";
+import StockOutPage from "@/features/stockMovement/pages/StockOutPage";
+import StockTransferPage from "@/features/stockMovement/pages/StockTransferPage";
+import StockAdjustmentPage from "@/features/stockMovement/pages/StockAdjustmentPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -106,14 +113,29 @@ export const router = createBrowserRouter([
                   { path: "vendors/:id/edit", element: <EditVendorPage /> },
                   { path: "vendors/:id", element: <ViewVendorPage /> },
 
-                  { path: "purchases", element: <PurchaseListPage />, },
-                  { path: "purchases/new", element: <CreatePurchasePage />, },
-                  { path: "purchases/:id", element: <ViewPurchasePage />, },
+                  { path: "purchases", element: <PurchaseListPage /> },
+                  { path: "purchases/new", element: <CreatePurchasePage /> },
+                  { path: "purchases/:id", element: <ViewPurchasePage /> },
 
                   { path: "inventory", element: <InventoryListPage /> },
                   { path: "inventory/new", element: <CreateInventoryPage /> },
-                  { path: "inventory/:id/edit", element: <EditInventoryPage /> },
+                  {
+                    path: "inventory/:id/edit",
+                    element: <EditInventoryPage />,
+                  },
                   { path: "inventory/:id", element: <ViewInventoryPage /> },
+
+                  {
+                    path: "stock-movements",
+                    children: [
+                      { index: true, element: <StockMovementListPage /> },
+                      { path: ":id", element: <ViewStockMovementPage /> },
+                      { path: "stock-in", element: <StockInPage /> },
+                      { path: "stock-out", element: <StockOutPage /> },
+                      { path: "transfer", element: <StockTransferPage /> },
+                      { path: "adjustment", element: <StockAdjustmentPage /> },
+                    ],
+                  },
                 ],
               },
             ],

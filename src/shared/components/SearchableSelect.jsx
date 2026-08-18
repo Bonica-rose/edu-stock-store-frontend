@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   Combobox,
   ComboboxContent,
@@ -46,6 +47,16 @@ export default function SearchableSelect({
         showClear
         aria-label={placeholder}
         aria-invalid={error}
+        // This updates the inner input if needed
+        inputClassName="focus-visible:ring-0 focus-visible:border-0"
+        // This updates the container box directly for error states
+        className={cn(
+          error && [
+            "border-destructive",
+            "!has-focus:border-destructive",
+            "!has-focus:ring-destructive",
+          ],
+        )}
       />
 
       <ComboboxContent>
