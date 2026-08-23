@@ -80,7 +80,7 @@ export default function StockInForm({
   }));
 
   const submitForm = async (data) => {
-    try {
+    try {      
       const payload = {
         inventory: data.inventory,
         quantity: Number(data.quantity),

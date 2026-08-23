@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import pluralize from "pluralize";
 
 const MOVEMENT_TYPE_CONFIG = {
   "Stock In": {
@@ -98,7 +99,9 @@ export default function StockMovementDetails({ movement }) {
               {formatDate(movement.createdAt)}
             </DetailItem>
 
-            <DetailItem label="Quantity">{movement.quantity}</DetailItem>
+            <DetailItem label="Quantity">
+              {movement.quantity} {pluralize(movement.inventory?.unit, movement.quantity)}
+            </DetailItem>
 
             <DetailItem label="Performed By">{performedBy}</DetailItem>
           </div>

@@ -81,6 +81,17 @@ const API_ENDPOINTS = {
         ADJUSTMENT: "/stock-movements/adjustment",
     },
 
+    ASSET: {
+        LIST: "/assets",
+        GET: (id) => `/assets/${id}`,
+        CREATE: "/assets",
+        UPDATE: (id) => `/assets/${id}`,
+        CHANGE_STATUS: (id) => `/assets/${id}/status`,
+        DELETE: (id) => `/assets/${id}`,
+        ASSIGN: (id) => `/assets/${id}/assign`,
+        RETURN: (id) => `/assets/${id}/return`,
+    },
+
     SETTINGS: "/settings",
 };
 

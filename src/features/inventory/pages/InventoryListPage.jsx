@@ -31,11 +31,7 @@ export default function InventoryListPage() {
     (state) => state.inventory,
   );
 
-  const {
-      categories,
-      vendors,
-      branches,
-  } = useInventoryFormOptions();
+  const { categories, vendors, branches } = useInventoryFormOptions();
 
   const [query, setQuery] = useState({
     page: 1,
@@ -139,6 +135,7 @@ export default function InventoryListPage() {
             vendor={query.vendor}
             branch={query.branch}
             isActive={query.isActive}
+            itemType={query.itemType}
             categories={categories}
             vendors={vendors}
             branches={branches}
@@ -167,6 +164,13 @@ export default function InventoryListPage() {
               setQuery((prev) => ({
                 ...prev,
                 isActive: value,
+                page: 1,
+              }))
+            }
+            onItemTypeChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                itemType: value,
                 page: 1,
               }))
             }

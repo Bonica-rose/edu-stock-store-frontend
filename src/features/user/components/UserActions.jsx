@@ -9,7 +9,6 @@ import {
 
 export default function UserActions({
   user,
-  onView,
   onEdit,
   onStatusChange,
   onDelete,
@@ -21,13 +20,6 @@ export default function UserActions({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        {onView && (
-          <DropdownMenuItem onClick={() => onView(user)}>
-            <Eye className="mr-2 h-4 w-4" />
-            View
-          </DropdownMenuItem>
-        )}
-
         {onEdit && (
           <DropdownMenuItem onClick={() => onEdit(user)}>
             <Pencil className="mr-2 h-4 w-4" />

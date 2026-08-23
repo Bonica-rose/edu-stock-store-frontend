@@ -117,6 +117,9 @@ const PurchaseForm = ({
     });
   }, [inventories, selectedBranch]);
 
+  console.log("filteredInventories: ", filteredInventories);
+  
+
   const selectedInventoryIds = useMemo(() => {
     return new Set(watchedItems?.map((item) => item.inventory).filter(Boolean));
   }, [watchedItems]);
@@ -386,7 +389,7 @@ const PurchaseForm = ({
                           >
                             <SelectValue placeholder="Select inventory">
                               {selectedInventory
-                                ? `${selectedInventory.sku} - ${selectedInventory.itemName}`
+                                ? `${selectedInventory.sku} - ${selectedInventory.itemName} (${selectedInventory.unit})`
                                 : "Select inventory"}
                             </SelectValue>
                           </SelectTrigger>
@@ -409,7 +412,8 @@ const PurchaseForm = ({
                                     value={inventory._id}
                                     disabled={isAlreadySelected}
                                   >
-                                    {inventory.sku} - {inventory.itemName}
+                                    {inventory.sku} - {inventory.itemName} (
+                                    {inventory.unit})
                                   </SelectItem>
                                 );
                               })
@@ -429,15 +433,21 @@ const PurchaseForm = ({
                         <FieldLabel htmlFor={`items-${index}-quantity`}>
                           Quantity <span className="text-destructive">*</span>
                         </FieldLabel>
-
-                        <Input
-                          id={`items-${index}-quantity`}
-                          type="number"
-                          min="1"
-                          step="1"
-                          {...register(`items.${index}.quantity`)}
-                          aria-invalid={!!itemErrors?.quantity}
-                        />
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id={`items-${index}-quantity`}
+                            type="number"
+                            min="1"
+                            step="1"
+                            {...register(`items.${index}.quantity`)}
+                            aria-invalid={!!itemErrors?.quantity}
+                          />
+                          {selectedInventory?.unit && (
+                            <span className="text-sm text-muted-foreground whitespace-nowrap">
+                              {selectedInventory.unit}
+                            </span>
+                          )}
+                        </div>
 
                         {itemErrors?.quantity && (
                           <FieldError>{itemErrors.quantity.message}</FieldError>
@@ -447,7 +457,8 @@ const PurchaseForm = ({
                       {/* Purchase Price */}
                       <Field>
                         <FieldLabel htmlFor={`items-${index}-purchasePrice`}>
-                          Purchase Price Per Unit<span className="text-destructive">*</span>
+                          Purchase Price Per Unit
+                          <span className="text-destructive">*</span>
                         </FieldLabel>
 
                         <Input

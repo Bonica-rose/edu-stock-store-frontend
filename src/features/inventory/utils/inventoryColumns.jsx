@@ -3,7 +3,12 @@ import { TableColumnHeader } from "@/shared/components/table";
 
 import InventoryActions from "../components/InventoryActions";
 
-export const getInventoryColumns = ({ onView, onEdit, onStatusChange, onDelete }) => [
+export const getInventoryColumns = ({
+  onView,
+  onEdit,
+  onStatusChange,
+  onDelete,
+}) => [
   {
     accessorKey: "sku",
     header: ({ column }) => <TableColumnHeader column={column} title="SKU" />,
@@ -39,6 +44,23 @@ export const getInventoryColumns = ({ onView, onEdit, onStatusChange, onDelete }
   },
 
   {
+    accessorKey: "itemType",
+    header: ({ column }) => <TableColumnHeader column={column} title="Type" />,
+    cell: ({ row }) => {
+      const type = row.original.itemType;
+
+      if (!type) return <span className="text-muted-foreground">-</span>;
+      const cleanType = type.replace(/[_-]/g, " ").toLowerCase();
+      return (
+        <span className="capitalize font-medium text-foreground">
+          {" "}
+          {cleanType}
+        </span>
+      );
+    },
+  },
+
+  {
     accessorKey: "currentStock",
     header: ({ column }) => <TableColumnHeader column={column} title="Stock" />,
   },
@@ -47,10 +69,7 @@ export const getInventoryColumns = ({ onView, onEdit, onStatusChange, onDelete }
     accessorKey: "purchasePrice",
 
     header: ({ column }) => (
-      <TableColumnHeader
-        column={column}
-        title="Price (Per Unit)"
-      />
+      <TableColumnHeader column={column} title="Price (Per Unit)" />
     ),
 
     cell: ({ row }) => {

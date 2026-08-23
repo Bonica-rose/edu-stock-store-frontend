@@ -145,7 +145,10 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
                   <TableHead>SKU</TableHead>
                   <TableHead>Item</TableHead>
                   <TableHead className="text-right">Quantity</TableHead>
-                  <TableHead className="text-right">Purchase Price Per Unit</TableHead>
+                  <TableHead className="text-right">Unit</TableHead>
+                  <TableHead className="text-right">
+                    Purchase Price Per Unit
+                  </TableHead>
                   <TableHead className="text-right">Line Total</TableHead>
                 </TableRow>
               </TableHeader>
@@ -165,6 +168,10 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
                         <TableCell>{item.inventory?.itemName ?? "-"}</TableCell>
 
                         <TableCell className="text-right">{quantity}</TableCell>
+
+                        <TableCell className="text-right">
+                          {item.inventory?.unit}
+                        </TableCell>
 
                         <TableCell className="text-right">
                           {formatCurrency(purchasePrice)}

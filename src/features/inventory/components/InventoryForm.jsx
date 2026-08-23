@@ -19,15 +19,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import SearchableSelect from "../../../shared/components/SearchableSelect";
 import { inventorySchema } from "../validations/inventorySchema";
 
+const ITEM_TYPE_OPTIONS = [
+  { value: "CONSUMABLE", label: "Consumable" },
+  { value: "ASSET", label: "Asset" },
+];
+
 const UNIT_OPTIONS = [
-    { value: "Piece", label: "Piece" },
-    { value: "Pack", label: "Pack" },
-    { value: "Box", label: "Box" },
-    { value: "Bottle", label: "Bottle" },
-    { value: "Kg", label: "Kg" },
-    { value: "Litre", label: "Litre" },
-    { value: "Dozen", label: "Dozen" },
-    { value: "Bundle", label: "Bundle" },
+  { value: "Piece", label: "Piece" },
+  { value: "Pack", label: "Pack" }, // means a package or set
+  { value: "Box", label: "Box" },
+  { value: "Bottle", label: "Bottle" },
+  { value: "Kg", label: "Kg" },
+  { value: "Litre", label: "Litre" },
+  { value: "Dozen", label: "Dozen" },
+  { value: "Bundle", label: "Bundle" }, // means a kit
 ];
 
 export default function InventoryForm({
@@ -43,28 +48,29 @@ export default function InventoryForm({
     const schema = inventorySchema;
 
     const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        setError,
-        watch,
-        control,
-        formState: { errors },
+      register,
+      handleSubmit,
+      reset,
+      setValue,
+      setError,
+      watch,
+      control,
+      formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+      resolver: yupResolver(schema),
 
-        defaultValues: {
-            itemName: "",
-            barcode: "",
-            category: "",
-            vendor: "",
-            branch: "",
-            unit: "",
-            purchasePrice: 0,
-            description: "",
-            itemImageFile: null,
-        },
+      defaultValues: {
+        itemName: "",
+        barcode: "",
+        category: "",
+        vendor: "",
+        branch: "",
+        itemType: "CONSUMABLE",
+        unit: "",
+        purchasePrice: 0,
+        description: "",
+        itemImageFile: null,
+      },
     });
 
     useEffect(() => {
@@ -75,6 +81,7 @@ export default function InventoryForm({
 
     const selectedVendor = watch("vendor");
     const selectedBranch = watch("branch");
+    const selectedItemType = watch("itemType");
     const selectedUnit = watch("unit");
     const selectedImage = watch("itemImageFile");
 
@@ -82,20 +89,21 @@ export default function InventoryForm({
     useEffect(() => {
         if (initialData) {
         reset({
-            itemName: initialData.itemName || "",
-            barcode: initialData.barcode || "",
-            category: initialData.category?._id || initialData.category || "",
-            vendor: initialData.vendor?._id || initialData.vendor || "",
-            branch: initialData.branch?._id || initialData.branch || "",
-            unit: initialData.unit || "",
-            purchasePrice:
-                initialData.purchasePrice !== undefined
-                ? String(initialData.purchasePrice)
+          itemName: initialData.itemName || "",
+          barcode: initialData.barcode || "",
+          category: initialData.category?._id || initialData.category || "",
+          vendor: initialData.vendor?._id || initialData.vendor || "",
+          branch: initialData.branch?._id || initialData.branch || "",
+          itemType: initialData.itemType ?? "CONSUMABLE",
+          unit: initialData.unit || "",
+          purchasePrice:
+            initialData.purchasePrice !== undefined
+              ? String(initialData.purchasePrice)
               : "",
-            minimumStock: initialData.minimumStock || "",
-            description: initialData.description || "",
-            itemImage: initialData.itemImage || "",
-            itemImageFile: null,
+          minimumStock: initialData.minimumStock || "",
+          description: initialData.description || "",
+          itemImage: initialData.itemImage || "",
+          itemImageFile: null,
         });
         }
     }, [initialData, reset]);
@@ -126,6 +134,7 @@ export default function InventoryForm({
           formData.append("category", data.category);
           formData.append("vendor", data.vendor);
           formData.append("branch", data.branch);
+          formData.append("itemType", data.itemType);
           formData.append("unit", data.unit);
           if (mode==='create') {
             formData.append("purchasePrice", data.purchasePrice);
@@ -312,6 +321,47 @@ export default function InventoryForm({
 
                 <FieldError>{errors.branch?.message}</FieldError>
               </Field>
+
+              {/* ItemType */}
+              <Field>
+                <FieldLabel htmlFor="itemType">
+                  Item Type <span className="text-destructive">*</span>
+                </FieldLabel>
+
+                <Select
+                  value={selectedItemType}
+                  onValueChange={(value) =>
+                    setValue("itemType", value, {
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  <SelectTrigger
+                    id="itemType"
+                    aria-invalid={!!errors.itemType}
+                    disabled={mode === "edit" && initialData.currentStock > 0}
+                  >
+                    <SelectValue placeholder="Select item type">
+                      {
+                        ITEM_TYPE_OPTIONS.find(
+                          (itemType) => itemType.value === selectedItemType,
+                        )?.label
+                      }
+                    </SelectValue>
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {ITEM_TYPE_OPTIONS.map((itemtype) => (
+                      <SelectItem key={itemtype.value} value={itemtype.value}>
+                        {itemtype.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <FieldError>{errors.itemType?.message}</FieldError>
+              </Field>
             </div>
 
             {/* PURCHASE INFORMATION */}
@@ -361,25 +411,27 @@ export default function InventoryForm({
               </Field>
 
               {/* Minimum Stock */}
-              {mode === 'edit' && (<Field>
-                <FieldLabel htmlFor="minimumStock">
-                  Minimum Stock <span className="text-destructive">*</span>
-                </FieldLabel>
+              {mode === "edit" && (
+                <Field>
+                  <FieldLabel htmlFor="minimumStock">
+                    Minimum Stock <span className="text-destructive">*</span>
+                  </FieldLabel>
 
-                <Input
-                  id="minimumStock"
-                  type="number"
-                  min="0"
-                  step="1"
-                  {...register("minimumStock")}
-                  aria-invalid={!!errors.minimumStock}
-                  placeholder="Enter minimum stock"
-                />
+                  <Input
+                    id="minimumStock"
+                    type="number"
+                    min="0"
+                    step="1"
+                    {...register("minimumStock")}
+                    aria-invalid={!!errors.minimumStock}
+                    placeholder="Enter minimum stock"
+                  />
 
-                {errors.minimumStock && (
-                  <FieldError>{errors.minimumStock.message}</FieldError>
-                )}
-              </Field>)}
+                  {errors.minimumStock && (
+                    <FieldError>{errors.minimumStock.message}</FieldError>
+                  )}
+                </Field>
+              )}
 
               {/* Purchase Price */}
               <Field>
