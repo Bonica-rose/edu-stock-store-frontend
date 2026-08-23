@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatDateTime } from "../../../shared/utils/dateFormatter";
 
 export default function RecentActivities({ activities = [] }) {
   return (
@@ -21,8 +22,11 @@ export default function RecentActivities({ activities = [] }) {
               >
                 <div>
                   <p className="font-medium">{activity.action}</p>
+                  <p className="text-[13px] text-blue-900/80">
+                    {activity.description}
+                  </p>
 
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {activity.user
                       ? `${activity.user.firstName} ${activity.user.lastName}`
                       : "System"}
@@ -30,7 +34,8 @@ export default function RecentActivities({ activities = [] }) {
                 </div>
 
                 <span className="text-xs text-muted-foreground">
-                  {new Date(activity.createdAt).toLocaleString()}
+                  {/* {new Date(activity.createdAt).toLocaleString()} */}
+                  {formatDateTime(activity.createdAt, "DD MMM, YYYY h:mm:ss A")}
                 </span>
               </div>
             ))}

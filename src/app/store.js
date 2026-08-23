@@ -13,6 +13,7 @@ import vendorReducer from "@/features/vendor/redux/vendorSlice";
 import purchaseReducer from "@/features/purchase/redux/purchaseSlice";
 import inventoryReducer from "@/features/inventory/redux/inventorySlice";
 import stockMovementReducer from "@/features/stockMovement/redux/stockMovementSlice";
+import assetReducer from "@/features/asset/redux/assetSlice";
 
 export const store = configureStore({
     reducer: {
@@ -29,5 +30,6 @@ export const store = configureStore({
         purchase: purchaseReducer,
         inventory: inventoryReducer,
         stockMovement: stockMovementReducer,
+        asset: assetReducer,
     },
 });

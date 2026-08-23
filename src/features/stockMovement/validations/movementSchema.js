@@ -1,32 +1,39 @@
 import * as yup from "yup";
 
 export const stockInSchema = yup.object({
-    inventory: yup.string().required("Inventory is required."),
+  inventory: yup.string().required("Inventory is required."),
 
-    quantity: yup
-        .number()
-        .typeError("Quantity is required.")
-        .integer("Quantity must be an integer.")
-        .min(1, "Quantity must be greater than zero.")
-        .required("Quantity is required."),
+  quantity: yup
+    .number()
+    .typeError("Quantity is required.")
+    .integer("Quantity must be an integer.")
+    .min(1, "Quantity must be greater than zero.")
+    .required("Quantity is required."),
 
-    reason: yup
-        .string()
-        .trim()
-        .required("Reason is required.")
-        .max(100, "Reason cannot exceed 100 characters."),
+  reason: yup
+    .string()
+    .trim()
+    .required("Reason is required.")
+    .max(100, "Reason cannot exceed 100 characters."),
 
-    purchasePrice: yup
-        .number()
-        .typeError("Purchase price must be a number.")
-        .min(0, "Purchase price cannot be negative.")
-        .nullable(),
+  purchasePrice: yup
+    .number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : value,
+    )
+    .typeError("Purchase price must be a number")
+    .min(0, "Purchase price cannot be negative")
+    .when("reason", {
+      is: "Purchase",
+      then: (schema) => schema.required("Purchase price is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 
-    remarks: yup
-        .string()
-        .trim()
-        .max(500, "Remarks cannot exceed 500 characters.")
-        .nullable(),
+  remarks: yup
+    .string()
+    .trim()
+    .max(500, "Remarks cannot exceed 500 characters.")
+    .nullable(),
 });
 
 export const stockOutSchema = yup.object({

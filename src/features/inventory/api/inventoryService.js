@@ -11,6 +11,10 @@ const getInventories = async (query = {}) => {
         params.search = query.search.trim();
     }
 
+    if (query.itemType && query.itemType !== "all") {
+        params.itemType = query.itemType;
+    }
+
     if (query.category && query.category !== "all") {
         params.category = query.category;
     }

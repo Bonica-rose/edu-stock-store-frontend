@@ -64,7 +64,6 @@ export const updateUserSchema = yup.object({
     firstName: yup.string().required(),
     lastName: yup.string().required(),
     email: yup.string().email().required(),
-    phone: yup.string().required(),
     role: yup.string().required(),
     branch: yup.string().required(),
 });

@@ -17,22 +17,27 @@ const summaryConfig = {
   totalUsers: {
     title: "Total Users",
     icon: Users,
+    iconClass: "text-blue-600",
   },
   totalBranches: {
     title: "Total Branches",
     icon: Building2,
+    iconClass: "text-violet-600",
   },
   totalVendors: {
     title: "Total Vendors",
     icon: Truck,
+    iconClass: "text-orange-600",
   },
   totalInventory: {
     title: "Inventory Items",
     icon: Boxes,
+    iconClass: "text-cyan-600",
   },
   totalAssets: {
     title: "Assets",
     icon: Package,
+    iconClass: "text-lime-600",
   },
   inventory: {
     title: "Inventory",
@@ -49,6 +54,7 @@ const summaryConfig = {
   maintenance: {
     title: "Maintenance",
     icon: Wrench,
+    iconClass: "text-amber-600",
   },
   pending: {
     title: "Pending",
@@ -65,6 +71,7 @@ const summaryConfig = {
   lowStock: {
     title: "Low Stock",
     icon: TriangleAlert,
+    iconClass: "text-red-600",
   },
   stockInToday: {
     title: "Stock In",
@@ -81,6 +88,8 @@ const summaryConfig = {
 };
 
 export default function SummaryCards({ summary = {} }) {
+  console.log(summary);
+  
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {Object.entries(summary).map(([key, value]) => {
@@ -94,6 +103,8 @@ export default function SummaryCards({ summary = {} }) {
             title={config.title}
             value={value}
             icon={config.icon}
+            iconColor={config.iconClass}
+            cardColor={config.bgClass}
           />
         );
       })}

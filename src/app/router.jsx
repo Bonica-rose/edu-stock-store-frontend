@@ -59,6 +59,11 @@ import StockOutPage from "@/features/stockMovement/pages/StockOutPage";
 import StockTransferPage from "@/features/stockMovement/pages/StockTransferPage";
 import StockAdjustmentPage from "@/features/stockMovement/pages/StockAdjustmentPage";
 
+import AssetListPage from "@/features/asset/pages/AssetListPage";
+import CreateAssetPage from "@/features/asset/pages/CreateAssetPage";
+import EditAssetPage from "@/features/asset/pages/EditAssetPage";
+import ViewAssetPage from "@/features/asset/pages/ViewAssetPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -136,6 +141,11 @@ export const router = createBrowserRouter([
                       { path: "adjustment", element: <StockAdjustmentPage /> },
                     ],
                   },
+
+                  { path: "assets", element: <AssetListPage /> },
+                  { path: "assets/new", element: <CreateAssetPage /> },
+                  { path: "assets/:id/edit", element: <EditAssetPage /> },
+                  { path: "assets/:id", element: <ViewAssetPage /> },
                 ],
               },
             ],

@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { TableColumnHeader } from "@/shared/components/table";
 import UserActions from "../components/UserActions";
 
-export const getUserColumns = ({ onView, onEdit, onStatusChange, onDelete }) => [
+export const getUserColumns = ({ onEdit, onStatusChange, onDelete }) => [
   {
     accessorKey: "employeeId",
     header: ({ column }) => (
@@ -54,7 +54,6 @@ export const getUserColumns = ({ onView, onEdit, onStatusChange, onDelete }) => 
     cell: ({ row }) => (
       <UserActions
         user={row.original}
-        onView={onView}
         onEdit={onEdit}
         onStatusChange={onStatusChange}
         onDelete={onDelete}

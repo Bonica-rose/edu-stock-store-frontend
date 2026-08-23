@@ -46,10 +46,6 @@ export default function UsersPage() {
         navigate(`/edu/users/new`);
     }
 
-    const handleView = (user) => {
-        navigate(`/edu/users/${user._id}`);
-    };
-
     const handleEdit = (user) => {
         navigate(`/edu/users/${user._id}/edit`);
     };
@@ -154,7 +150,6 @@ export default function UsersPage() {
           <UserTable
             users={users}
             loading={loading.users}
-            onView={handleView}
             onEdit={handleEdit}
             onStatusChange={handleStatusChange}
             onDelete={handleDelete}
