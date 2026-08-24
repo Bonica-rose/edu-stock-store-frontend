@@ -187,10 +187,10 @@ export default function AssetListPage() {
               }
             />
 
-            {/* ASSET ACTIONS ROW */}            
+            {/* ASSET ACTIONS ROW */}
             <Button
               onClick={handleCreate}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
             >
               <Plus className="h-4 w-4" />
               Create Asset

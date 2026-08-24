@@ -27,21 +27,21 @@ export const getInventoryColumns = ({
     ),
   },
 
-  {
-    accessorFn: (row) => row.vendor?.vendorName ?? "-",
-    id: "vendor",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Vendor" />
-    ),
-  },
+  // {
+  //   accessorFn: (row) => row.vendor?.vendorName ?? "-",
+  //   id: "vendor",
+  //   header: ({ column }) => (
+  //     <TableColumnHeader column={column} title="Vendor" />
+  //   ),
+  // },
 
-  {
-    accessorFn: (row) => row.branch?.branchName ?? "-",
-    id: "branch",
-    header: ({ column }) => (
-      <TableColumnHeader column={column} title="Branch" />
-    ),
-  },
+  // {
+  //   accessorFn: (row) => row.branch?.branchName ?? "-",
+  //   id: "branch",
+  //   header: ({ column }) => (
+  //     <TableColumnHeader column={column} title="Branch" />
+  //   ),
+  // },
 
   {
     accessorKey: "itemType",

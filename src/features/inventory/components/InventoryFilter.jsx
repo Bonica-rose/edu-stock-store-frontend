@@ -46,7 +46,7 @@ export default function InventoryFilter({
           <SelectValue>
             {itemType === "CONSUMABLE"
               ? "Consumable"
-              : isActive === "ASSET"
+              : itemType === "ASSET"
                 ? "Asset"
                 : "All Types"}
           </SelectValue>

@@ -92,6 +92,16 @@ const API_ENDPOINTS = {
         RETURN: (id) => `/assets/${id}/return`,
     },
 
+    MAINTENANCE: {
+        LIST: "/maintenance",
+        GET: (id) => `/maintenance/${id}`,
+        CREATE: "/maintenance",
+        ASSIGN: (id) => `/maintenance/${id}/assign`,
+        UPDATE_STATUS: (id) => `/maintenance/${id}/status`,
+        COMPLETE: (id) => `/maintenance/${id}/complete`,
+        DELETE: (id) => `/maintenance/${id}`,
+    },
+
     SETTINGS: "/settings",
 };
 
