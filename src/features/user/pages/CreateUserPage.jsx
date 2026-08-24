@@ -28,7 +28,6 @@ export default function CreateUserPage() {
   );
 
   const handleCreateUser = async (data) => {
-      // console.log(data);
       await dispatch(createUser(data)).unwrap();
       toast.success("User created successfully");
       navigate("/edu/users");

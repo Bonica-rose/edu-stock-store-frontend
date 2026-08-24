@@ -1,20 +1,13 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
 import { Loader2, UserMinus } from "lucide-react";
+import { toast } from "sonner";
 
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
-const returnAssetSchema = yup.object({
-  remarks: yup
-    .string()
-    .trim()
-    .max(500, "Remarks must not exceed 500 characters.")
-    .default(""),
-});
+import { returnAssetSchema } from "../validations/assetSchema";
+import { formatDate } from "../../../shared/utils/dateFormatter";
 
 const getUserName = (user) => {
   if (!user) return "-";
@@ -25,16 +18,6 @@ const getUserName = (user) => {
     user.email ||
     "-"
   );
-};
-
-const formatDate = (date) => {
-  if (!date) return "-";
-
-  return new Date(date).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
 };
 
 export default function ReturnAssetForm({
@@ -55,9 +38,25 @@ export default function ReturnAssetForm({
   });
 
   const submitForm = async (data) => {
-    await onSubmit({
-      remarks: data.remarks?.trim() || "",
-    });
+    try {
+      await onSubmit({
+        remarks: data.remarks?.trim() || "",
+      });
+    } catch (error) {
+      // Handle backend validation errors
+      if (error.errors?.length) {
+        error.errors.forEach((err) => {
+          setError(err.path, {
+            type: "server",
+            message: err.msg,
+          });
+        });
+
+        return;
+      }
+
+      toast.error(error?.message ?? "Failed to return asset.");
+    }
   };
 
   return (
@@ -118,7 +117,7 @@ export default function ReturnAssetForm({
             <p className="text-xs text-muted-foreground">Assigned Date</p>
 
             <p className="mt-1 text-sm font-medium">
-              {formatDate(asset?.assignedDate)}
+              {formatDate(asset?.assignedDate, "DD MMM, YYYY")}
             </p>
           </div>
 

@@ -72,9 +72,7 @@ const DetailItem = ({ label, value, children }) => {
     );
 };
 
-export default function AssetDetails({ asset }) {
-    console.log(asset);
-    
+export default function AssetDetails({ asset }) {    
     if (!asset) return null;
 
     const inventory = asset.inventory;

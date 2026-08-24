@@ -11,13 +11,6 @@ import {
 } from "../redux/inventoryThunks";
 import InventoryTable from "../components/InventoryTable";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import useInventoryFormOptions from "../utils/useInventoryFormOptions";

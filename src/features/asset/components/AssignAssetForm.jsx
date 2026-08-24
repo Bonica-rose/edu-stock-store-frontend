@@ -1,25 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
+import { toast } from "sonner";
 import { Loader2, UserPlus } from "lucide-react";
 
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
 import SearchableSelect from "@/shared/components/SearchableSelect";
-
-const assignAssetSchema = yup.object({
-  assignedTo: yup.string().required("Please select an employee."),
-
-  remarks: yup
-    .string()
-    .trim()
-    .max(500, "Remarks must not exceed 500 characters.")
-    .default(""),
-});
+import { assignAssetSchema } from "../validations/assetSchema";
 
 export default function AssignAssetForm({
   asset,
@@ -42,10 +30,26 @@ export default function AssignAssetForm({
   });
 
   const submitForm = async (data) => {
-    await onSubmit({
-      assignedTo: data.assignedTo,
-      remarks: data.remarks?.trim() || "",
-    });
+    try {
+      await onSubmit({
+        assignedTo: data.assignedTo,
+        remarks: data.remarks?.trim() || "",
+      });
+    } catch (error) {
+      // Handle backend validation errors
+      if (error.errors?.length) {
+        error.errors.forEach((err) => {
+          setError(err.path, {
+            type: "server",
+            message: err.msg,
+          });
+        });
+
+        return;
+      }
+
+      toast.error(error?.message ?? "Failed to assign asset.");
+    }
   };
 
   return (

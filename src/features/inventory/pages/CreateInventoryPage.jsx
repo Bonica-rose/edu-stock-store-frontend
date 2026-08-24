@@ -24,8 +24,6 @@ export default function CreateInventoryPage() {
     } = useInventoryFormOptions();
 
     const handleCreateInventory = async (data) => {
-        // console.log(data);       
-
         await dispatch(createInventory(data)).unwrap();
         toast.success("Inventory created successfully");
         navigate("/edu/inventory");

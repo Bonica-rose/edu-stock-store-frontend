@@ -15,8 +15,7 @@ export default function StockInPage() {
 
   const { loading } = useSelector((state) => state.stockMovement);
 
-  const handleSubmit = async (data) => {
-      // console.log(data);    
+  const handleSubmit = async (data) => {   
       await dispatch(stockIn(data)).unwrap();
       toast.success("Stock added successfully.");
       navigate("/edu/stock-movements");

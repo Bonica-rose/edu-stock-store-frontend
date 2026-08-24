@@ -5,11 +5,8 @@ import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/shared/components/PageHeader";
-
 import AssetForm from "../components/AssetForm";
-
 import { createAsset } from "../redux/assetThunks";
-
 import useAssetFormOptions from "../utils/useAssetFormOptions";
 
 export default function CreateAssetPage() {

@@ -15,12 +15,10 @@ export default function StockOutPage() {
 
     const { loading } = useSelector((state) => state.stockMovement);
 
-    const handleSubmit = async (data) => {
-        console.log(data);
-        
-        // await dispatch(stockOut(data)).unwrap();
-        // toast.success("Stock issued successfully.");
-        // navigate("/edu/stock-movements");
+    const handleSubmit = async (data) => {        
+        await dispatch(stockOut(data)).unwrap();
+        toast.success("Stock issued successfully.");
+        navigate("/edu/stock-movements");
     };
 
     const handleCancel = () => {

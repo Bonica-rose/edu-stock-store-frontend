@@ -115,10 +115,7 @@ const PurchaseForm = ({
 
       return String(inventoryBranch) === String(selectedBranch);
     });
-  }, [inventories, selectedBranch]);
-
-  console.log("filteredInventories: ", filteredInventories);
-  
+  }, [inventories, selectedBranch]);  
 
   const selectedInventoryIds = useMemo(() => {
     return new Set(watchedItems?.map((item) => item.inventory).filter(Boolean));

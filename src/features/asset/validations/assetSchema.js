@@ -17,3 +17,21 @@ export const assetSchema = yup.object({
         .nullable()
         .transform((value) => value || ""),
 });
+
+export const assignAssetSchema = yup.object({
+    assignedTo: yup.string().required("Please select an employee."),
+
+    remarks: yup
+        .string()
+        .trim()
+        .max(500, "Remarks must not exceed 500 characters.")
+        .default(""),
+});
+
+export const returnAssetSchema = yup.object({
+    remarks: yup
+        .string()
+        .trim()
+        .max(500, "Remarks must not exceed 500 characters.")
+        .default(""),
+});

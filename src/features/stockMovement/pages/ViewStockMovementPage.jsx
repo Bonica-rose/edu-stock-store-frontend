@@ -8,6 +8,7 @@ import StockMovementDetails from "../components/StockMovementDetails";
 
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/shared/components/PageHeader";
+import Loader from "@/shared/components/Loader";
 
 export default function ViewStockMovementPage() {
   const dispatch = useDispatch();
@@ -30,10 +31,8 @@ export default function ViewStockMovementPage() {
 
   if (loading.movement) {
     return (
-      <div className="rounded-lg border border-muted bg-white p-6">
-        <div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
-          Loading stock movement...
-        </div>
+      <div>
+        <Loader />
       </div>
     );
   }

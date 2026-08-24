@@ -40,27 +40,20 @@ export default function ViewAssetPage() {
   }, [dispatch, id]);
 
   const handleAssign = async (data) => {
-    try {
-      await dispatch(
-        assignAsset({
-          id,
-          assignmentData:data,
-        }),
-      ).unwrap();
+    await dispatch(
+      assignAsset({
+        id,
+        assignmentData:data,
+      }),
+    ).unwrap();
 
-      toast.success("Asset assigned successfully.");
-
-      setAssignOpen(false);
-
-      // Refresh the asset so current assignment/history is updated.
-      dispatch(fetchAssetById(id));
-    } catch (error) {
-      toast.error(error?.message || "Failed to assign asset.");
-    }
+    toast.success("Asset assigned successfully.");
+    setAssignOpen(false);
+    // Refresh the asset so current assignment/history is updated.
+    dispatch(fetchAssetById(id));
   };
 
   const handleReturn = async (data) => {
-    try {
       await dispatch(
         returnAsset({
           id,
@@ -69,14 +62,9 @@ export default function ViewAssetPage() {
       ).unwrap();
 
       toast.success("Asset returned successfully.");
-
       setReturnOpen(false);
-
       // Refresh current assignment + assignment history.
       dispatch(fetchAssetById(id));
-    } catch (error) {
-      toast.error(error?.message || "Failed to return asset.");
-    }
   };
 
   if (loading && !currentAsset) {

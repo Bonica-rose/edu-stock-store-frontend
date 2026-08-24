@@ -16,11 +16,9 @@ export default function StockTransferPage() {
     const { loading } = useSelector((state) => state.stockMovement);
 
     const handleSubmit = async (data) => {
-        console.log(data);
-        
-        // await dispatch(transferStock(data)).unwrap();
-        // toast.success("Stock transferred successfully.");
-        // navigate("/edu/stock-movements");
+        await dispatch(transferStock(data)).unwrap();
+        toast.success("Stock transferred successfully.");
+        navigate("/edu/stock-movements");
     };
 
     const handleCancel = () => {
