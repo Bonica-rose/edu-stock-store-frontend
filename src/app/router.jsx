@@ -64,6 +64,10 @@ import CreateAssetPage from "@/features/asset/pages/CreateAssetPage";
 import EditAssetPage from "@/features/asset/pages/EditAssetPage";
 import ViewAssetPage from "@/features/asset/pages/ViewAssetPage";
 
+import MaintenanceListPage from "@/features/maintenance/pages/MaintenanceListPage";
+import CreateMaintenancePage from "@/features/maintenance/pages/CreateMaintenancePage";
+import ViewMaintenancePage from "@/features/maintenance/pages/ViewMaintenancePage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -146,6 +150,13 @@ export const router = createBrowserRouter([
                   { path: "assets/new", element: <CreateAssetPage /> },
                   { path: "assets/:id/edit", element: <EditAssetPage /> },
                   { path: "assets/:id", element: <ViewAssetPage /> },
+
+                  { path: "maintenance", element: <MaintenanceListPage /> },
+                  {
+                    path: "maintenance/new",
+                    element: <CreateMaintenancePage />,
+                  },
+                  { path: "maintenance/:id", element: <ViewMaintenancePage /> },
                 ],
               },
             ],

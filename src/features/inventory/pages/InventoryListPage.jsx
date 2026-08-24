@@ -115,6 +115,7 @@ export default function InventoryListPage() {
         <TableToolbar
           search={query.search}
           searchPlaceholder="Search inventory item..."
+          searchTitle="Search item name, sku, or barcode..."
           onSearchChange={(value) =>
             setQuery((prev) => ({
               ...prev,
@@ -122,53 +123,54 @@ export default function InventoryListPage() {
               page: 1,
             }))
           }
+          filterRow={
+            <InventoryFilter
+              category={query.category}
+              vendor={query.vendor}
+              branch={query.branch}
+              isActive={query.isActive}
+              itemType={query.itemType}
+              categories={categories}
+              vendors={vendors}
+              branches={branches}
+              onCategoryChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  category: value,
+                  page: 1,
+                }))
+              }
+              onVendorChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  vendor: value,
+                  page: 1,
+                }))
+              }
+              onBranchChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  branch: value,
+                  page: 1,
+                }))
+              }
+              onStatusChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  isActive: value,
+                  page: 1,
+                }))
+              }
+              onItemTypeChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  itemType: value,
+                  page: 1,
+                }))
+              }
+            />
+          }
         >
-          <InventoryFilter
-            category={query.category}
-            vendor={query.vendor}
-            branch={query.branch}
-            isActive={query.isActive}
-            itemType={query.itemType}
-            categories={categories}
-            vendors={vendors}
-            branches={branches}
-            onCategoryChange={(value) =>
-              setQuery((prev) => ({
-                ...prev,
-                category: value,
-                page: 1,
-              }))
-            }
-            onVendorChange={(value) =>
-              setQuery((prev) => ({
-                ...prev,
-                vendor: value,
-                page: 1,
-              }))
-            }
-            onBranchChange={(value) =>
-              setQuery((prev) => ({
-                ...prev,
-                branch: value,
-                page: 1,
-              }))
-            }
-            onStatusChange={(value) =>
-              setQuery((prev) => ({
-                ...prev,
-                isActive: value,
-                page: 1,
-              }))
-            }
-            onItemTypeChange={(value) =>
-              setQuery((prev) => ({
-                ...prev,
-                itemType: value,
-                page: 1,
-              }))
-            }
-          />
-
           {/* CREATE INVENTORY */}
           <Button
             onClick={handleCreateInventory}

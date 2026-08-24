@@ -6,6 +6,7 @@ export default function TableSearch({
   value = "",
   onChange,
   placeholder = "Search...",
+  title,
   className = "",
 }) {
   return (
@@ -16,6 +17,7 @@ export default function TableSearch({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        title={title}
         className="pl-9"
       />
     </div>
