@@ -13,9 +13,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { Pencil, Save, X } from "lucide-react";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function InventorySettingsCard() {
   const dispatch = useDispatch();
+  const { hasPermission } = usePermission();
+
+  const canUpdate = hasPermission(PERMISSIONS.SETTINGS_UPDATE);
 
   const { settings, loading } = useSelector((state) => state.settings);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,7 +32,18 @@ export default function InventorySettingsCard() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(inventorySettingsSchema),
+    defaultValues: {
+      lowStockQuantityThreshold: 10,
+      predictionAlertDays: 10,
+      predictionHistoryDays: 30,
+    },
   });
+
+  useEffect(() => {
+    if (!canUpdate && isEditing) {
+      setIsEditing(false);
+    }
+  }, [canUpdate, isEditing]);
 
   useEffect(() => {
     if (!settings) return;
@@ -40,7 +56,14 @@ export default function InventorySettingsCard() {
   }, [settings, reset]);
 
   const handleCancel = () => {
-    reset();
+    if (settings) {
+      reset({
+        lowStockQuantityThreshold: settings.lowStockQuantityThreshold,
+        predictionAlertDays: settings.predictionAlertDays,
+        predictionHistoryDays: settings.predictionHistoryDays,
+      });
+    }
+
     setIsEditing(false);
   };
 
@@ -62,38 +85,42 @@ export default function InventorySettingsCard() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className={`text-blue-900`}>Inventory Settings</CardTitle>
 
-          {!isEditing ? (
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-sm"
-              onClick={() => setIsEditing(true)}
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </Button>
-          ) : (
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-sm"
-                onClick={handleCancel}
-              >
-                <X className="mr-2 h-4 w-4" />
-                Cancel
-              </Button>
+          {canUpdate && (
+            <>
+              {!isEditing ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-sm"
+                  onClick={() => setIsEditing(true)}
+                >
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Edit
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-sm"
+                    onClick={handleCancel}
+                  >
+                    <X className="mr-2 h-4 w-4" />
+                    Cancel
+                  </Button>
 
-              <Button
-                type="submit"
-                className="rounded-sm"
-                disabled={loading.update}
-              >
-                <Save className="mr-2 h-4 w-4" />
+                  <Button
+                    type="submit"
+                    className="rounded-sm"
+                    disabled={loading.update}
+                  >
+                    <Save className="mr-2 h-4 w-4" />
 
-                {loading.update ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
+                    {loading.update ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </CardHeader>
 
@@ -111,7 +138,9 @@ export default function InventorySettingsCard() {
                 className={`rounded-sm text-[15px] placeholder:text-sm  
                 ${errors.lowStockQuantityThreshold ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
-                {...register("lowStockQuantityThreshold")}
+                {...register("lowStockQuantityThreshold", {
+                  valueAsNumber: true,
+                })}
               />
 
               <p className="text-sm text-destructive">
@@ -132,7 +161,9 @@ export default function InventorySettingsCard() {
                 className={`rounded-sm text-[15px] placeholder:text-sm  
                   ${errors.predictionAlertDays ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
-                {...register("predictionAlertDays")}
+                {...register("predictionAlertDays", {
+                  valueAsNumber: true,
+                })}
               />
 
               <p className="text-sm text-destructive">
@@ -153,7 +184,9 @@ export default function InventorySettingsCard() {
                 className={`rounded-sm text-[15px] placeholder:text-sm  
                   ${errors.predictionHistoryDays ? "border-destructive" : ""}`}
                 readOnly={!isEditing}
-                {...register("predictionHistoryDays")}
+                {...register("predictionHistoryDays", {
+                  valueAsNumber: true,
+                })}
               />
 
               <p className="text-sm text-destructive">

@@ -10,11 +10,16 @@ import PageHeader from "@/shared/components/PageHeader";
 
 import { fetchInventoryById } from "../redux/inventoryThunks";
 import Loader from "@/shared/components/Loader";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function ViewInventoryPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
+    const { hasPermission } = usePermission();
+
+    const canUpdate = hasPermission(PERMISSIONS.INVENTORY_UPDATE);
 
     const { inventory, loading } = useSelector((state) => state.inventory);
 
@@ -53,10 +58,10 @@ export default function ViewInventoryPage() {
                 Back to Inventory
               </Button>
 
-              <Button type="button" onClick={handleEdit}>
+              {canUpdate && <Button type="button" onClick={handleEdit}>
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
-              </Button>
+              </Button>}
             </div>
           }
         />

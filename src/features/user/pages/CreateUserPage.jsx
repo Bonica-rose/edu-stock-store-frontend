@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { ROLE_OPTIONS } from "@/shared/constants/roles";
+import {
+  ROLES,
+  USER_CREATE_ROLE_OPTIONS,
+  BRANCH_ADMIN_ROLE_OPTIONS,
+} from "@/shared/constants/roles";
 import UserForm from "../components/UserForm";
 import { createUser } from "../redux/userThunks";
 import { fetchBranches } from "../../branch/redux/branchThunks";
@@ -18,6 +22,7 @@ export default function CreateUserPage() {
   const navigate = useNavigate();
 
   const { loading: userLoading } = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -26,6 +31,11 @@ export default function CreateUserPage() {
   const { branches, loading: branchLoading } = useSelector(
     (state) => state.branch
   );
+
+  const ALLOWED_ROLES =
+    currentUser.role === ROLES.BRANCH_ADMIN
+      ? BRANCH_ADMIN_ROLE_OPTIONS
+      : USER_CREATE_ROLE_OPTIONS;  
 
   const handleCreateUser = async (data) => {
       await dispatch(createUser(data)).unwrap();
@@ -61,7 +71,7 @@ export default function CreateUserPage() {
 
       <UserForm
         mode="create"
-        roles={ROLE_OPTIONS}
+        roles={ALLOWED_ROLES}
         branches={branches}
         onSubmit={handleCreateUser}
         loading={userLoading.create}

@@ -8,6 +8,10 @@ export const getInventoryColumns = ({
   onEdit,
   onStatusChange,
   onDelete,
+  canView,
+  canUpdate,
+  canStatusChange,
+  canDelete,
 }) => [
   {
     accessorKey: "sku",
@@ -110,19 +114,23 @@ export const getInventoryColumns = ({
     ),
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    enableSorting: false,
-
-    cell: ({ row }) => (
-      <InventoryActions
-        inventory={row.original}
-        onView={onView}
-        onEdit={onEdit}
-        onStatusChange={onStatusChange}
-        onDelete={onDelete}
-      />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView || canUpdate || canStatusChange || canDelete
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <InventoryActions
+              inventory={row.original}
+              onView={onView}
+              onEdit={onEdit}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+            />
+          ),
+        },
+      ]
+    : []),
 ];

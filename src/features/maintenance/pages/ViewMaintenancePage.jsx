@@ -13,12 +13,18 @@ import CancelMaintenanceDialog from "../components/CancelMaintenanceDialog";
 
 import { fetchMaintenanceById } from "../redux/maintenanceThunks";
 import Loader from "@/shared/components/Loader";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function ViewMaintenancePage() {
   const { id } = useParams();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canMAssign = hasPermission(PERMISSIONS.MAINTENANCE_ASSIGN);
+  const canMComplete = hasPermission(PERMISSIONS.MAINTENANCE_COMPLETE);
+  const canMCancel = hasPermission(PERMISSIONS.MAINTENANCE_UPDATE_STATUS);
 
   const { maintenance, loading } = useSelector((state) => state.maintenance);
 
@@ -64,27 +70,31 @@ export default function ViewMaintenancePage() {
         <div className="flex flex-wrap justify-end gap-2 pb-2">
           {isPending && (
             <>
-              <Button
-                type="button"
-                onClick={() => setAssignOpen(true)}
-                className="bg-blue-900 hover:bg-blue-900/90"
-              >
-                <UserPlus className="mr-2 h-4 w-4" />
-                Assign
-              </Button>
+              {canMAssign && (
+                <Button
+                  type="button"
+                  onClick={() => setAssignOpen(true)}
+                  className="bg-blue-900 hover:bg-blue-900/90"
+                >
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Assign
+                </Button>
+              )}
 
-              <Button
-                type="button"
-                variant="destructive"
-                onClick={() => setCancelOpen(true)}
-              >
-                <XCircle className="mr-2 h-4 w-4" />
-                Cancel
-              </Button>
+              {canMCancel && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setCancelOpen(true)}
+                >
+                  <XCircle className="mr-2 h-4 w-4" />
+                  Cancel
+                </Button>
+              )}
             </>
           )}
 
-          {isInProgress && (
+          {canMComplete && isInProgress && (
             <Button
               type="button"
               onClick={() => setCompleteOpen(true)}

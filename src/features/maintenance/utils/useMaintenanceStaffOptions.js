@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-
 import userService from "@/features/user/api/userService";
+import { ROLES } from "@/shared/constants/roles";
 
 export default function useMaintenanceStaffOptions() {
     const [maintenanceStaff, setMaintenanceStaff] = useState([]);
@@ -15,7 +15,7 @@ export default function useMaintenanceStaffOptions() {
                 const response = await userService.getUsers({
                     page: 1,
                     limit: 100,
-                    role: "Maintenance Staff",
+                    role: ROLES.MAINTENANCE_STAFF,
                     isActive: "true",
                 });
 

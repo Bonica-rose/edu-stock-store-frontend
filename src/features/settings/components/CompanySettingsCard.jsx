@@ -14,9 +14,14 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Pencil, Upload, Save, X } from "lucide-react";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function CompanySettingsCard() {
   const dispatch = useDispatch();
+  const { hasPermission } = usePermission();
+
+  const canUpdate = hasPermission(PERMISSIONS.SETTINGS_UPDATE);
 
   const { settings, loading } = useSelector((state) => state.settings);
   const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +36,19 @@ export default function CompanySettingsCard() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(companySettingsSchema),
+    defaultValues: {
+      companyName: "",
+      companyEmail: "",
+      companyPhone: "",
+      companyAddress: "",
+    },
   });
+
+  useEffect(() => {
+    if (!canUpdate && isEditing) {
+      setIsEditing(false);
+    }
+  }, [canUpdate, isEditing]);
 
   useEffect(() => {
     if (!settings) return;
@@ -41,14 +58,13 @@ export default function CompanySettingsCard() {
       companyEmail: settings.companyEmail || "",
       companyPhone: settings.companyPhone || "",
       companyAddress: settings.companyAddress || "",
-      // companyLogo: settings.companyLogo || "",
     });
 
     setLogoPreview(settings.companyLogo || null);
   }, [settings, reset]);
 
   const handleLogoChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
 
     const allowed = [
@@ -67,14 +83,31 @@ export default function CompanySettingsCard() {
       toast.error("Maximum file size is 2 MB.");
       return;
     }
+
+    if (logoPreview?.startsWith("blob:")) {
+      URL.revokeObjectURL(logoPreview);
+    }
     
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
   };
 
   const handleCancel = () => {
-    reset();
-    setLogoPreview(settings.companyLogo || null);
+    if (logoPreview?.startsWith("blob:")) {
+      URL.revokeObjectURL(logoPreview);
+    }
+
+    if (settings) {
+      reset({
+        companyName: settings.companyName || "",
+        companyEmail: settings.companyEmail || "",
+        companyPhone: settings.companyPhone || "",
+        companyAddress: settings.companyAddress || "",
+      });
+
+      setLogoPreview(settings.companyLogo || "");
+    }
+
     setLogoFile(null);
     setIsEditing(false);
   };
@@ -109,43 +142,46 @@ export default function CompanySettingsCard() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className={`text-blue-900`}>Company Information</CardTitle>
 
-          {!isEditing ? (
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-sm"
-              onClick={() => setIsEditing(true)}
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-              Edit
-            </Button>
-          ) : (
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="rounded-sm"
-                onClick={handleCancel}
-              >
-                <X className="mr-2 h-4 w-4" />
-                Cancel
-              </Button>
+          {canUpdate && (
+            <>
+              {!isEditing ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-sm"
+                  onClick={() => setIsEditing(true)}
+                >
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Edit
+                </Button>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-sm"
+                    onClick={handleCancel}
+                  >
+                    <X className="mr-2 h-4 w-4" />
+                    Cancel
+                  </Button>
 
-              <Button
-                type="submit"
-                className="rounded-sm"
-                disabled={loading.update}
-              >
-                <Save className="mr-2 h-4 w-4" />
+                  <Button
+                    type="submit"
+                    className="rounded-sm"
+                    disabled={loading.update}
+                  >
+                    <Save className="mr-2 h-4 w-4" />
 
-                {loading.update ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
+                    {loading.update ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </CardHeader>
 
         <CardContent className="space-y-6">
-          
           {/* Logo */}
           <div className="flex flex-col items-center gap-4">
             <Avatar className="h-24 w-24 rounded-sm">
@@ -167,7 +203,7 @@ export default function CompanySettingsCard() {
               variant="outline"
               className="rounded-sm"
               disabled={!isEditing}
-              onClick={() => fileInputRef.current.click()}
+              onClick={() => fileInputRef.current?.click()}
             >
               <Upload className="mr-2 h-4 w-4" />
               Change Logo

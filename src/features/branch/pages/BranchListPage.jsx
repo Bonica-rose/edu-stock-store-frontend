@@ -20,10 +20,15 @@ import {
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 
 import { Button } from "@/components/ui/button";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function BranchListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.BRANCH_CREATE);
 
   const { branches, pagination, loading } = useSelector(
     (state) => state.branch,
@@ -125,13 +130,13 @@ export default function BranchListPage() {
             </SelectContent>
           </Select>
 
-          <Button
+          {canCreate && <Button
             onClick={handleCreateBranch}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" />
             Create Branch
-          </Button>
+          </Button>}
         </TableToolbar>
 
         <BranchTable

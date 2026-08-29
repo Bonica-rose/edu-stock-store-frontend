@@ -1,0 +1,93 @@
+export const PERMISSIONS = Object.freeze({
+    // Users
+    USER_MANAGE: "user:manage",
+    USER_VIEW: "user:view",
+    USER_UPDATE: "user:update",
+    USER_CREATE: "user:create",
+    USER_DELETE: "user:delete",
+    USER_STATUS_UPDATE: "user:status:update",
+
+    // Branches
+    BRANCH_VIEW: "branch:view",
+    BRANCH_UPDATE: "branch:update",
+    BRANCH_CREATE: "branch:create",
+
+    // Categories
+    CATEGORY_VIEW: "category:view",
+    CATEGORY_CREATE: "category:create",
+    CATEGORY_UPDATE: "category:update",
+    CATEGORY_DELETE: "category:delete",
+    CATEGORY_CHANGE_STATUS: "category:status:update",
+
+    // Vendors
+    VENDOR_VIEW: "vendor:view",
+    VENDOR_CREATE: "vendor:create",
+    VENDOR_UPDATE: "vendor:update",
+    VENDOR_DELETE: "vendor:delete",
+
+    // Inventory
+    INVENTORY_VIEW: "inventory:view",
+    INVENTORY_CREATE: "inventory:create",
+    INVENTORY_UPDATE: "inventory:update",
+    INVENTORY_CHANGE_STATUS: "inventory:status:update",
+    INVENTORY_DELETE: "inventory:delete",
+
+    // Stock Movement
+    STOCK_MOVEMENT_VIEW: "stockMovement:view",
+    STOCK_IN_CREATE: "stockMovement:stockIn",
+    STOCK_OUT_CREATE: "stockMovement:stockOut",
+    STOCK_TRANSFER_CREATE: "stockMovement:transfer",
+    STOCK_ADJUSTMENT_CREATE: "stockMovement:adjustment",
+
+    // Purchase
+    PURCHASE_VIEW: "purchase:view",
+    PURCHASE_CREATE: "purchase:create",
+
+    // Asset
+    ASSET_VIEW: "asset:view",
+    ASSET_CREATE: "asset:create",
+    ASSET_UPDATE: "asset:update",
+    ASSET_CHANGE_STATUS: "asset:status:update",
+    ASSET_DELETE: "asset:delete",
+    ASSET_ASSIGN: "asset:assign",
+    ASSET_RETURN: "asset:return",
+
+    // Maintenance
+    MAINTENANCE_VIEW: "maintenance:view",
+    MAINTENANCE_CREATE: "maintenance:create",
+    MAINTENANCE_ASSIGN: "maintenance:assign",
+    MAINTENANCE_UPDATE_STATUS: "maintenance:update:status",
+    MAINTENANCE_COMPLETE: "maintenance:complete",
+    MAINTENANCE_DELETE: "maintenance:delete",
+
+    // Activity
+    ACTIVITY_VIEW: "activity:view",
+
+    // Settings
+    SETTINGS_VIEW: "settings:view",
+    SETTINGS_UPDATE: "settings:update",
+
+    // Reports
+    REPORT_DASHBOARD: "report:dashboard",
+
+    REPORT_INVENTORY: "report:inventory",
+    REPORT_INVENTORY_EXPORT: "report:inventory:export",
+
+    REPORT_LOW_STOCK: "report:low_stock",
+    REPORT_LOW_STOCK_EXPORT: "report:low_stock:export",
+
+    REPORT_ASSET: "report:asset",
+    REPORT_ASSET_EXPORT: "report:asset:export",
+
+    REPORT_STOCK_MOVEMENT: "report:stock_movement",
+    REPORT_STOCK_MOVEMENT_EXPORT: "report:stock_movement:export",
+
+    REPORT_PURCHASE: "report:purchase",
+    REPORT_PURCHASE_EXPORT: "report:purchase:export",
+
+    REPORT_MAINTENANCE: "report:maintenance",
+    REPORT_MAINTENANCE_EXPORT: "report:maintenance:export",
+
+    REPORT_VENDOR: "report:vendor",
+    REPORT_VENDOR_EXPORT: "report:vendor:export",
+});

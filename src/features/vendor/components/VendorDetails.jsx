@@ -1,7 +1,7 @@
 import { ArrowLeft, Pencil } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/shared/utils/dateFormatter";
 
 const DetailItem = ({ label, value }) => {
   return (
@@ -25,16 +25,7 @@ const DetailSection = ({ title, children }) => {
   );
 };
 
-export default function VendorDetails({ vendor, onBack, onEdit }) {
-  const formatDate = (date) => {
-    if (!date) return "-";
-
-    return new Date(date).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
+export default function VendorDetails({ vendor, onBack, onEdit, canUpdate }) {
 
   const getUserName = (user) => {
     if (!user) return "-";
@@ -60,13 +51,15 @@ export default function VendorDetails({ vendor, onBack, onEdit }) {
           Back
         </Button>
 
-        <Button
-          onClick={onEdit}
-          className="flex items-center gap-2 bg-blue-900 hover:bg-blue-900/80"
-        >
-          <Pencil className="h-4 w-4" />
-          Edit Vendor
-        </Button>
+        {canUpdate && (
+          <Button
+            onClick={onEdit}
+            className="flex items-center gap-2 bg-blue-900 hover:bg-blue-900/80"
+          >
+            <Pencil className="h-4 w-4" />
+            Edit Vendor
+          </Button>
+        )}
       </div>
 
       {/* Vendor Header */}
@@ -149,14 +142,20 @@ export default function VendorDetails({ vendor, onBack, onEdit }) {
             value={getUserName(vendor.createdBy)}
           />
 
-          <DetailItem label="Created At" value={formatDate(vendor.createdAt)} />
+          <DetailItem
+            label="Created At"
+            value={formatDate(vendor.createdAt, "DD MMM, YYYY")}
+          />
 
           <DetailItem
             label="Updated By"
             value={getUserName(vendor.updatedBy)}
           />
 
-          <DetailItem label="Updated At" value={formatDate(vendor.updatedAt)} />
+          <DetailItem
+            label="Updated At"
+            value={formatDate(vendor.updatedAt, "DD MMM, YYYY")}
+          />
         </div>
       </DetailSection>
     </div>

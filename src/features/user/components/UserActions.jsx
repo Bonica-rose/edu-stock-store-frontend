@@ -7,12 +7,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+
 export default function UserActions({
   user,
   onEdit,
   onStatusChange,
   onDelete,
 }) {
+  const { hasPermission } = usePermission();
+
+  const canUpdate = hasPermission(PERMISSIONS.USER_UPDATE);
+  const canChangeStatus = hasPermission(PERMISSIONS.USER_STATUS_UPDATE);
+  const canDelete = hasPermission(PERMISSIONS.USER_DELETE);
+
+  const showActions =
+    (canUpdate && onEdit) ||
+    (canChangeStatus && onStatusChange) ||
+    (canDelete && onDelete);
+
+  /* Don't render the Actions button if user has none of the available action permissions */
+  if (!showActions) {
+    return null;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="inline-flex size-8 items-center justify-center rounded-md hover:bg-muted">
@@ -20,14 +39,14 @@ export default function UserActions({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        {onEdit && (
+        {canUpdate && onEdit && (
           <DropdownMenuItem onClick={() => onEdit(user)}>
             <Pencil className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
         )}
 
-        {onStatusChange && (
+        {canChangeStatus && onStatusChange && (
           <DropdownMenuItem onClick={() => onStatusChange(user)}>
             <Power className="mr-2 h-4 w-4" />
 
@@ -35,7 +54,7 @@ export default function UserActions({
           </DropdownMenuItem>
         )}
 
-        {onDelete && (
+        {canDelete && onDelete && (
           <DropdownMenuItem
             onClick={() => onDelete(user)}
             className="text-destructive focus:text-destructive"

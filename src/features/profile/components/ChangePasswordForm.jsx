@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 import PasswordInput from "@/shared/components/PasswordInput";
-import { KeySquare } from "lucide-react";
+import { KeySquare, Loader2 } from "lucide-react";
 
 export default function ChangePasswordForm() {
     const dispatch = useDispatch();

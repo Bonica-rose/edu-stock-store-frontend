@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { TableColumnHeader } from "@/shared/components/table";
-
 import StockMovementActions from "../components/StockMovementActions";
+import { formatDate } from "@/shared/utils/dateFormatter";
 
 const getMovementBadgeClass = (type) => {
   switch (type) {
@@ -22,7 +22,7 @@ const getMovementBadgeClass = (type) => {
   }
 };
 
-export const getStockMovementColumns = ({ onView }) => [
+export const getStockMovementColumns = ({ onView, canView }) => [
   {
     accessorKey: "createdAt",
     header: ({ column }) => <TableColumnHeader column={column} title="Date" />,
@@ -33,11 +33,7 @@ export const getStockMovementColumns = ({ onView }) => [
         return "-";
       }
 
-      return new Intl.DateTimeFormat("en-IN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }).format(new Date(date));
+      return formatDate(date, "DD MMM, YYYY");
     },
   },
 
@@ -131,12 +127,17 @@ export const getStockMovementColumns = ({ onView }) => [
     ),
   },
 
-  {
-    id: "action",
-    header: "Action",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <StockMovementActions movement={row.original} onView={onView} />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <StockMovementActions movement={row.original} onView={onView} />
+          ),
+        },
+      ]
+    : []),
 ];

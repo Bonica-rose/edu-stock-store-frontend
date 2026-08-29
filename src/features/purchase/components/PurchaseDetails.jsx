@@ -8,20 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const formatDate = (value) => {
-  if (!value) {
-    return "-";
-  }
-
-  const date = new Date(value);
-
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-};
+import { formatDate } from "@/shared/utils/dateFormatter";
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat("en-IN", {
@@ -108,7 +95,7 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
             <div>
               <p className="text-sm text-muted-foreground">Purchase Date</p>
               <p className="mt-1 font-medium">
-                {formatDate(purchase.purchaseDate)}
+                {formatDate(purchase.purchaseDate, "DD MMM, YYYY")}
               </p>
             </div>
 
@@ -122,7 +109,7 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
             <div>
               <p className="text-sm text-muted-foreground">Created At</p>
               <p className="mt-1 font-medium">
-                {formatDate(purchase.createdAt)}
+                {formatDate(purchase.createdAt, "DD MMM, YYYY")}
               </p>
             </div>
           </div>
@@ -244,7 +231,7 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
             <div>
               <p className="text-sm text-muted-foreground">Created At</p>
               <p className="mt-1 font-medium">
-                {formatDate(purchase.createdAt)}
+                {formatDate(purchase.createdAt, "DD MMM, YYYY")}
               </p>
             </div>
 
@@ -258,7 +245,7 @@ const PurchaseDetails = ({ purchase, loading = false }) => {
             <div>
               <p className="text-sm text-muted-foreground">Updated At</p>
               <p className="mt-1 font-medium">
-                {formatDate(purchase.updatedAt)}
+                {formatDate(purchase.updatedAt, "DD MMM, YYYY")}
               </p>
             </div>
           </div>

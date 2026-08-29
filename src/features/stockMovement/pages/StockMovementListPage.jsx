@@ -16,10 +16,18 @@ import { TablePagination, TableToolbar } from "@/shared/components/table";
 import { Button } from "@/components/ui/button";
 import useStockMovementFormOptions from "@/features/stockMovement/utils/useStockMovementFormOptions";
 import { getToday } from "@/shared/utils/getToday";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function StockMovementListPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { hasPermission } = usePermission();
+  
+    const canStockIn = hasPermission(PERMISSIONS.STOCK_IN_CREATE);
+    const canStockOut = hasPermission(PERMISSIONS.STOCK_OUT_CREATE);
+    const canStockTransfer = hasPermission(PERMISSIONS.STOCK_TRANSFER_CREATE);
+    const canStockAdjustment = hasPermission(PERMISSIONS.STOCK_ADJUSTMENT_CREATE);
 
     const { movements, pagination, loading } = useSelector((state) => state.stockMovement );
 
@@ -134,37 +142,45 @@ export default function StockMovementListPage() {
 
               {/* STOCK ACTIONS ROW */}
               <div className="flex flex-wrap items-center justify-start gap-2">
-                <Button
-                  onClick={handleStockIn}
-                  className="flex items-center gap-2 text-emerald-100 bg-emerald-700 hover:bg-emerald-700/90 border-emerald-200"
-                >
-                  <ArrowDownToLine className="h-4 w-4" />
-                  Stock In
-                </Button>
+                {canStockIn && (
+                  <Button
+                    onClick={handleStockIn}
+                    className="flex items-center gap-2 text-emerald-100 bg-emerald-700 hover:bg-emerald-700/90 border-emerald-200"
+                  >
+                    <ArrowDownToLine className="h-4 w-4" />
+                    Stock In
+                  </Button>
+                )}
 
-                <Button
-                  onClick={handleStockOut}
-                  className="flex items-center gap-2 text-red-100 bg-red-700 hover:bg-red-700/90 border-red-200"
-                >
-                  <ArrowUpFromLine className="h-4 w-4" />
-                  Stock Out
-                </Button>
+                {canStockOut && (
+                  <Button
+                    onClick={handleStockOut}
+                    className="flex items-center gap-2 text-red-100 bg-red-700 hover:bg-red-700/90 border-red-200"
+                  >
+                    <ArrowUpFromLine className="h-4 w-4" />
+                    Stock Out
+                  </Button>
+                )}
 
-                <Button
-                  onClick={handleTransfer}
-                  className="flex items-center gap-2 text-sky-100 bg-sky-700 hover:bg-sky-700/90 border-sky-200"
-                >
-                  <ArrowLeftRight className="h-4 w-4" />
-                  Transfer
-                </Button>
+                {canStockTransfer && (
+                  <Button
+                    onClick={handleTransfer}
+                    className="flex items-center gap-2 text-sky-100 bg-sky-700 hover:bg-sky-700/90 border-sky-200"
+                  >
+                    <ArrowLeftRight className="h-4 w-4" />
+                    Transfer
+                  </Button>
+                )}
 
-                <Button
-                  onClick={handleAdjustment}
-                  className="flex items-center gap-2 text-purple-100 bg-purple-700 hover:bg-purple-700/90 border-purple-200"
-                >
-                  <SlidersHorizontal className="h-4 w-4" />
-                  Adjustment
-                </Button>
+                {canStockAdjustment && (
+                  <Button
+                    onClick={handleAdjustment}
+                    className="flex items-center gap-2 text-purple-100 bg-purple-700 hover:bg-purple-700/90 border-purple-200"
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                    Adjustment
+                  </Button>
+                )}
               </div>
             </div>
           </TableToolbar>

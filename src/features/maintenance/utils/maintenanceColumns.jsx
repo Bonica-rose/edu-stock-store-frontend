@@ -1,11 +1,9 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
-
+import { Eye, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import MaintenanceStatusBadge from "../components/MaintenanceStatusBadge";
 import MaintenancePriorityBadge from "../components/MaintenancePriorityBadge";
 
-export const getMaintenanceColumns = ({ onView, onEdit, onDelete }) => [
+export const getMaintenanceColumns = ({ onView, onDelete, canView, canDelete }) => [
   {
     accessorKey: "maintenanceId",
     header: "Maintenance ID",
@@ -58,34 +56,71 @@ export const getMaintenanceColumns = ({ onView, onEdit, onDelete }) => [
     cell: ({ row }) => <MaintenanceStatusBadge status={row.original.status} />,
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const maintenance = row.original;
+  // Actions column only when at least one permission exists
+  ...(canView || canDelete
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => {
+            const maintenance = row.original;
 
-      return (
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onView(maintenance)}
-            title="View maintenance"
-          >
-            <Eye className="h-4 w-4" />
-          </Button>
+            return (
+              <div className="flex items-center gap-1">
+                {canView && <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onView(maintenance)}
+                  title="View maintenance"
+                >
+                  <Eye className="h-4 w-4" />
+                </Button>}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onDelete(maintenance)}
-            title="Delete maintenance"
-            className="text-destructive focus:text-destructive"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
-  },
+                {canDelete && <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onDelete(maintenance)}
+                  title="Delete maintenance"
+                  className="text-destructive focus:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>}
+              </div>
+            );
+          }
+        },
+      ]
+    : []),
+
+  // {
+  //   id: "actions",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     const maintenance = row.original;
+
+  //     return (
+  //       <div className="flex items-center gap-1">
+  //         <Button
+  //           variant="ghost"
+  //           size="icon"
+  //           onClick={() => onView(maintenance)}
+  //           title="View maintenance"
+  //         >
+  //           <Eye className="h-4 w-4" />
+  //         </Button>
+
+  //         <Button
+  //           variant="ghost"
+  //           size="icon"
+  //           onClick={() => onDelete(maintenance)}
+  //           title="Delete maintenance"
+  //           className="text-destructive focus:text-destructive"
+  //         >
+  //           <Trash2 className="h-4 w-4" />
+  //         </Button>
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

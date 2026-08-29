@@ -1,11 +1,12 @@
-import { MoreHorizontal, Pencil, Power, Eye, Trash2, UserPlus, UserMinus } from "lucide-react";
-
+import { MoreHorizontal, Pencil, Power, Eye, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function AssetActions({
   asset,
@@ -13,9 +14,73 @@ export default function AssetActions({
   onEdit,
   onStatusChange,
   onDelete,
-  onAssign,
-  onReturn,
 }) { 
+  const { hasPermission } = usePermission();
+
+  const canView = hasPermission(PERMISSIONS.ASSET_VIEW);
+  const canUpdate = hasPermission(PERMISSIONS.ASSET_UPDATE);
+  const canStatusChange = hasPermission(PERMISSIONS.ASSET_CHANGE_STATUS);
+  const canDelete = hasPermission(PERMISSIONS.ASSET_DELETE);
+
+  const actions = [
+    canUpdate && onEdit && asset.status !== "Retired"
+      ? {
+          key: "edit",
+          label: "Edit",
+          icon: Pencil,
+          onClick: () => onEdit(asset),
+        }
+      : null,
+
+    canStatusChange && onStatusChange && !asset.assignedTo
+      ? {
+          key: "status",
+          label: asset.isActive ? "Deactivate" : "Activate",
+          icon: Power,
+          onClick: () => onStatusChange(asset),
+        }
+      : null,
+
+    canView && onView
+      ? {
+          key: "view",
+          label: "View",
+          icon: Eye,
+          onClick: () => onView(asset),
+        }
+      : null,
+
+    canDelete && onDelete && !asset.assignedTo
+      ? {
+          key: "delete",
+          label: "Delete",
+          icon: Trash2,
+          onClick: () => onDelete(asset),
+          destructive: true,
+        }
+      : null,
+  ].filter(Boolean);
+
+  if (actions.length === 0) {
+    return null;
+  }
+
+  // Only one available action
+  if (actions.length === 1) {
+    const action = actions[0];
+    const Icon = action.icon;
+
+    return (
+      <button
+        type="button"
+        onClick={action.onClick}
+        title={action.label}
+        className="inline-flex size-8 items-center justify-center rounded-md hover:bg-muted"
+      >
+        <Icon className="h-4 w-4" />
+      </button>
+    );
+  }
   
   return (
     <DropdownMenu>
@@ -24,50 +89,24 @@ export default function AssetActions({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
-        {onView && (
-          <DropdownMenuItem onClick={() => onView(asset)}>
-            <Eye className="mr-2 h-4 w-4" />
-            View
-          </DropdownMenuItem>
-        )}
+        {actions.map((action) => {
+          const Icon = action.icon;
 
-        {onEdit && asset.status !== "Retired" && (
-          <DropdownMenuItem onClick={() => onEdit(asset)}>
-            <Pencil className="mr-2 h-4 w-4" />
-            Edit
-          </DropdownMenuItem>
-        )}
-
-        {onAssign && asset.status === "Available" && (
-          <DropdownMenuItem onClick={() => onAssign(asset)}>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Assign
-          </DropdownMenuItem>
-        )}
-
-        {onReturn && asset.status === "Assigned" && (
-          <DropdownMenuItem onClick={() => onReturn(asset)}>
-            <UserMinus className="mr-2 h-4 w-4" />
-            Return
-          </DropdownMenuItem>
-        )}
-
-        {onStatusChange && !asset.assignedTo && (
-          <DropdownMenuItem onClick={() => onStatusChange(asset)}>
-            <Power className="mr-2 h-4 w-4" />
-            {asset.isActive ? "Deactivate" : "Activate"}
-          </DropdownMenuItem>
-        )}
-
-        {onDelete && !asset.assignedTo && (
-          <DropdownMenuItem
-            onClick={() => onDelete(asset)}
-            className="text-destructive focus:text-destructive"
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
-          </DropdownMenuItem>
-        )}
+          return (
+            <DropdownMenuItem
+              key={action.key}
+              onClick={action.onClick}
+              className={
+                action.destructive
+                  ? "text-destructive focus:text-destructive"
+                  : ""
+              }
+            >
+              <Icon className="mr-2 h-4 w-4" />
+              {action.label}
+            </DropdownMenuItem>
+          );
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

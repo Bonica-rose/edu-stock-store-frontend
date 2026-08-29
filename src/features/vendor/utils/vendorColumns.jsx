@@ -3,7 +3,16 @@ import { TableColumnHeader } from "@/shared/components/table";
 
 import VendorActions from "../components/VendorActions";
 
-export const getVendorColumns = ({ onView, onEdit, onStatusChange, onDelete }) => [
+export const getVendorColumns = ({
+  onView,
+  onEdit,
+  onStatusChange,
+  onDelete,
+  canView,
+  canUpdate,
+  canStatusChange,
+  canDelete,
+}) => [
   {
     accessorKey: "vendorCode",
     header: ({ column }) => (
@@ -52,19 +61,23 @@ export const getVendorColumns = ({ onView, onEdit, onStatusChange, onDelete }) =
     ),
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    enableSorting: false,
-
-    cell: ({ row }) => (
-      <VendorActions
-        vendor={row.original}
-        onView={onView}
-        onEdit={onEdit}
-        onStatusChange={onStatusChange}
-        onDelete={onDelete}
-      />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView || canUpdate || canStatusChange || canDelete
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <VendorActions
+              vendor={row.original}
+              onView={onView}
+              onEdit={onEdit}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+            />
+          ),
+        },
+      ]
+    : []),
 ];

@@ -102,6 +102,11 @@ const API_ENDPOINTS = {
         DELETE: (id) => `/maintenance/${id}`,
     },
 
+    ACTIVITY: {
+        LIST: "/activity-log",
+        GET: (id) => `/activity-log/${id}`,
+    },
+
     SETTINGS: "/settings",
 };
 

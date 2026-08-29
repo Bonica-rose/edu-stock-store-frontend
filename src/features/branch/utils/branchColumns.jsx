@@ -3,7 +3,13 @@ import { TableColumnHeader } from "@/shared/components/table";
 
 import BranchActions from "../components/BranchActions";
 
-export const getBranchColumns = ({ onView, onEdit, onStatusChange }) => [
+export const getBranchColumns = ({
+  onView,
+  onEdit,
+  onStatusChange,
+  canUpdate,
+  canView,
+}) => [
   {
     accessorKey: "branchCode",
     header: ({ column }) => (
@@ -50,18 +56,22 @@ export const getBranchColumns = ({ onView, onEdit, onStatusChange }) => [
     ),
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    enableSorting: false,
-
-    cell: ({ row }) => (
-      <BranchActions
-        branch={row.original}
-        onView={onView}
-        onEdit={onEdit}
-        onStatusChange={onStatusChange}
-      />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView || canUpdate
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <BranchActions
+              branch={row.original}
+              onView={onView}
+              onEdit={onEdit}
+              onStatusChange={onStatusChange}
+            />
+          ),
+        },
+      ]
+    : []),
 ];

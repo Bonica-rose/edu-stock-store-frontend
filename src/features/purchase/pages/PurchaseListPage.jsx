@@ -13,10 +13,15 @@ import { Input } from "@/components/ui/input";
 import BranchFilter from "@/shared/components/filters/BranchFilter";
 import VendorFilter from "@/shared/components/filters/VendorFilter";
 import DatePicker from "@/shared/components/DatePicker";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function PurchaseListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.PURCHASE_CREATE);
 
   const { purchases, pagination, loading } = useSelector(
     (state) => state.purchase,
@@ -100,13 +105,13 @@ export default function PurchaseListPage() {
               }))
             }
           />
-          <Button
+          {canCreate && <Button
             onClick={handleCreatePurchase}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" />
             Create Purchase
-          </Button>
+          </Button>}
         </TableToolbar>
 
         <PurchaseTable

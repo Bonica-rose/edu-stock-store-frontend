@@ -45,8 +45,10 @@ export const getAssetColumns = ({
   onEdit,
   onChangeStatus,
   onDelete,
-  onAssign,
-  onReturn,
+  canView,
+  canUpdate,
+  canStatusChange,
+  canDelete,
 }) => [
   // Asset Code
   {
@@ -209,22 +211,23 @@ export const getAssetColumns = ({
     ),
   },
 
-  // Actions
-  {
-    id: "action",
-    header: "Action",
-    enableSorting: false,
-
-    cell: ({ row }) => (
-      <AssetActions
-        asset={row.original}
-        onView={onView}
-        onEdit={onEdit}
-        onChangeStatus={onChangeStatus}
-        onDelete={onDelete}
-        onAssign={onAssign}
-        onReturn={onReturn}
-      />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView || canUpdate || canStatusChange || canDelete
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <AssetActions
+              asset={row.original}
+              onView={onView}
+              onEdit={onEdit}
+              onStatusChange={onChangeStatus}
+              onDelete={onDelete}
+            />
+          ),
+        },
+      ]
+    : []),
 ];

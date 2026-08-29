@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -10,20 +8,21 @@ import {
   fetchMaintenances,
   deleteMaintenance,
 } from "../redux/maintenanceThunks";
-
 import MaintenanceTable from "../components/MaintenanceTable";
 import MaintenanceFilter from "../components/MaintenanceFilter";
-
 import { TablePagination, TableToolbar } from "@/shared/components/table";
-
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
-
 import useMaintenanceFormOptions from "../utils/useMaintenanceFormOptions";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function MaintenanceListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.MAINTENANCE_CREATE);
 
   const { maintenances, pagination, loading } = useSelector(
     (state) => state.maintenance,
@@ -64,11 +63,6 @@ export default function MaintenanceListPage() {
   // View
   const handleView = (maintenance) => {
     navigate(`/edu/maintenance/${maintenance._id}`);
-  };
-
-  // Edit
-  const handleEdit = (maintenance) => {
-    navigate(`/edu/maintenance/${maintenance._id}/edit`);
   };
 
   // Delete
@@ -158,13 +152,13 @@ export default function MaintenanceListPage() {
           }
         >
           {/* CREATE MAINTENANCE */}
-          <Button
+          {canCreate && <Button
             onClick={handleCreate}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" />
             New Maintenance
-          </Button>
+          </Button>}
         </TableToolbar>
 
         {/* TABLE */}
@@ -172,7 +166,6 @@ export default function MaintenanceListPage() {
           maintenances={maintenances}
           loading={loading.maintenances}
           onView={handleView}
-          onEdit={handleEdit}
           onDelete={handleDelete}
         />
 

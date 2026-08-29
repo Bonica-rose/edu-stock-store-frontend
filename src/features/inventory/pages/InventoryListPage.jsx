@@ -15,10 +15,15 @@ import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import useInventoryFormOptions from "../utils/useInventoryFormOptions";
 import InventoryFilter from "../components/InventoryFilter";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function InventoryListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.INVENTORY_CREATE);
 
   const { inventories, pagination, loading } = useSelector(
     (state) => state.inventory,
@@ -172,13 +177,13 @@ export default function InventoryListPage() {
           }
         >
           {/* CREATE INVENTORY */}
-          <Button
+          {canCreate && <Button
             onClick={handleCreateInventory}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" />
             Add Inventory
-          </Button>
+          </Button>}
         </TableToolbar>
 
         {/* TABLE */}

@@ -11,68 +11,34 @@ import PublicRoute from "@/routes/PublicRoute";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import ForcePasswordChangeRoute from "@/routes/ForcePasswordChangeRoute";
 
+import LandingPage from "@/features/landing/pages/LandingPage";
 import LoginPage from "@/features/auth/pages/LoginPage";
+import SetupPage from "@/features/setup/pages/SetupPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
-
-import DashboardPage from "@/features/dashboard/pages/DashboardPage";
-
-import LandingPage from "@/features/landing/pages/LandingPage";
 
 import ProfilePage from "@/features/profile/pages/ProfilePage";
 import ChangePasswordPage from "@/features/profile/pages/ChangePasswordPage";
 
-import SettingsPage from "@/features/settings/pages/SettingsPage";
-import SetupPage from "@/features/setup/pages/SetupPage";
-
-import UsersPage from "@/features/user/pages/UsersPage";
-import CreateUserPage from "@/features/user/pages/CreateUserPage";
-import EditUserPage from "@/features/user/pages/EditUserPage";
-
-import BranchListPage from "@/features/branch/pages/BranchListPage";
-import CreateBranchPage from "@/features/branch/pages/CreateBranchPage";
-import EditBranchPage from "@/features/branch/pages/EditBranchPage";
-import ViewBranchPage from "@/features/branch/pages/ViewBranchPage";
-
-import CategoryListPage from "@/features/category/pages/CategoryListPage";
-import CreateCategoryPage from "@/features/category/pages/CreateCategoryPage";
-import EditCategoryPage from "@/features/category/pages/EditCategoryPage";
-
-import VendorListPage from "@/features/vendor/pages/VendorListPage";
-import CreateVendorPage from "@/features/vendor/pages/CreateVendorPage";
-import EditVendorPage from "@/features/vendor/pages/EditVendorPage";
-import ViewVendorPage from "@/features/vendor/pages/ViewVendorPage";
-
-import PurchaseListPage from "@/features/purchase/pages/PurchaseListPage";
-import CreatePurchasePage from "@/features/purchase/pages/CreatePurchasePage";
-import ViewPurchasePage from "@/features/purchase/pages/ViewPurchasePage";
-
-import InventoryListPage from "@/features/inventory/pages/InventoryListPage";
-import CreateInventoryPage from "@/features/inventory/pages/CreateInventoryPage";
-import EditInventoryPage from "@/features/inventory/pages/EditInventoryPage";
-import ViewInventoryPage from "@/features/inventory/pages/ViewInventoryPage";
-
-import StockMovementListPage from "@/features/stockMovement/pages/StockMovementListPage";
-import ViewStockMovementPage from "@/features/stockMovement/pages/ViewStockMovementPage";
-import StockInPage from "@/features/stockMovement/pages/StockInPage";
-import StockOutPage from "@/features/stockMovement/pages/StockOutPage";
-import StockTransferPage from "@/features/stockMovement/pages/StockTransferPage";
-import StockAdjustmentPage from "@/features/stockMovement/pages/StockAdjustmentPage";
-
-import AssetListPage from "@/features/asset/pages/AssetListPage";
-import CreateAssetPage from "@/features/asset/pages/CreateAssetPage";
-import EditAssetPage from "@/features/asset/pages/EditAssetPage";
-import ViewAssetPage from "@/features/asset/pages/ViewAssetPage";
-
-import MaintenanceListPage from "@/features/maintenance/pages/MaintenanceListPage";
-import CreateMaintenancePage from "@/features/maintenance/pages/CreateMaintenancePage";
-import ViewMaintenancePage from "@/features/maintenance/pages/ViewMaintenancePage";
+import { dashboardRoutes } from "@/routes/modules/dashboard.routes";
+import { userRoutes } from "@/routes/modules/user.routes";
+import { branchRoutes } from "@/routes/modules/branch.routes";
+import { categoryRoutes } from "@/routes/modules/category.routes";
+import { vendorRoutes } from "@/routes/modules/vendor.routes";
+import { purchaseRoutes } from "@/routes/modules/purchase.routes";
+import { inventoryRoutes } from "@/routes/modules/inventory.routes";
+import { stockMovementRoutes } from "@/routes/modules/stockMovement.routes";
+import { assetRoutes } from "@/routes/modules/asset.routes";
+import { maintenanceRoutes } from "@/routes/modules/maintenance.routes";
+import { activityRoutes } from "@/routes/modules/activity.routes";
+import { reportRoutes } from "@/routes/modules/report.routes";
+import { settingsRoutes } from "@/routes/modules/settings.routes";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <ErrorPage />, // Runtime 500 errors
+    errorElement: <ErrorPage />, // Runtime errors
     children: [
       { index: true, element: <LandingPage /> },
 
@@ -96,67 +62,24 @@ export const router = createBrowserRouter([
               {
                 element: <DashboardLayout />,
                 children: [
-                  { path: "dashboard", element: <DashboardPage /> },
+                  { path: "unauthorized", element: <UnauthorizedPage /> },
                   { path: "profile", element: <ProfilePage /> },
-                  { path: "settings", element: <SettingsPage /> },
                   { path: "change-password", element: <ChangePasswordPage /> },
 
-                  { path: "users", element: <UsersPage /> },
-                  { path: "users/new", element: <CreateUserPage /> },
-                  { path: "users/:id/edit", element: <EditUserPage /> },
+                  ...dashboardRoutes,
+                  ...userRoutes,
+                  ...branchRoutes,
+                  ...categoryRoutes,
+                  ...vendorRoutes,
+                  ...purchaseRoutes,
+                  ...inventoryRoutes,
+                  ...stockMovementRoutes,
+                  ...assetRoutes,
+                  ...maintenanceRoutes,
+                  ...activityRoutes,
+                  ...reportRoutes,
+                  ...settingsRoutes,
 
-                  { path: "branches", element: <BranchListPage /> },
-                  { path: "branches/new", element: <CreateBranchPage /> },
-                  { path: "branches/:id/edit", element: <EditBranchPage /> },
-                  { path: "branches/:id", element: <ViewBranchPage /> },
-
-                  { path: "categories", element: <CategoryListPage /> },
-                  { path: "categories/new", element: <CreateCategoryPage /> },
-                  {
-                    path: "categories/:id/edit",
-                    element: <EditCategoryPage />,
-                  },
-
-                  { path: "vendors", element: <VendorListPage /> },
-                  { path: "vendors/new", element: <CreateVendorPage /> },
-                  { path: "vendors/:id/edit", element: <EditVendorPage /> },
-                  { path: "vendors/:id", element: <ViewVendorPage /> },
-
-                  { path: "purchases", element: <PurchaseListPage /> },
-                  { path: "purchases/new", element: <CreatePurchasePage /> },
-                  { path: "purchases/:id", element: <ViewPurchasePage /> },
-
-                  { path: "inventory", element: <InventoryListPage /> },
-                  { path: "inventory/new", element: <CreateInventoryPage /> },
-                  {
-                    path: "inventory/:id/edit",
-                    element: <EditInventoryPage />,
-                  },
-                  { path: "inventory/:id", element: <ViewInventoryPage /> },
-
-                  {
-                    path: "stock-movements",
-                    children: [
-                      { index: true, element: <StockMovementListPage /> },
-                      { path: ":id", element: <ViewStockMovementPage /> },
-                      { path: "stock-in", element: <StockInPage /> },
-                      { path: "stock-out", element: <StockOutPage /> },
-                      { path: "transfer", element: <StockTransferPage /> },
-                      { path: "adjustment", element: <StockAdjustmentPage /> },
-                    ],
-                  },
-
-                  { path: "assets", element: <AssetListPage /> },
-                  { path: "assets/new", element: <CreateAssetPage /> },
-                  { path: "assets/:id/edit", element: <EditAssetPage /> },
-                  { path: "assets/:id", element: <ViewAssetPage /> },
-
-                  { path: "maintenance", element: <MaintenanceListPage /> },
-                  {
-                    path: "maintenance/new",
-                    element: <CreateMaintenancePage />,
-                  },
-                  { path: "maintenance/:id", element: <ViewMaintenancePage /> },
                 ],
               },
             ],

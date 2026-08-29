@@ -1,8 +1,8 @@
 import { TableColumnHeader } from "@/shared/components/table";
-
 import PurchaseActions from "../components/PurchaseActions";
+import { formatDate } from "@/shared/utils/dateFormatter";
 
-export const getPurchaseColumns = ({ onView }) => [
+export const getPurchaseColumns = ({ onView, canView }) => [
   {
     accessorKey: "purchaseNo",
     header: ({ column }) => (
@@ -39,7 +39,7 @@ export const getPurchaseColumns = ({ onView }) => [
         return "-";
       }
 
-      return new Date(value).toLocaleDateString("en-IN");
+      return formatDate(value, "DD MMM, YYYY");
     },
   },
 
@@ -71,13 +71,17 @@ export const getPurchaseColumns = ({ onView }) => [
     ),
   },
 
-  {
-    id: "actions",
-    header: "Actions",
-    enableSorting: false,
-
-    cell: ({ row }) => (
-      <PurchaseActions purchase={row.original} onView={onView} />
-    ),
-  },
+  // Actions column only when at least one permission exists
+  ...(canView
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <PurchaseActions purchase={row.original} onView={onView} />
+          ),
+        },
+      ]
+    : []),
 ];

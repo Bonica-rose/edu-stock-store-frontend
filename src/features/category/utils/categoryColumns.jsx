@@ -3,7 +3,14 @@ import { TableColumnHeader } from "@/shared/components/table";
 import CategoryActions from "../components/CategoryActions";
 import { getCategoryTypeBadgeClass } from "../utils/categoryHelpers";
 
-export const getCategoryColumns = ({ onView, onEdit, onStatusChange, onDelete }) => [
+export const getCategoryColumns = ({
+  onEdit,
+  onStatusChange,
+  onDelete,
+  canUpdate,
+  canStatusChange,
+  canDelete,
+}) => [
   {
     accessorKey: "categoryName",
     header: ({ column }) => (
@@ -63,17 +70,23 @@ export const getCategoryColumns = ({ onView, onEdit, onStatusChange, onDelete })
       <TableColumnHeader column={column} title="Created By" />
     ),
   },
-  {
-    id: "actions",
-    header: "Actions",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <CategoryActions
-        category={row.original}
-        onEdit={onEdit}
-        onStatusChange={onStatusChange}
-        onDelete={onDelete}
-      />
-    ),
-  },
+
+  // Actions column only when at least one permission exists
+  ...(canUpdate || canStatusChange || canDelete
+    ? [
+        {
+          id: "actions",
+          header: "Actions",
+          enableSorting: false,
+          cell: ({ row }) => (
+            <CategoryActions
+              category={row.original}
+              onEdit={onEdit}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+            />
+          ),
+        },
+      ]
+    : []),
 ];

@@ -19,11 +19,18 @@ import AssetDetails from "../components/AssetDetails";
 import AssignAssetForm from "../components/AssignAssetForm";
 import ReturnAssetForm from "../components/ReturnAssetForm";
 import Loader from "@/shared/components/Loader";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function ViewAssetPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { hasPermission } = usePermission();
+
+  const canUpdate = hasPermission(PERMISSIONS.ASSET_UPDATE);
+  const canAssetAssign = hasPermission(PERMISSIONS.ASSET_ASSIGN);
+  const canAssetReturn = hasPermission(PERMISSIONS.ASSET_RETURN);
 
   const { asset: currentAsset, loading } = useSelector((state) => state.asset);
 
@@ -123,17 +130,19 @@ export default function ViewAssetPage() {
                   <span className="hidden sm:inline">Back</span>
                 </Button>
 
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    navigate(`/edu/assets/${currentAsset._id}/edit`)
-                  }
-                >
-                  <Pencil className="h-4 w-4" />
-                  <span className="hidden sm:inline">Edit</span>
-                </Button>
+                {canUpdate && (
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      navigate(`/edu/assets/${currentAsset._id}/edit`)
+                    }
+                  >
+                    <Pencil className="h-4 w-4" />
+                    <span className="hidden sm:inline">Edit</span>
+                  </Button>
+                )}
 
-                {canAssign && (
+                {canAssetAssign && canAssign && (
                   <Button
                     onClick={() => setAssignOpen(true)}
                     className="text-sky-100 bg-sky-700 hover:bg-sky-600"
@@ -143,7 +152,7 @@ export default function ViewAssetPage() {
                   </Button>
                 )}
 
-                {canReturn && (
+                {canAssetReturn && canReturn && (
                   <Button
                     onClick={() => setReturnOpen(true)}
                     className="bg-violet/40 text-violet-foreground hover:bg-violet/90"

@@ -6,12 +6,16 @@ import { fetchVendorById } from "../redux/vendorThunks";
 import { clearCurrentVendor } from "../redux/vendorSlice";
 
 import VendorDetails from "../components/VendorDetails";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function ViewVendorPage() {
   const { id } = useParams();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canUpdate = hasPermission(PERMISSIONS.VENDOR_UPDATE);
 
   const { vendor, loading, error } = useSelector((state) => state.vendor);
 
@@ -59,9 +63,7 @@ export default function ViewVendorPage() {
     <div className="space-y-4">
       {/* Page Header */}
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">
-          Vendor Details
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight">Vendor Details</h1>
 
         <p className="text-[13px] text-muted-foreground">
           View vendor information and contact details.
@@ -69,7 +71,12 @@ export default function ViewVendorPage() {
       </div>
 
       {/* Vendor Details */}
-      <VendorDetails vendor={vendor} onBack={handleBack} onEdit={handleEdit} />
+      <VendorDetails
+        vendor={vendor}
+        onBack={handleBack}
+        onEdit={handleEdit}
+        canUpdate={canUpdate}
+      />
     </div>
   );
 }

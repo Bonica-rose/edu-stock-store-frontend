@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import pluralize from "pluralize";
+import { formatDate, formatDateTime } from "@/shared/utils/dateFormatter";
 
 const MOVEMENT_TYPE_CONFIG = {
   "Stock In": {
@@ -30,32 +31,6 @@ const getMovementType = (type) => {
       className: "bg-muted text-muted-foreground",
     }
   );
-};
-
-const formatDate = (date) => {
-  if (!date) {
-    return "-";
-  }
-
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(date));
-};
-
-const formatDateTime = (date) => {
-  if (!date) {
-    return "-";
-  }
-
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(new Date(date));
 };
 
 function DetailItem({ label, children }) {
@@ -96,11 +71,12 @@ export default function StockMovementDetails({ movement }) {
             </DetailItem>
 
             <DetailItem label="Date">
-              {formatDate(movement.createdAt)}
+              {formatDate(movement.createdAt, "DD MMMM, YYYY")}
             </DetailItem>
 
             <DetailItem label="Quantity">
-              {movement.quantity} {pluralize(movement.inventory?.unit, movement.quantity)}
+              {movement.quantity}{" "}
+              {pluralize(movement.inventory?.unit, movement.quantity)}
             </DetailItem>
 
             <DetailItem label="Performed By">{performedBy}</DetailItem>
@@ -126,8 +102,11 @@ export default function StockMovementDetails({ movement }) {
               {movement.branch?.branchName}
             </DetailItem>
 
-            <DetailItem label="Movement Date">
-              {formatDateTime(movement.createdAt)}
+            <DetailItem label="Inventory Date">
+              {formatDateTime(
+                movement.inventory?.createdAt,
+                "DD MMM, YYYY h:mm A",
+              )}
             </DetailItem>
           </div>
         </section>

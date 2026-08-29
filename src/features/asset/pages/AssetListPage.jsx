@@ -15,10 +15,15 @@ import { TablePagination, TableToolbar } from "@/shared/components/table";
 import { Button } from "@/components/ui/button";
 import useAssetFormOptions from "@/features/asset/utils/useAssetFormOptions";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function AssetListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+  
+  const canCreate = hasPermission(PERMISSIONS.ASSET_CREATE);
 
   const { assets, pagination, loading } = useSelector((state) => state.asset);
   const { inventories, branches, users } = useAssetFormOptions();
@@ -55,18 +60,6 @@ export default function AssetListPage() {
 
   const handleEdit = (asset) => {
     navigate(`/edu/assets/${asset._id}/edit`);
-  };
-
-  const handleAssign = (asset) => {
-    // Open assign dialog
-    setSelectedAsset(asset);
-    setAssignDialogOpen(true);
-  };
-
-  const handleReturn = (asset) => {
-    // Open return dialog
-    setSelectedAsset(asset);
-    setReturnDialogOpen(true);
   };
 
   const handleStatusChange = (asset) => {
@@ -188,13 +181,13 @@ export default function AssetListPage() {
             />
 
             {/* ASSET ACTIONS ROW */}
-            <Button
+            {canCreate && <Button
               onClick={handleCreate}
               className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
             >
               <Plus className="h-4 w-4" />
               Create Asset
-            </Button>
+            </Button>}
           </div>
         </TableToolbar>
 
@@ -207,8 +200,6 @@ export default function AssetListPage() {
           onEdit={handleEdit}
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
-          onAssign={handleAssign}
-          onReturn={handleReturn}
         />
 
         {/* PAGINATION */}

@@ -16,10 +16,15 @@ import { TablePagination, TableToolbar } from "@/shared/components/table";
 
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function VendorsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.VENDOR_CREATE);
 
   const { vendors, pagination, loading } = useSelector((state) => state.vendor);
 
@@ -136,13 +141,13 @@ export default function VendorsPage() {
           </select>
 
           {/* Create Vendor */}
-          <Button
+          {canCreate && <Button
             onClick={handleCreateVendor}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-3 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" />
             Create Vendor
-          </Button>
+          </Button>}
         </TableToolbar>
 
         {/* Vendor Table */}

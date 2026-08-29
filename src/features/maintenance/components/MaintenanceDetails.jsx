@@ -1,5 +1,6 @@
 import MaintenanceStatusBadge from "./MaintenanceStatusBadge";
 import MaintenancePriorityBadge from "./MaintenancePriorityBadge";
+import { formatDateTime } from "@/shared/utils/dateFormatter";
 
 function getUserName(user) {
   if (!user) return "—";
@@ -101,7 +102,10 @@ export default function MaintenanceDetails({ maintenance }) {
         <InfoGrid>
           <InfoItem label="Reported By" value={getUserName(reportedBy)} />
 
-          <InfoItem label="Reported Date" value={reportedDate} />
+          <InfoItem
+            label="Reported Date"
+            value={formatDateTime(reportedDate, "DD MMMM, YYYY h:mm A")}
+          />
         </InfoGrid>
       </section>
 
@@ -114,7 +118,10 @@ export default function MaintenanceDetails({ maintenance }) {
 
           <InfoItem label="Assigned By" value={getUserName(assignedBy)} />
 
-          <InfoItem label="Assigned Date" value={assignedDate} />
+          <InfoItem
+            label="Assigned Date"
+            value={formatDateTime(assignedDate, "DD MMMM, YYYY h:mm A")}
+          />
         </InfoGrid>
       </section>
 
@@ -134,7 +141,10 @@ export default function MaintenanceDetails({ maintenance }) {
 
           <InfoItem label="Vendor" value={vendor?.vendorName} />
 
-          <InfoItem label="Completed Date" value={completedDate} />
+          <InfoItem
+            label="Completed Date"
+            value={formatDateTime(completedDate, "DD MMMM, YYYY h:mm A")}
+          />
         </InfoGrid>
       </section>
     </div>

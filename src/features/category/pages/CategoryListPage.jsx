@@ -19,10 +19,15 @@ import {
 } from "@/components/ui/select";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function CategoryListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
+
+  const canCreate = hasPermission(PERMISSIONS.CATEGORY_CREATE);
 
   const { categories, pagination, loading } = useSelector(
     (state) => state.category,
@@ -45,11 +50,6 @@ export default function CategoryListPage() {
 
   const handleCreateCategory = () => {
     navigate("/edu/categories/new");
-  };
-
-  const handleView = (category) => {
-    // We will connect this to CategoryViewDialog.
-    // For now, keep the selected category in local state. setSelectedCategory(category);
   };
 
   const handleEdit = (category) => {
@@ -156,18 +156,17 @@ export default function CategoryListPage() {
           </Select>
 
           {/* Create Category */}
-          <Button
+          {canCreate && <Button
             onClick={handleCreateCategory}
             className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
           >
             <Plus className="h-4 w-4" /> Create Category
-          </Button>
+          </Button>}
         </TableToolbar>
 
         <CategoryTable
           categories={categories}
           loading={loading.categories}
-          onView={handleView}
           onEdit={handleEdit}
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}

@@ -9,11 +9,16 @@ import { fetchBranchById } from "../redux/branchThunks";
 import BranchDetails from "../components/BranchDetails";
 import PageHeader from "@/shared/components/PageHeader";
 import Loader from "@/shared/components/Loader";
+import usePermission from "@/shared/hooks/usePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export default function ViewBranchPage() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { hasPermission } = usePermission();
+
+    const canUpdate = hasPermission(PERMISSIONS.BRANCH_UPDATE);
 
     const { branch, loading, error } = useSelector((state) => state.branch);
 
@@ -96,14 +101,14 @@ export default function ViewBranchPage() {
                             Back to Branches
                         </Button>
 
-                        <Button
+                        {canUpdate && <Button
                             type="button"
                             onClick={() => navigate(`/edu/branches/${id}/edit`)}
                             className="rounded-lg"
                         >
                             <Pencil className="mr-2 h-4 w-4" />
                             Edit Branch
-                        </Button>
+                        </Button>}
                     </div>
                 }
             />
