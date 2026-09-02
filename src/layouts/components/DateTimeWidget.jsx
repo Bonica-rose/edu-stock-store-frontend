@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Clock3 } from "lucide-react";
 
-const DEFAULT_TIME_ZONE = "Asia/Kolkata";
-
 function getTimeZoneOffset(timeZone) {
     const now = new Date();
     const parts = new Intl.DateTimeFormat("en-US", {
@@ -17,9 +15,9 @@ function getTimeZoneOffset(timeZone) {
 }
 
 export default function DateTimeWidget({
-    timeZone = DEFAULT_TIME_ZONE,
+    timeZone,
     className = "",
-}) {
+}) {    
     // Store a standard current Date object in state (no manual localString shifts)
     const [date, setDate] = useState(() => new Date());
 
