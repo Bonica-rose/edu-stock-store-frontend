@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { TableColumnHeader } from "@/shared/components/table";
 import AssetActions from "../components/AssetActions";
+import AssetStatusBadge from "../components/AssetStatusBadge";
 
 const getConditionBadgeClass = (condition) => {
   switch (condition) {
@@ -21,24 +22,24 @@ const getConditionBadgeClass = (condition) => {
   }
 };
 
-const getStatusBadgeClass = (status) => {
-  switch (status) {
-    case "Available":
-      return "bg-green-100 text-green-700 border-green-200";
+// const getStatusBadgeClass = (status) => {
+//   switch (status) {
+//     case "Available":
+//       return "bg-green-100 text-green-700 border-green-200";
 
-    case "Assigned":
-      return "bg-sky-100 text-sky-700 border-sky-200";
+//     case "Assigned":
+//       return "bg-sky-100 text-sky-700 border-sky-200";
 
-    case "Maintenance":
-      return "bg-amber-100 text-amber-700 border-amber-200";
+//     case "Maintenance":
+//       return "bg-amber-100 text-amber-700 border-amber-200";
 
-    case "Retired":
-      return "bg-gray-100 text-gray-700 border-gray-200";
+//     case "Retired":
+//       return "bg-gray-100 text-gray-700 border-gray-200";
 
-    default:
-      return "bg-muted text-muted-foreground";
-  }
-};
+//     default:
+//       return "bg-muted text-muted-foreground";
+//   }
+// };
 
 export const getAssetColumns = ({
   onView,
@@ -187,14 +188,7 @@ export const getAssetColumns = ({
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Status" />
     ),
-
-    cell: ({ row }) => {
-      const status = row.original.status;
-
-      return (
-        <Badge className={getStatusBadgeClass(status)}>{status ?? "-"}</Badge>
-      );
-    },
+    cell: ({ row }) => <AssetStatusBadge status={row.original.status} />,
   },
 
   // Active

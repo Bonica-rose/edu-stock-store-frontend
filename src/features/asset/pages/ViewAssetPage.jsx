@@ -106,8 +106,8 @@ export default function ViewAssetPage() {
   const canAssign =
     currentAsset.status === "Available" &&
     !currentAsset.assignedTo &&
-    currentAsset.condition !== "Retired" &&
-    currentAsset.isActive !== false;
+    currentAsset.condition === "Good" &&
+    currentAsset.isActive === true;
 
   const canReturn =
     currentAsset.status === "Assigned" && !!currentAsset.assignedTo;

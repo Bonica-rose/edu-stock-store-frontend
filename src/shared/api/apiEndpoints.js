@@ -107,6 +107,31 @@ const API_ENDPOINTS = {
         GET: (id) => `/activity-log/${id}`,
     },
 
+    REPORT: {
+        DASHBOARD: "/reports/dashboard-summary",
+
+        INVENTORY: "/reports/inventory",
+        INVENTORY_EXPORT: "/reports/inventory/export",
+
+        LOW_STOCK: "/reports/low-stock",
+        LOW_STOCK_EXPORT: "/reports/low-stock/export",
+
+        ASSET: "/reports/assets",
+        ASSET_EXPORT: "/reports/assets/export",
+
+        STOCK_MOVEMENT: "/reports/stock-movements",
+        STOCK_MOVEMENT_EXPORT: "/reports/stock-movements/export",
+
+        PURCHASE: "/reports/purchases",
+        PURCHASE_EXPORT: "/reports/purchases/export",
+
+        MAINTENANCE: "/reports/maintenance",
+        MAINTENANCE_EXPORT: "/reports/maintenance/export",
+
+        VENDOR: "/reports/vendors",
+        VENDOR_EXPORT: "/reports/vendors/export",
+    },
+
     SETTINGS: "/settings",
 };
 

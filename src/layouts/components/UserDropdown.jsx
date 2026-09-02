@@ -45,38 +45,40 @@ export default function UserDropdown() {
 
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors">
-            {/* Profile Image / Fallback Icon */}
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-muted">
-              {user?.profileImage ? (
-                <img
-                  src={user.profileImage}
-                  alt={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <UserCircle className="h-7 w-7 text-muted-foreground" />
-              )}
-            </div>
+        <DropdownMenuTrigger 
+          type="button"
+          className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
+        >
+          {/* Profile Image / Fallback Icon */}
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-muted">
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <UserCircle className="h-7 w-7 text-muted-foreground" />
+            )}
+          </div>
 
-            {/* User Information */}
-            <div className="hidden text-left sm:block">
-              <p className="text-sm font-medium leading-5">
-                {user?.firstName} {user?.lastName}
+          {/* User Information */}
+          <div className="hidden text-left sm:block">
+            <p className="text-sm font-medium leading-5">
+              {user?.firstName} {user?.lastName}
+            </p>
+
+            <p className="text-xs text-muted-foreground">{user?.role}</p>
+
+            {user?.branch?.branchName && (
+              <p className="text-xs text-muted-foreground">
+                {user.branch.branchName}
               </p>
+            )}
+          </div>
 
-              <p className="text-xs text-muted-foreground">{user?.role}</p>
-
-              {user?.branch?.branchName && (
-                <p className="text-xs text-muted-foreground">
-                  {user.branch.branchName}
-                </p>
-              )}
-            </div>
-
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          </button>
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-56">
@@ -95,10 +97,12 @@ export default function UserDropdown() {
               Change Password
             </DropdownMenuItem>
 
-            {canViewSettings && <DropdownMenuItem onClick={() => navigate("/edu/settings")}>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>}
+            {canViewSettings && (
+              <DropdownMenuItem onClick={() => navigate("/edu/settings")}>
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </DropdownMenuItem>
+            )}
 
             <DropdownMenuSeparator />
 

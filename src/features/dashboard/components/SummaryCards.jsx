@@ -88,7 +88,6 @@ const summaryConfig = {
 };
 
 export default function SummaryCards({ summary = {} }) {
-  console.log(summary);
   
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

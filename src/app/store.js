@@ -16,6 +16,7 @@ import stockMovementReducer from "@/features/stockMovement/redux/stockMovementSl
 import assetReducer from "@/features/asset/redux/assetSlice";
 import maintenanceReducer from "@/features/maintenance/redux/maintenanceSlice";
 import activityReducer from "@/features/activity/redux/activitySlice";
+import reportReducer from "@/features/reports/redux/reportSlice";
 
 export const store = configureStore({
     reducer: {
@@ -35,5 +36,6 @@ export const store = configureStore({
         asset: assetReducer,
         maintenance: maintenanceReducer,
         activity: activityReducer,
+        reports: reportReducer,
     },
 });

@@ -7,9 +7,12 @@ import {
 import UserDropdown from "./UserDropdown";
 import DateTimeWidget from "./DateTimeWidget";
 
-export default function Header() {
-    const { user } = useSelector((state) => state.auth);
+const DEFAULT_TIME_ZONE = "Asia/Kolkata";
+
+export default function Header() {    
     const dispatch = useDispatch();
+    
+    const { settings } = useSelector((state) => state.settings);
 
     return (
       <header className="flex h-16 items-center justify-between border-b bg-background px-6">
@@ -33,7 +36,7 @@ export default function Header() {
 
           <div className="hidden items-center gap-2 lg:flex">
             {/* <h1 className="text-lg font-semibold">Dashboard</h1> */}
-            <DateTimeWidget />
+            <DateTimeWidget timeZone={settings.timeZone ?? DEFAULT_TIME_ZONE} />
           </div>
         </div>
 

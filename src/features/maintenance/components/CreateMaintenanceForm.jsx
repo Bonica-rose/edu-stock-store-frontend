@@ -108,10 +108,14 @@ export default function CreateMaintenanceForm({
                       placeholder="Search asset..."
                       searchPlaceholder="Search asset..."
                       emptyMessage="No assets found."
-                      options={assets.map((asset) => ({
-                        value: asset._id,
-                        label: `${asset.assetCode} - ${asset.inventory?.itemName}`,
-                      }))}
+                      options={assets
+                        .filter(
+                          (asset) => asset.isActive && asset.status === "Available",
+                        )
+                        .map((asset) => ({
+                          value: asset._id,
+                          label: `${asset.assetCode} - ${asset.inventory?.itemName}`,
+                        }))}
                     />
                   )}
                 />

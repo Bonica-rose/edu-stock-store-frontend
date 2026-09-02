@@ -8,7 +8,7 @@ export default  function Providers({ children }) {
             {children}
             <Toaster
                 richColors
-                position="top-right"
+                position="top-left"
                 toastOptions={{
                     style: {
                         borderRadius: "5px", 
