@@ -9,7 +9,6 @@ export const ACTIVITY_MODULES = {
     ASSET: "Asset",
     MAINTENANCE: "Maintenance",
     SETTINGS: "Settings",
-    REPORT: "Report",
 };
 
 export const ACTIVITY_ACTIONS = {
@@ -35,7 +34,5 @@ export const ACTIVITY_ACTIONS = {
     START_MAINTENANCE: "Start Maintenance",
     COMPLETE_MAINTENANCE: "Complete Maintenance",
     CANCEL_MAINTENANCE: "Cancel Maintenance",
-
-    EXPORT: "Export",
 };
 

@@ -23,6 +23,7 @@ export const logoutUser = createAsyncThunk(
         try {
             return await authService.logout();
         } catch (error) {
+            console.error("Logout error:", error);
             return thunkAPI.rejectWithValue(
                 error.response?.data ?? {
                     success: false,

@@ -5,10 +5,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-
 import { Separator } from "@/components/ui/separator";
-
 import { formatDateTime } from "@/shared/utils/dateFormatter";
+
+function isMetadataId(key) {
+  return key.endsWith("Id") || key.endsWith("ID");
+}
 
 export default function ActivityDetailsSheet({ activity, open, onOpenChange }) {
   if (!activity) {
@@ -23,11 +25,12 @@ export default function ActivityDetailsSheet({ activity, open, onOpenChange }) {
   const hasMetadata =
     activity.metadata &&
     typeof activity.metadata === "object" &&
+    !Array.isArray(activity.metadata) &&
     Object.keys(activity.metadata).length > 0;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+      <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
         <SheetHeader>
           <SheetTitle>Activity Details</SheetTitle>
 
@@ -78,7 +81,7 @@ export default function ActivityDetailsSheet({ activity, open, onOpenChange }) {
                 <div className="font-medium">{fullName || "-"}</div>
 
                 {user?.email && (
-                  <div className="text-muted-foreground text-xs">
+                  <div className="text-xs text-muted-foreground">
                     {user.email}
                   </div>
                 )}
@@ -119,10 +122,18 @@ export default function ActivityDetailsSheet({ activity, open, onOpenChange }) {
               <section className="space-y-4">
                 <SectionTitle>Metadata</SectionTitle>
 
-                <div className="rounded-md border bg-muted/30 p-3">
-                  <pre className="whitespace-pre-wrap break-all text-xs">
-                    {JSON.stringify(activity.metadata, null, 2)}
-                  </pre>
+                <div className="rounded-md border bg-muted/20">
+                  <div className="divide-y">
+                    {Object.entries(activity.metadata)
+                      .filter(([key]) => !isMetadataId(key))
+                      .map(([key, value]) => (
+                        <MetadataRow
+                          key={key}
+                          label={formatMetadataLabel(key)}
+                          value={value}
+                        />
+                      ))}
+                  </div>
                 </div>
               </section>
             </>
@@ -145,4 +156,76 @@ function DetailRow({ label, children }) {
       <div className="min-w-0">{children}</div>
     </div>
   );
+}
+
+function MetadataRow({ label, value }) {
+  return (
+    <div className="grid grid-cols-[150px_1fr] gap-4 px-3 py-2.5 text-sm">
+      <div className="text-muted-foreground">{label}</div>
+
+      <div className="min-w-0 break-all font-medium">
+        <MetadataValue value={value} />
+      </div>
+    </div>
+  );
+}
+
+function MetadataValue({ value }) {
+  if (value === null || value === undefined) {
+    return "-";
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  }
+
+  if (typeof value === "object") {
+    return (
+      <pre className="whitespace-pre-wrap break-all font-mono text-xs font-normal">
+        {JSON.stringify(value, null, 2)}
+      </pre>
+    );
+  }
+
+  return String(value);
+}
+
+function formatMetadataLabel(key) {
+  const specialLabels = {
+    sourceInventoryId: "Source Inventory ID",
+    sourceInventory: "Source Inventory",
+    sourcePreviousStock: "Source Previous Stock",
+    sourceNewStock: "Source New Stock",
+
+    sourceMovementId: "Source Movement ID",
+
+    destinationInventoryId: "Destination Inventory ID",
+    destinationInventory: "Destination Inventory",
+    destinationPreviousStock: "Destination Previous Stock",
+    destinationNewStock: "Destination New Stock",
+
+    destinationMovementId: "Destination Movement ID",
+
+    fromBranch: "From Branch",
+    toBranch: "To Branch",
+
+    destinationInventoryCreated: "Destination Inventory Created",
+
+    stockMovementId: "Stock Movement ID",
+
+    previousStock: "Previous Stock",
+    newStock: "New Stock",
+
+    quantity: "Quantity",
+    reason: "Reason",
+  };
+
+  if (specialLabels[key]) {
+    return specialLabels[key];
+  }
+
+  return key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (char) => char.toUpperCase())
+    .trim();
 }

@@ -39,8 +39,8 @@ export default function StockMovementListPage() {
       inventory: "all",
       branch: "all",
       movementType: "all",
-      startDate: getToday(-7),
-      endDate: "",
+      startDate: "",
+      endDate: getToday(),
     });
 
     // Fetch stock movements

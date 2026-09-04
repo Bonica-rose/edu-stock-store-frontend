@@ -10,6 +10,7 @@ export default function PasswordInput({
     placeholder = "",
     disablePaste = false,
     className = "",
+    readOnly = false,
 }) {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -22,6 +23,7 @@ export default function PasswordInput({
                 className={`pr-10 text-[15px] placeholder:text-sm ${className}`}
                 aria-invalid={!!error}
                 autoComplete="new-password"
+                readOnly={readOnly}
                 onPaste={
                     disablePaste
                     ? (e) => {

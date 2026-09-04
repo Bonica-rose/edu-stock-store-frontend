@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createUserSchema, updateUserSchema } from "../validations/userSchema";
 import { Save, SavePlus, Loader2 } from "lucide-react";
 import PasswordInput from "@/shared/components/PasswordInput";
+import { USER_PASSWORD_BY_SUPER_ADMIN } from "@/shared/constants/user";
 
 export default function UserForm({
   mode = 'create',
@@ -46,6 +47,7 @@ export default function UserForm({
       phone: "",
       role: "",
       branch: "",
+      password: USER_PASSWORD_BY_SUPER_ADMIN,
     },
   });
 
@@ -63,6 +65,7 @@ export default function UserForm({
         phone: initialData.phone || "",
         role: initialData.role || "",
         branch: initialData.branch?._id || "",
+        password: USER_PASSWORD_BY_SUPER_ADMIN,
       });
     }
   }, [initialData, reset]);
@@ -233,20 +236,10 @@ export default function UserForm({
                   register={register("password")}
                   error={errors.password}
                   placeholder="Enter password"
+                  readOnly={true}
                 />
 
                 {errors.password && <FieldError errors={[errors.password]} />}
-                <p className="text-[13px] text-muted-foreground">
-                  Password must contain:
-                </p>
-
-                <ul className="ml-5 list-disc text-[13px] text-muted-foreground">
-                  <li>Minimum 8 characters</li>
-                  <li>One uppercase letter</li>
-                  <li>One lowercase letter</li>
-                  <li>One number</li>
-                  <li>One special character</li>
-                </ul>
               </Field>
             </>
           )}

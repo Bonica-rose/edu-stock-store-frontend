@@ -17,25 +17,27 @@ import assetReducer from "@/features/asset/redux/assetSlice";
 import maintenanceReducer from "@/features/maintenance/redux/maintenanceSlice";
 import activityReducer from "@/features/activity/redux/activitySlice";
 import reportReducer from "@/features/reports/redux/reportSlice";
+import aiReducer from "@/features/ai/redux/aiSlice";
 
 export const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        ui: uiReducer,
-        settings: settingsReducer,
-        profile: profileReducer,
-        setup: setupReducer,
-        dashboard: dashboardReducer,
-        user: userReducer,
-        branch: branchReducer,
-        category: categoryReducer,
-        vendor: vendorReducer,
-        purchase: purchaseReducer,
-        inventory: inventoryReducer,
-        stockMovement: stockMovementReducer,
-        asset: assetReducer,
-        maintenance: maintenanceReducer,
-        activity: activityReducer,
-        reports: reportReducer,
-    },
+  reducer: {
+    auth: authReducer,
+    ui: uiReducer,
+    settings: settingsReducer,
+    profile: profileReducer,
+    setup: setupReducer,
+    dashboard: dashboardReducer,
+    user: userReducer,
+    branch: branchReducer,
+    category: categoryReducer,
+    vendor: vendorReducer,
+    purchase: purchaseReducer,
+    inventory: inventoryReducer,
+    stockMovement: stockMovementReducer,
+    asset: assetReducer,
+    maintenance: maintenanceReducer,
+    activity: activityReducer,
+    reports: reportReducer,
+    ai: aiReducer,
+  },
 });
