@@ -58,7 +58,7 @@ export default function InventoryFilters({
       <SearchableSelect
         value={filters.category || ""}
         onValueChange={(option) =>
-          onFilterChange("category", option?.value ?? "")
+          onFilterChange("category", option)
         }
         options={categoryOptions}
         placeholder="Category"

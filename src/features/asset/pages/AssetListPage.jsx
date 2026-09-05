@@ -12,6 +12,7 @@ import {
 import AssetTable from "../components/AssetTable";
 import AssetFilter from "../components/AssetFilter";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useAssetFormOptions from "@/features/asset/utils/useAssetFormOptions";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
@@ -111,143 +112,149 @@ export default function AssetListPage() {
   };
 
   return (
-    <div className="rounded-lg border border-muted bg-white p-3">
-      <div className="space-y-4">
-        {/* TOOLBAR */}
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+          {/* TOOLBAR */}
 
-        <TableToolbar>
-          <div className="flex w-full gap-3">
-            {/* FILTER ROW */}
+          <TableToolbar>
+            <div className="flex w-full gap-3">
+              {/* FILTER ROW */}
 
-            <AssetFilter
-              filters={{
-                inventory: query.inventory,
-                branch: query.branch,
-                status: query.status,
-                assignedTo: query.assignedTo,
-                isActive: query.isActive,
-              }}
-              inventories={inventories}
-              branches={branches}
-              users={users}
-              onInventoryChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  inventory: value,
-                  page: 1,
-                }))
-              }
-              onBranchChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  branch: value,
-                  page: 1,
-                }))
-              }
-              onStatusChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  status: value,
-                  page: 1,
-                }))
-              }
-              onAssignedToChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  assignedTo: value,
-                  page: 1,
-                }))
-              }
-              onIsActiveChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  isActive: value,
-                  page: 1,
-                }))
-              }
-              onReset={() =>
-                setQuery((prev) => ({
-                  ...prev,
+              <AssetFilter
+                filters={{
+                  inventory: query.inventory,
+                  branch: query.branch,
+                  status: query.status,
+                  assignedTo: query.assignedTo,
+                  isActive: query.isActive,
+                }}
+                inventories={inventories}
+                branches={branches}
+                users={users}
+                onInventoryChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    inventory: value,
+                    page: 1,
+                  }))
+                }
+                onBranchChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    branch: value,
+                    page: 1,
+                  }))
+                }
+                onStatusChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    status: value,
+                    page: 1,
+                  }))
+                }
+                onAssignedToChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    assignedTo: value,
+                    page: 1,
+                  }))
+                }
+                onIsActiveChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    isActive: value,
+                    page: 1,
+                  }))
+                }
+                onReset={() =>
+                  setQuery((prev) => ({
+                    ...prev,
 
-                  page: 1,
+                    page: 1,
 
-                  inventory: "all",
-                  branch: "all",
-                  status: "all",
-                  assignedTo: "all",
-                  isActive: "all",
-                }))
-              }
-            />
+                    inventory: "all",
+                    branch: "all",
+                    status: "all",
+                    assignedTo: "all",
+                    isActive: "all",
+                  }))
+                }
+              />
 
-            {/* ASSET ACTIONS ROW */}
-            {canCreate && <Button
-              onClick={handleCreate}
-              className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
-            >
-              <Plus className="h-4 w-4" />
-              Create Asset
-            </Button>}
-          </div>
-        </TableToolbar>
+              {/* ASSET ACTIONS ROW */}
+              {canCreate && (
+                <Button
+                  onClick={handleCreate}
+                  className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Asset
+                </Button>
+              )}
+            </div>
+          </TableToolbar>
 
-        {/* TABLE */}
+          {/* TABLE */}
 
-        <AssetTable
-          assets={assets}
-          loading={loading.assets}
-          onView={handleView}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
-        />
+          <AssetTable
+            assets={assets}
+            loading={loading.assets}
+            onView={handleView}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+          />
 
-        {/* PAGINATION */}
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) =>
-            setQuery((prev) => ({
-              ...prev,
-              page,
-            }))
+          {/* PAGINATION */}
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) =>
+              setQuery((prev) => ({
+                ...prev,
+                page,
+              }))
+            }
+          />
+        </div>
+
+        {/* Delete Confirmation */}
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete Asset"
+          description={
+            selectedAsset
+              ? `Are you sure you want to delete ${selectedAsset.assetCode} ${selectedAsset.inventory?.itemName}? This action cannot be undone.`
+              : ""
           }
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
         />
-      </div>
 
-      {/* Delete Confirmation */}
-      <ConfirmationDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        title="Delete Asset"
-        description={
-          selectedAsset
-            ? `Are you sure you want to delete ${selectedAsset.assetCode} ${selectedAsset.inventory?.itemName}? This action cannot be undone.`
-            : ""
-        }
-        confirmText="Delete"
-        confirmVariant="destructive"
-        loading={loading.delete}
-        onConfirm={confirmDelete}
-        loadingText="Deleting..."
-      />
-
-      {/* STATUS CONFIRMATION */}
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={selectedAsset?.isActive ? "Deactivate Asset" : "Activate Asset"}
-        description={
-          selectedAsset?.isActive
-            ? `Are you sure you want to deactivate ${selectedAsset?.inventory?.itemName}?`
-            : `Are you sure you want to activate ${selectedAsset?.inventory?.itemName}?`
-        }
-        confirmText={selectedAsset?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        loadingText={
-          selectedAsset?.isActive ? "Deactivating..." : "Activating..."
-        }
-        onConfirm={confirmStatusChange}
-      />
-    </div>
+        {/* STATUS CONFIRMATION */}
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={
+            selectedAsset?.isActive ? "Deactivate Asset" : "Activate Asset"
+          }
+          description={
+            selectedAsset?.isActive
+              ? `Are you sure you want to deactivate ${selectedAsset?.inventory?.itemName}?`
+              : `Are you sure you want to activate ${selectedAsset?.inventory?.itemName}?`
+          }
+          confirmText={selectedAsset?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          loadingText={
+            selectedAsset?.isActive ? "Deactivating..." : "Activating..."
+          }
+          onConfirm={confirmStatusChange}
+        />
+      </CardContent>
+    </Card>
   );
 }

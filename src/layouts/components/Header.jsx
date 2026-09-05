@@ -6,6 +6,7 @@ import {
 } from "@/features/ui/redux/uiSlice";
 import UserDropdown from "./UserDropdown";
 import DateTimeWidget from "./DateTimeWidget";
+import ThemeToggle from "@/shared/components/ThemeToggle";
 
 const DEFAULT_TIME_ZONE = "Asia/Kolkata";
 
@@ -42,10 +43,10 @@ export default function Header() {
 
         {/* Right */}
         <div className="flex items-center gap-4">
-          <button className="rounded-sm border p-2 hover:bg-muted">
+          <ThemeToggle/>
+          {/* <button className="rounded-sm border p-2 hover:bg-muted">
             <Bell size={16} />
-          </button>
-
+          </button> */}
           <div className="flex items-center gap-2">
             <UserDropdown />
           </div>

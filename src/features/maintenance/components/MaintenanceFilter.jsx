@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/select";
 
 import SearchableSelect from "@/shared/components/SearchableSelect";
+import { ROLES } from "@/shared/constants/roles";
 
 import {
     MAINTENANCE_STATUS,
@@ -28,83 +29,87 @@ export default function MaintenanceFilter({
     onBranchChange,
 }) {
     return (
-        <>
+      <>
         {/* Status */}
         <Select value={status} onValueChange={onStatusChange}>
-            <SelectTrigger className="w-36">
-            <SelectValue>{status === "all" ? "All Status" : status}</SelectValue>
-            </SelectTrigger>
+          <SelectTrigger className="w-36">
+            <SelectValue>
+              {status === "all" ? "All Status" : status}
+            </SelectValue>
+          </SelectTrigger>
 
-            <SelectContent>
+          <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
 
             {Object.values(MAINTENANCE_STATUS).map((item) => (
-                <SelectItem key={item} value={item}>
+              <SelectItem key={item} value={item}>
                 {item}
-                </SelectItem>
+              </SelectItem>
             ))}
-            </SelectContent>
+          </SelectContent>
         </Select>
 
         {/* Priority */}
         <Select value={priority} onValueChange={onPriorityChange}>
-            <SelectTrigger className="w-36">
+          <SelectTrigger className="w-36">
             <SelectValue>
-                {priority === "all" ? "All Priorities" : priority}
+              {priority === "all" ? "All Priorities" : priority}
             </SelectValue>
-            </SelectTrigger>
+          </SelectTrigger>
 
-            <SelectContent>
+          <SelectContent>
             <SelectItem value="all">All Priorities</SelectItem>
 
             {Object.values(MAINTENANCE_PRIORITY).map((item) => (
-                <SelectItem key={item} value={item}>
+              <SelectItem key={item} value={item}>
                 {item}
-                </SelectItem>
+              </SelectItem>
             ))}
-            </SelectContent>
+          </SelectContent>
         </Select>
 
         {/* Assigned Staff */}
         <SearchableSelect
-            value={assignedTo}
-            onValueChange={onAssignedToChange}
-            placeholder="All Assigned Staff"
-            searchPlaceholder="Search staff..."
-            emptyMessage="No staff found."
-            options={[
+          value={assignedTo}
+          onValueChange={onAssignedToChange}
+          placeholder="All Assigned Staff"
+          searchPlaceholder="Search staff..."
+          emptyMessage="No staff found."
+          options={[
             {
-                value: "all",
-                label: "All Assigned Staff",
+              value: "all",
+              label: "All Assigned Staff",
             },
-            ...assignedStaff.map((staff) => ({
+            ...assignedStaff
+              .filter((staff) => staff.role === ROLES.MAINTENANCE_STAFF)
+              .map((staff) => ({
                 value: staff._id,
-                label: staff.name,
-            })),
-            ]}
+                label: `${staff.firstName} ${staff.lastName} - ${staff.branch?.branchName}`,
+              })),
+          ]}
         />
 
         {/* Branch */}
         <Select value={branch} onValueChange={onBranchChange}>
-            <SelectTrigger className="w-40">
+          <SelectTrigger className="w-40">
             <SelectValue>
-                {branch === "all"
+              {branch === "all"
                 ? "All Branches"
                 : (branches.find((b) => b._id === branch)?.branchName ??
-                    "All Branches")}
+                  "All Branches")}
             </SelectValue>
-            </SelectTrigger>
+          </SelectTrigger>
 
-            <SelectContent>
+          <SelectContent>
             <SelectItem value="all">All Branches</SelectItem>
 
             {branches.map((item) => (
-                <SelectItem key={item._id} value={item._id}>
+              <SelectItem key={item._id} value={item._id}>
                 {item.branchName}
-                </SelectItem>
+              </SelectItem>
             ))}
-            </SelectContent>
+          </SelectContent>
         </Select>
-        </>
+      </>
     );
 }

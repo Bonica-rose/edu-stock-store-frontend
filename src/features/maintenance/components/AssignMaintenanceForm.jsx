@@ -122,14 +122,12 @@ export default function AssignMaintenanceForm({
                 <SearchableSelect
                   value={field.value}
                   onValueChange={field.onChange}
-                  options={(Array.isArray(maintenanceStaff)
-                    ? maintenanceStaff
+                  options={(Array.isArray(maintenanceStaff.users)
+                    ? maintenanceStaff.users
                     : []
                   ).map((user) => ({
                     value: user._id,
-                    label: [user.firstName, user.lastName]
-                      .filter(Boolean)
-                      .join(" "),
+                    label: `${user.firstName} ${user.lastName} - ${user.branch?.branchName}`
                   }))}
                   placeholder="Search maintenance staff..."
                   searchPlaceholder="Search maintenance staff..."

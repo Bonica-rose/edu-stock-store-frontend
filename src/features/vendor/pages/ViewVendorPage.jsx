@@ -1,21 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import { fetchVendorById } from "../redux/vendorThunks";
 import { clearCurrentVendor } from "../redux/vendorSlice";
 
 import VendorDetails from "../components/VendorDetails";
-import usePermission from "@/shared/hooks/usePermission";
-import { PERMISSIONS } from "@/shared/constants/permissions";
+import Loader from "@/shared/components/Loader";
+import PageHeader from "@/shared/components/PageHeader";
 
 export default function ViewVendorPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { hasPermission } = usePermission();
-
-  const canUpdate = hasPermission(PERMISSIONS.VENDOR_UPDATE);
 
   const { vendor, loading, error } = useSelector((state) => state.vendor);
 
@@ -31,14 +30,10 @@ export default function ViewVendorPage() {
     navigate("/edu/vendors");
   };
 
-  const handleEdit = () => {
-    navigate(`/edu/vendors/${id}/edit`);
-  };
-
   if (loading.vendor) {
     return (
-      <div className="flex items-center justify-center py-10">
-        <p className="text-sm text-muted-foreground">Loading vendor...</p>
+      <div>
+        <Loader />
       </div>
     );
   }
@@ -53,7 +48,7 @@ export default function ViewVendorPage() {
 
   if (!vendor) {
     return (
-      <div className="rounded-lg border bg-white p-6">
+      <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
         <p className="text-sm text-muted-foreground">Vendor not found.</p>
       </div>
     );
@@ -62,20 +57,25 @@ export default function ViewVendorPage() {
   return (
     <div className="space-y-4">
       {/* Page Header */}
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">Vendor Details</h1>
-
-        <p className="text-[13px] text-muted-foreground">
-          View vendor information and contact details.
-        </p>
-      </div>
+      <PageHeader
+        title="Vendor details"
+        description="View vendor information and contact details."
+        action={
+          <Button
+            type="button"
+            variant="secondary"
+            className="text-gray-500"
+            onClick={handleBack}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4 text-gray-500" />
+            Back to Vendor List
+          </Button>
+        }
+      />
 
       {/* Vendor Details */}
       <VendorDetails
         vendor={vendor}
-        onBack={handleBack}
-        onEdit={handleEdit}
-        canUpdate={canUpdate}
       />
     </div>
   );

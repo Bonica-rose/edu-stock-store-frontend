@@ -13,7 +13,7 @@ import {
 import VendorTable from "../components/VendorTable";
 
 import { TablePagination, TableToolbar } from "@/shared/components/table";
-
+import { Card, CardContent } from "@/components/ui/card";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import usePermission from "@/shared/hooks/usePermission";
@@ -109,105 +109,109 @@ export default function VendorsPage() {
   };
 
   return (
-    <div className="rounded-lg border border-muted bg-white p-3">
-      <div className="space-y-4">
-        {/* Toolbar */}
-        <TableToolbar
-          search={query.search}
-          onSearchChange={(value) =>
-            setQuery((prev) => ({
-              ...prev,
-              search: value,
-              page: 1,
-            }))
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+              {/* Toolbar */}
+              <TableToolbar
+                search={query.search}
+                onSearchChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    search: value,
+                    page: 1,
+                  }))
+                }
+                searchPlaceholder="Search vendors..."
+              >
+                {/* Status Filter */}
+                <select
+                  value={query.isActive}
+                  onChange={(event) =>
+                    setQuery((prev) => ({
+                      ...prev,
+                      isActive: event.target.value,
+                      page: 1,
+                    }))
+                  }
+                  className="h-9 rounded-md border bg-background px-3 text-sm"
+                >
+                  <option value="all">All Status</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+
+                {/* Create Vendor */}
+                {canCreate && (
+                  <Button
+                    onClick={handleCreateVendor}
+                    className="flex items-center gap-2 rounded-lg bg-blue-950 px-3 py-1 text-white hover:bg-blue-900"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Create Vendor
+                  </Button>
+                )}
+              </TableToolbar>
+
+              {/* Vendor Table */}
+              <VendorTable
+                vendors={vendors}
+                loading={loading.vendors}
+                onView={handleView}
+                onEdit={handleEdit}
+                onStatusChange={handleStatusChange}
+                onDelete={handleDelete}
+              />
+
+              {/* Pagination */}
+              <TablePagination
+                pagination={pagination}
+                onPageChange={(page) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    page,
+                  }))
+                }
+              />
+        </div>
+
+        {/* Delete Confirmation */}
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete Vendor"
+          description={
+            selectedVendor
+              ? `Are you sure you want to delete ${selectedVendor.vendorName}? This action cannot be undone.`
+              : ""
           }
-          searchPlaceholder="Search vendors..."
-        >
-          {/* Status Filter */}
-          <select
-            value={query.isActive}
-            onChange={(event) =>
-              setQuery((prev) => ({
-                ...prev,
-                isActive: event.target.value,
-                page: 1,
-              }))
-            }
-            className="h-9 rounded-md border bg-background px-3 text-sm"
-          >
-            <option value="all">All Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-
-          {/* Create Vendor */}
-          {canCreate && <Button
-            onClick={handleCreateVendor}
-            className="flex items-center gap-2 rounded-lg bg-blue-950 px-3 py-1 text-white hover:bg-blue-900"
-          >
-            <Plus className="h-4 w-4" />
-            Create Vendor
-          </Button>}
-        </TableToolbar>
-
-        {/* Vendor Table */}
-        <VendorTable
-          vendors={vendors}
-          loading={loading.vendors}
-          onView={handleView}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
         />
 
-        {/* Pagination */}
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) =>
-            setQuery((prev) => ({
-              ...prev,
-              page,
-            }))
+        {/* Status Confirmation */}
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={
+            selectedVendor?.isActive ? "Deactivate Vendor" : "Activate Vendor"
           }
-        />
-      </div>
-
-      {/* Delete Confirmation */}
-      <ConfirmationDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        title="Delete Vendor"
-        description={
-          selectedVendor
-            ? `Are you sure you want to delete ${selectedVendor.vendorName}? This action cannot be undone.`
-            : ""
-        }
-        confirmText="Delete"
-        confirmVariant="destructive"
-        loading={loading.delete}
-        onConfirm={confirmDelete}
-        loadingText="Deleting..."
+          description={
+            selectedVendor?.isActive
+              ? `Are you sure you want to deactivate ${selectedVendor.vendorName}?`
+              : `Are you sure you want to activate ${selectedVendor?.vendorName}?`
+          }
+          confirmText={selectedVendor?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          onConfirm={confirmStatusChange}
+          loadingText={
+            selectedVendor?.isActive ? "Deactivating..." : "Activating..."
+          }
       />
-
-      {/* Status Confirmation */}
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={
-          selectedVendor?.isActive ? "Deactivate Vendor" : "Activate Vendor"
-        }
-        description={
-          selectedVendor?.isActive
-            ? `Are you sure you want to deactivate ${selectedVendor.vendorName}?`
-            : `Are you sure you want to activate ${selectedVendor?.vendorName}?`
-        }
-        confirmText={selectedVendor?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        onConfirm={confirmStatusChange}
-        loadingText={
-          selectedVendor?.isActive ? "Deactivating..." : "Activating..."
-        }
-      />
-    </div>
+      </CardContent>
+    </Card>
   );
 }

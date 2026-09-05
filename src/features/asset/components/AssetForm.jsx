@@ -100,34 +100,6 @@ export default function AssetForm({
               </div>
 
               {/* Inventory */}
-              {/* <Field>
-                        <FieldLabel htmlFor="inventory">
-                            Inventory <span className="text-destructive">*</span>
-                        </FieldLabel>
-
-                        <Controller
-                            name="inventory"
-                            control={control}
-                            render={({ field }) => (
-                            <SearchableSelect
-                                id="inventory"
-                                value={field.value}
-                                onValueChange={field.onChange}
-                                error={!!errors.inventory}
-                                placeholder="Search inventory..."
-                                searchPlaceholder="Search inventory..."
-                                emptyMessage="No inventory items found."
-                                options={inventories.map((inventory) => ({
-                                value: inventory._id,
-                                label: `${inventory.sku} - ${inventory.itemName}`,
-                                }))}
-                            />
-                            )}
-                        />
-
-                        <FieldError>{errors.inventory?.message}</FieldError>
-                        </Field> */}
-
               {mode === "create" ? (
                 <Field>
                   <FieldLabel htmlFor="inventory">
@@ -157,7 +129,7 @@ export default function AssetForm({
                   <FieldError>{errors.inventory?.message}</FieldError>
                 </Field>
               ) : (
-                <div className="rounded-lg border-sky-50 bg-sky-50 p-4">
+                <div className="rounded-lg border border-sky-800/40 bg-sky-800/10 p-4">
                   <h4 className="mb-3 text-sm font-semibold">
                     Inventory Information
                   </h4>
@@ -192,7 +164,7 @@ export default function AssetForm({
 
               {/* Selected Inventory Information */}
               {selectedInventory && (
-                <div className="rounded-lg border border-sky-50 bg-sky-50/70 p-4">
+                <div className="rounded-lg border border-sky-800/30 bg-sky-800/10 p-4">
                   <h4 className="mb-3 text-sm font-semibold">
                     Selected Inventory
                   </h4>
@@ -220,14 +192,16 @@ export default function AssetForm({
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground">Branch</p>
+                      <p className="text-xs text-muted-foreground dark:text-gray-500">
+                        Branch
+                      </p>
                       <p className="text-sm font-medium">
                         {selectedInventory.branch?.branchName || "-"}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground dark:text-gray-500">
                         Available Stock
                       </p>
                       <p className="text-sm font-medium">

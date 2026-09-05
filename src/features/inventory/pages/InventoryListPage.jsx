@@ -10,6 +10,7 @@ import {
   deleteInventory,
 } from "../redux/inventoryThunks";
 import InventoryTable from "../components/InventoryTable";
+import { Card, CardContent } from "@/components/ui/card";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
@@ -114,138 +115,142 @@ export default function InventoryListPage() {
   };
 
   return (
-    <div className="rounded-lg border border-muted bg-white p-3">
-      <div className="space-y-4">
-        {/* TOOLBAR */}
-        <TableToolbar
-          search={query.search}
-          searchPlaceholder="Search inventory item..."
-          searchTitle="Search item name, sku, or barcode..."
-          onSearchChange={(value) =>
-            setQuery((prev) => ({
-              ...prev,
-              search: value,
-              page: 1,
-            }))
-          }
-          filterRow={
-            <InventoryFilter
-              category={query.category}
-              vendor={query.vendor}
-              branch={query.branch}
-              isActive={query.isActive}
-              itemType={query.itemType}
-              categories={categories}
-              vendors={vendors}
-              branches={branches}
-              onCategoryChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  category: value,
-                  page: 1,
-                }))
-              }
-              onVendorChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  vendor: value,
-                  page: 1,
-                }))
-              }
-              onBranchChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  branch: value,
-                  page: 1,
-                }))
-              }
-              onStatusChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  isActive: value,
-                  page: 1,
-                }))
-              }
-              onItemTypeChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  itemType: value,
-                  page: 1,
-                }))
-              }
-            />
-          }
-        >
-          {/* CREATE INVENTORY */}
-          {canCreate && <Button
-            onClick={handleCreateInventory}
-            className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+          {/* TOOLBAR */}
+          <TableToolbar
+            search={query.search}
+            searchPlaceholder="Search inventory item..."
+            searchTitle="Search item name, sku, or barcode..."
+            onSearchChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                search: value,
+                page: 1,
+              }))
+            }
+            filterRow={
+              <InventoryFilter
+                category={query.category}
+                vendor={query.vendor}
+                branch={query.branch}
+                isActive={query.isActive}
+                itemType={query.itemType}
+                categories={categories}
+                vendors={vendors}
+                branches={branches}
+                onCategoryChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    category: value,
+                    page: 1,
+                  }))
+                }
+                onVendorChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    vendor: value,
+                    page: 1,
+                  }))
+                }
+                onBranchChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    branch: value,
+                    page: 1,
+                  }))
+                }
+                onStatusChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    isActive: value,
+                    page: 1,
+                  }))
+                }
+                onItemTypeChange={(value) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    itemType: value,
+                    page: 1,
+                  }))
+                }
+              />
+            }
           >
-            <Plus className="h-4 w-4" />
-            Add Inventory
-          </Button>}
-        </TableToolbar>
+            {/* CREATE INVENTORY */}
+            {canCreate && (
+              <Button
+                onClick={handleCreateInventory}
+                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+              >
+                <Plus className="h-4 w-4" />
+                Add Inventory
+              </Button>
+            )}
+          </TableToolbar>
 
-        {/* TABLE */}
-        <InventoryTable
-          inventories={inventories}
-          loading={loading.inventories}
-          onView={handleView}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
-        />
+          {/* TABLE */}
+          <InventoryTable
+            inventories={inventories}
+            loading={loading.inventories}
+            onView={handleView}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+          />
 
-        {/* PAGINATION */}
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) =>
-            setQuery((prev) => ({
-              ...prev,
-              page,
-            }))
+          {/* PAGINATION */}
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) =>
+              setQuery((prev) => ({
+                ...prev,
+                page,
+              }))
+            }
+          />
+        </div>
+
+        {/* Delete Confirmation */}
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete Inventory"
+          description={
+            selectedInventory
+              ? `Are you sure you want to delete ${selectedInventory.itemName}? This action cannot be undone.`
+              : ""
           }
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
         />
-      </div>
 
-      {/* Delete Confirmation */}
-      <ConfirmationDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        title="Delete Inventory"
-        description={
-          selectedInventory
-            ? `Are you sure you want to delete ${selectedInventory.itemName}? This action cannot be undone.`
-            : ""
-        }
-        confirmText="Delete"
-        confirmVariant="destructive"
-        loading={loading.delete}
-        onConfirm={confirmDelete}
-        loadingText="Deleting..."
-      />
-
-      {/* STATUS CONFIRMATION */}
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={
-          selectedInventory?.isActive
-            ? "Deactivate Inventory"
-            : "Activate Inventory"
-        }
-        description={
-          selectedInventory?.isActive
-            ? `Are you sure you want to deactivate ${selectedInventory?.itemName}?`
-            : `Are you sure you want to activate ${selectedInventory?.itemName}?`
-        }
-        confirmText={selectedInventory?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        loadingText={
-          selectedInventory?.isActive ? "Deactivating..." : "Activating..."
-        }
-        onConfirm={confirmStatusChange}
-      />
-    </div>
+        {/* STATUS CONFIRMATION */}
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={
+            selectedInventory?.isActive
+              ? "Deactivate Inventory"
+              : "Activate Inventory"
+          }
+          description={
+            selectedInventory?.isActive
+              ? `Are you sure you want to deactivate ${selectedInventory?.itemName}?`
+              : `Are you sure you want to activate ${selectedInventory?.itemName}?`
+          }
+          confirmText={selectedInventory?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          loadingText={
+            selectedInventory?.isActive ? "Deactivating..." : "Activating..."
+          }
+          onConfirm={confirmStatusChange}
+        />
+      </CardContent>
+    </Card>
   );
 }

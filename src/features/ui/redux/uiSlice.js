@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const savedTheme = localStorage.getItem("theme");
+
 const initialState = {
     sidebarCollapsed: false,
     mobileSidebarOpen: false,
-    theme: "light",
+    theme: savedTheme === "dark" ? "dark" : "light",
     notificationsOpen: false,
     userMenuOpen: false,
 };
@@ -37,7 +39,9 @@ const uiSlice = createSlice({
         },
 
         setTheme(state, action) {
-            state.theme = action.payload;
+            if (["light", "dark"].includes(action.payload)) {
+                state.theme = action.payload;
+            }
         },
 
         toggleNotifications(state) {

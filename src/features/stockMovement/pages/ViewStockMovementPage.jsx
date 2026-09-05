@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { fetchStockMovementById } from "../redux/stockMovementThunks";
 import StockMovementDetails from "../components/StockMovementDetails";
-
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/shared/components/PageHeader";
 import Loader from "@/shared/components/Loader";
@@ -39,18 +39,20 @@ export default function ViewStockMovementPage() {
 
   if (error || !movement) {
     return (
-      <div className="rounded-lg border border-muted bg-white p-6">
-        <div className="space-y-4">
-          <p className="text-sm text-destructive">
-            {error || "Stock movement not found."}
-          </p>
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-sm text-destructive">
+              {error || "Stock movement not found."}
+            </p>
 
-          <Button variant="outline" onClick={handleBack}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Stock Movements
-          </Button>
-        </div>
-      </div>
+            <Button variant="outline" onClick={handleBack}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Stock Movements
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

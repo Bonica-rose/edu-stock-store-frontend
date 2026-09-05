@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import usePermission from "@/shared/hooks/usePermission";
@@ -99,121 +100,125 @@ export default function CategoryListPage() {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-muted p-3">
-      <div className="space-y-4">
-        <TableToolbar
-          search={query.search}
-          searchPlaceholder="Search categories by code, name, ..."
-          onSearchChange={(value) =>
-            setQuery((prev) => ({ ...prev, search: value, page: 1 }))
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+          <TableToolbar
+            search={query.search}
+            searchPlaceholder="Search categories by code, name, ..."
+            onSearchChange={(value) =>
+              setQuery((prev) => ({ ...prev, search: value, page: 1 }))
+            }
+          >
+            {/* Category Type Filter */}
+            <Select
+              value={query.type}
+              onValueChange={(value) =>
+                setQuery((prev) => ({ ...prev, type: value, page: 1 }))
+              }
+            >
+              <SelectTrigger className="w-40">
+                {query.type === "Inventory"
+                  ? "Inventory"
+                  : query.type === "Asset"
+                    ? "Asset"
+                    : query.type === "Both"
+                      ? "Both"
+                      : "All Types"}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all"> All Types </SelectItem>
+                <SelectItem value="Inventory"> Inventory </SelectItem>
+                <SelectItem value="Asset"> Asset </SelectItem>
+                <SelectItem value="Both"> Both </SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Category Status Filter */}
+            <Select
+              value={query.isActive}
+              onValueChange={(value) =>
+                setQuery((prev) => ({ ...prev, isActive: value, page: 1 }))
+              }
+            >
+              <SelectTrigger className="w-35">
+                {query.isActive === "true"
+                  ? "Active"
+                  : query.isActive === "false"
+                    ? "Inactive"
+                    : query.isActive === "all"
+                      ? "Status"
+                      : "All Status"}
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all"> All </SelectItem>
+                <SelectItem value="true"> Active </SelectItem>
+                <SelectItem value="false"> Inactive </SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Create Category */}
+            {canCreate && (
+              <Button
+                onClick={handleCreateCategory}
+                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+              >
+                <Plus className="h-4 w-4" /> Create Category
+              </Button>
+            )}
+          </TableToolbar>
+
+          <CategoryTable
+            categories={categories}
+            loading={loading.categories}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+          />
+
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) => setQuery((prev) => ({ ...prev, page }))}
+          />
+        </div>
+
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete Category"
+          description={
+            selectedCategory
+              ? `Are you sure you want to delete ${selectedCategory.type}: ${selectedCategory.categoryName} ? This action cannot be undone.`
+              : ""
           }
-        >
-          {/* Category Type Filter */}
-          <Select
-            value={query.type}
-            onValueChange={(value) =>
-              setQuery((prev) => ({ ...prev, type: value, page: 1 }))
-            }
-          >
-            <SelectTrigger className="w-40">
-              {query.type === "Inventory"
-                ? "Inventory"
-                : query.type === "Asset"
-                  ? "Asset"
-                  : query.type === "Both"
-                    ? "Both"
-                    : "All Types"}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all"> All Types </SelectItem>
-              <SelectItem value="Inventory"> Inventory </SelectItem>
-              <SelectItem value="Asset"> Asset </SelectItem>
-              <SelectItem value="Both"> Both </SelectItem>
-            </SelectContent>
-          </Select>
-
-          {/* Category Status Filter */}
-          <Select
-            value={query.isActive}
-            onValueChange={(value) =>
-              setQuery((prev) => ({ ...prev, isActive: value, page: 1 }))
-            }
-          >
-            <SelectTrigger className="w-35">
-              {query.isActive === "true"
-                ? "Active"
-                : query.isActive === "false"
-                  ? "Inactive"
-                  : query.isActive === "all"
-                    ? "Status"
-                    : "All Status"}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all"> All </SelectItem>
-              <SelectItem value="true"> Active </SelectItem>
-              <SelectItem value="false"> Inactive </SelectItem>
-            </SelectContent>
-          </Select>
-
-          {/* Create Category */}
-          {canCreate && <Button
-            onClick={handleCreateCategory}
-            className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
-          >
-            <Plus className="h-4 w-4" /> Create Category
-          </Button>}
-        </TableToolbar>
-
-        <CategoryTable
-          categories={categories}
-          loading={loading.categories}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
         />
 
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) => setQuery((prev) => ({ ...prev, page }))}
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={
+            selectedCategory?.isActive
+              ? "Deactivate Category"
+              : "Activate Category"
+          }
+          description={
+            selectedCategory?.isActive
+              ? `Are you sure you want to deactivate ${selectedCategory?.categoryName}?`
+              : `Are you sure you want to activate ${selectedCategory?.categoryName}?`
+          }
+          confirmText={selectedCategory?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          loadingText={
+            selectedCategory?.isActive ? "Deactivating..." : "Activating..."
+          }
+          onConfirm={confirmStatusChange}
         />
-      </div>
-
-      <ConfirmationDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        title="Delete Category"
-        description={
-          selectedCategory
-            ? `Are you sure you want to delete ${selectedCategory.type}: ${selectedCategory.categoryName} ? This action cannot be undone.`
-            : ""
-        }
-        confirmText="Delete"
-        confirmVariant="destructive"
-        loading={loading.delete}
-        onConfirm={confirmDelete}
-        loadingText="Deleting..."
-      />
-
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={
-          selectedCategory?.isActive
-            ? "Deactivate Category"
-            : "Activate Category"
-        }
-        description={
-          selectedCategory?.isActive
-            ? `Are you sure you want to deactivate ${selectedCategory?.categoryName}?`
-            : `Are you sure you want to activate ${selectedCategory?.categoryName}?`
-        }
-        confirmText={selectedCategory?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        loadingText={
-          selectedCategory?.isActive ? "Deactivating..." : "Activating..."
-        }
-        onConfirm={confirmStatusChange}
-      />
-    </div>
+      </CardContent>
+    </Card>
   );
 }

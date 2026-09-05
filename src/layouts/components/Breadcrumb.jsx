@@ -29,7 +29,7 @@ export default function Breadcrumb() {
                         <ChevronRight className="mx-2 h-4 w-4" />
 
                         {isLast ? (
-                        <span className="font-medium">{label}</span>
+                        <span className="text-gray-500">{label}</span>
                         ) : (
                         <Link to={url} className="hover:text-primary">
                             {label}

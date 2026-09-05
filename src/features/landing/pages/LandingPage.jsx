@@ -25,12 +25,12 @@ const LandingPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            <Navbar onGetStarted={handleGetStarted} />
-            <Hero onGetStarted={handleGetStarted} />
-            <Features />
-            <Footer />
-        </div>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900">        
+        <Navbar onGetStarted={handleGetStarted} />
+        <Hero onGetStarted={handleGetStarted} />
+        <Features />
+        <Footer />
+      </div>
     );
 };
 

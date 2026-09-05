@@ -7,20 +7,20 @@ import Breadcrumb from "./components/Breadcrumb";
 
 export default function DashboardLayout() {
     return (
-        <div className="flex min-h-screen">
-            <Sidebar />
+      <div className="flex min-h-screen dark:bg-gray-950 dark:text-white">
+        <Sidebar />
 
-            <div className="flex flex-1 flex-col">
-                <Header />
+        <div className="flex flex-1 flex-col">
+          <Header />
 
-                <main className="flex-1 p-6 bg-muted/80">
-                    <Breadcrumb />
+          <main className="flex-1 p-6 bg-muted/80">
+            <Breadcrumb />
 
-                    <Outlet />
-                </main>
+            <Outlet />
+          </main>
 
-                <Footer />
-            </div>
+          <Footer />
         </div>
+      </div>
     );
 }

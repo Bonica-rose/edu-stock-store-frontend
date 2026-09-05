@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { fetchBranches, changeBranchStatus } from "../redux/branchThunks";
 
 import BranchTable from "../components/BranchTable";
-
+import { Card, CardContent } from "@/components/ui/card";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
 import {
   Select,
@@ -90,92 +90,96 @@ export default function BranchListPage() {
   };
 
   return (
-    <div className="rounded-lg border border-muted bg-white p-3">
-      <div className="space-y-4">
-        <TableToolbar
-          search={query.search}
-          searchPlaceholder="Search branches by code, name, city, state, ..."
-          onSearchChange={(value) =>
-            setQuery((prev) => ({
-              ...prev,
-              search: value,
-              page: 1,
-            }))
-          }
-        >
-          <Select
-            value={query.isActive}
-            onValueChange={(value) =>
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+          <TableToolbar
+            search={query.search}
+            searchPlaceholder="Search branches by code, name, city, state, ..."
+            onSearchChange={(value) =>
               setQuery((prev) => ({
                 ...prev,
-                isActive: value,
+                search: value,
                 page: 1,
               }))
             }
           >
-            <SelectTrigger className="w-37.5">
-              <SelectValue>
-                {query.isActive === "true"
-                  ? "Active"
-                  : query.isActive === "false"
-                    ? "Inactive"
-                    : "All"}
-              </SelectValue>
-            </SelectTrigger>
+            <Select
+              value={query.isActive}
+              onValueChange={(value) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  isActive: value,
+                  page: 1,
+                }))
+              }
+            >
+              <SelectTrigger className="w-37.5">
+                <SelectValue>
+                  {query.isActive === "true"
+                    ? "Active"
+                    : query.isActive === "false"
+                      ? "Inactive"
+                      : "All"}
+                </SelectValue>
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="true">Active</SelectItem>
-              <SelectItem value="false">Inactive</SelectItem>
-            </SelectContent>
-          </Select>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="true">Active</SelectItem>
+                <SelectItem value="false">Inactive</SelectItem>
+              </SelectContent>
+            </Select>
 
-          {canCreate && <Button
-            onClick={handleCreateBranch}
-            className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
-          >
-            <Plus className="h-4 w-4" />
-            Create Branch
-          </Button>}
-        </TableToolbar>
+            {canCreate && (
+              <Button
+                onClick={handleCreateBranch}
+                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+              >
+                <Plus className="h-4 w-4" />
+                Create Branch
+              </Button>
+            )}
+          </TableToolbar>
 
-        <BranchTable
-          branches={branches}
-          loading={loading.branches}
-          onView={handleView}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-        />
+          <BranchTable
+            branches={branches}
+            loading={loading.branches}
+            onView={handleView}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+          />
 
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) =>
-            setQuery((prev) => ({
-              ...prev,
-              page,
-            }))
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) =>
+              setQuery((prev) => ({
+                ...prev,
+                page,
+              }))
+            }
+          />
+        </div>
+
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={
+            selectedBranch?.isActive ? "Deactivate Branch" : "Activate Branch"
           }
+          description={
+            selectedBranch?.isActive
+              ? `Are you sure you want to deactivate ${selectedBranch?.branchName}?`
+              : `Are you sure you want to activate ${selectedBranch?.branchName}?`
+          }
+          confirmText={selectedBranch?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          loadingText={
+            selectedBranch?.isActive ? "Deactivating..." : "Activating..."
+          }
+          onConfirm={confirmStatusChange}
         />
-      </div>
-
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={
-          selectedBranch?.isActive ? "Deactivate Branch" : "Activate Branch"
-        }
-        description={
-          selectedBranch?.isActive
-            ? `Are you sure you want to deactivate ${selectedBranch?.branchName}?`
-            : `Are you sure you want to activate ${selectedBranch?.branchName}?`
-        }
-        confirmText={selectedBranch?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        loadingText={
-          selectedBranch?.isActive ? "Deactivating..." : "Activating..."
-        }
-        onConfirm={confirmStatusChange}
-      />
-    </div>
+      </CardContent>
+    </Card>
   );
 }

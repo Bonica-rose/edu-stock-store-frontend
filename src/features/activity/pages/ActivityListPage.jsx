@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import PageHeader from "@/shared/components/PageHeader";
 import TableToolbar from "@/shared/components/table/TableToolbar";
 import TablePagination from "@/shared/components/table/TablePagination";
+import { Card, CardContent } from "@/components/ui/card";
 
 import ActivityFilters from "../components/ActivityFilters";
 import ActivityTable from "../components/ActivityTable";
@@ -157,55 +158,57 @@ export default function ActivityListPage() {
         description="View and monitor system activity logs."
         icon={HistoryIcon}
       />
-      <div className="bg-white rounded-lg border border-muted p-3 mt-3">
-        <div className="space-y-4"> 
-          {/* Toolbar */}
-          <TableToolbar
-            search={search}
-            onSearchChange={handleSearchChange}
-            searchPlaceholder="Search activity logs..."
-            searchTitle="Search Activity"
-          />
+      <Card className="mt-2">
+        <CardContent>
+          <div className="space-y-4"> 
+            {/* Toolbar */}
+            <TableToolbar
+              search={search}
+              onSearchChange={handleSearchChange}
+              searchPlaceholder="Search activity logs..."
+              searchTitle="Search Activity"
+            />
 
-          {/* Filters */}
-          <ActivityFilters
-            module={filters.module}
-            action={filters.action}
-            user={filters.user}
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-            // User options will come from your user API.
-            users={[]}
-            onModuleChange={handleModuleChange}
-            onActionChange={handleActionChange}
-            onUserChange={handleUserChange}
-            onStartDateChange={handleStartDateChange}
-            onEndDateChange={handleEndDateChange}
-            onReset={handleReset}
-          />
+            {/* Filters */}
+            <ActivityFilters
+              module={filters.module}
+              action={filters.action}
+              user={filters.user}
+              startDate={filters.startDate}
+              endDate={filters.endDate}
+              // User options will come from your user API.
+              users={[]}
+              onModuleChange={handleModuleChange}
+              onActionChange={handleActionChange}
+              onUserChange={handleUserChange}
+              onStartDateChange={handleStartDateChange}
+              onEndDateChange={handleEndDateChange}
+              onReset={handleReset}
+            />
 
-          {/* Table */}
-          <ActivityTable
-            activities={activities}
-            loading={loading.list}
-            onView={handleView}
-          />
+            {/* Table */}
+            <ActivityTable
+              activities={activities}
+              loading={loading.list}
+              onView={handleView}
+            />
 
-          {/* Pagination */}
-          <TablePagination
-            pagination={pagination}
-            onPageChange={handlePageChange}
-            onLimitChange={handleLimitChange}
-          />
-        </div>
+            {/* Pagination */}
+            <TablePagination
+              pagination={pagination}
+              onPageChange={handlePageChange}
+              onLimitChange={handleLimitChange}
+            />
+          </div>
 
-        {/* Activity Details */}
-        <ActivityDetailsSheet
-          activity={selectedActivity}
-          open={detailsOpen}
-          onOpenChange={setDetailsOpen}
-        />
-      </div>
+          {/* Activity Details */}
+          <ActivityDetailsSheet
+            activity={selectedActivity}
+            open={detailsOpen}
+            onOpenChange={setDetailsOpen}
+          />
+        </CardContent>
+      </Card>
     </>
   );
 }

@@ -5,6 +5,7 @@ import { fetchUsers, deleteUser, changeUserStatus } from "../redux/userThunks";
 import { fetchBranches } from "../../branch/redux/branchThunks";
 
 import UserTable from "../components/UserTable";
+import { Card, CardContent } from "@/components/ui/card";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { useNavigate } from "react-router-dom";
@@ -117,102 +118,106 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-muted p-3">
-      <div className="space-y-4">
-        <TableToolbar
-          search={query.search}
-          onSearchChange={(value) =>
-            setQuery((prev) => ({
-              ...prev,
-              search: value,
-              page: 1,
-            }))
-          }
-          searchPlaceholder="Search users by ID, name, email, ..."
-        >
-          <BranchFilter
-            value={query.branch}
-            branches={branches}
-            onChange={(branch) =>
+    <Card>
+      <CardContent>
+        <div className="space-y-4">
+          <TableToolbar
+            search={query.search}
+            onSearchChange={(value) =>
               setQuery((prev) => ({
                 ...prev,
-                branch,
+                search: value,
                 page: 1,
               }))
             }
+            searchPlaceholder="Search users by ID, name, email, ..."
+          >
+            <BranchFilter
+              value={query.branch}
+              branches={branches}
+              onChange={(branch) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  branch,
+                  page: 1,
+                }))
+              }
+            />
+            <RoleFilter
+              value={query.role}
+              roles={ALLOWED_ROLES}
+              onChange={(role) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  role,
+                  page: 1,
+                }))
+              }
+            />
+
+            {canCreate && (
+              <Button
+                onClick={handleCreateUser}
+                className="py-1 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-white flex items-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Create User
+              </Button>
+            )}
+          </TableToolbar>
+
+          <UserTable
+            users={users}
+            loading={loading.users}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
           />
-          <RoleFilter
-            value={query.role}
-            roles={ALLOWED_ROLES}
-            onChange={(role) =>
+
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) =>
               setQuery((prev) => ({
                 ...prev,
-                role,
-                page: 1,
+                page,
               }))
             }
           />
+        </div>
 
-          {canCreate && (
-            <Button
-              onClick={handleCreateUser}
-              className="py-1 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-white flex items-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Create User
-            </Button>
-          )}
-        </TableToolbar>
-
-        <UserTable
-          users={users}
-          loading={loading.users}
-          onEdit={handleEdit}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
+        <ConfirmationDialog
+          open={openDelete}
+          onOpenChange={setOpenDelete}
+          title="Delete User"
+          description={
+            selectedUser
+              ? `Are you sure you want to delete ${selectedUser.firstName} ${selectedUser.lastName}? This action cannot be undone.`
+              : ""
+          }
+          confirmText="Delete"
+          confirmVariant="destructive"
+          loading={loading.delete}
+          onConfirm={confirmDelete}
+          loadingText="Deleting..."
         />
 
-        <TablePagination
-          pagination={pagination}
-          onPageChange={(page) =>
-            setQuery((prev) => ({
-              ...prev,
-              page,
-            }))
+        <ConfirmationDialog
+          open={openStatus}
+          onOpenChange={setOpenStatus}
+          title={selectedUser?.isActive ? "Deactivate User" : "Activate User"}
+          description={
+            selectedUser?.isActive
+              ? `Are you sure you want to deactivate ${selectedUser?.firstName} ${selectedUser?.lastName}? They will no longer be able to sign in.`
+              : `Are you sure you want to activate ${selectedUser?.firstName} ${selectedUser?.lastName}?`
+          }
+          confirmText={selectedUser?.isActive ? "Deactivate" : "Activate"}
+          loading={loading.status}
+          onConfirm={confirmStatusChange}
+          loadingText={
+            selectedUser?.isActive ? "Deactivating" : "Activating..."
           }
         />
-      </div>
-
-      <ConfirmationDialog
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        title="Delete User"
-        description={
-          selectedUser
-            ? `Are you sure you want to delete ${selectedUser.firstName} ${selectedUser.lastName}? This action cannot be undone.`
-            : ""
-        }
-        confirmText="Delete"
-        confirmVariant="destructive"
-        loading={loading.delete}
-        onConfirm={confirmDelete}
-        loadingText="Deleting..."
-      />
-
-      <ConfirmationDialog
-        open={openStatus}
-        onOpenChange={setOpenStatus}
-        title={selectedUser?.isActive ? "Deactivate User" : "Activate User"}
-        description={
-          selectedUser?.isActive
-            ? `Are you sure you want to deactivate ${selectedUser?.firstName} ${selectedUser?.lastName}? They will no longer be able to sign in.`
-            : `Are you sure you want to activate ${selectedUser?.firstName} ${selectedUser?.lastName}?`
-        }
-        confirmText={selectedUser?.isActive ? "Deactivate" : "Activate"}
-        loading={loading.status}
-        onConfirm={confirmStatusChange}
-        loadingText={selectedUser?.isActive ? "Deactivating" : "Activating..."}
-      />
-    </div>
+      </CardContent>
+    </Card>
   );
 }

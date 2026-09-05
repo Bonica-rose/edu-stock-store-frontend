@@ -62,7 +62,7 @@ export default function ReturnAssetForm({
   return (
     <form onSubmit={handleSubmit(submitForm)} className="space-y-5">
       {/* ASSET INFORMATION */}
-      <div className="rounded-lg border border-yellow-50 bg-yellow-100 p-4">
+      <div className="rounded-lg border border-yellow-500/50 bg-yellow-500/20 p-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <p className="text-xs text-muted-foreground">Asset</p>
@@ -76,7 +76,7 @@ export default function ReturnAssetForm({
             <p className="text-xs text-muted-foreground">Inventory</p>
 
             <p className="mt-1 text-sm font-medium">
-              {asset?.inventory?.itemName || asset?.assetName || "-"}
+              {asset?.inventory?.itemName || "-"}
             </p>
           </div>
 

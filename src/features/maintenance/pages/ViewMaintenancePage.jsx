@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, UserPlus, CheckCircle, XCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import PageHeader from "@/shared/components/PageHeader";
 
 import MaintenanceDetails from "../components/MaintenanceDetails";
@@ -65,50 +66,52 @@ export default function ViewMaintenancePage() {
         }
       />
 
-      <div className="bg-white rounded-lg border border-muted p-3">
-        {/* Actions */}
-        <div className="flex flex-wrap justify-end gap-2 pb-2">
-          {isPending && (
-            <>
-              {canMAssign && (
-                <Button
-                  type="button"
-                  onClick={() => setAssignOpen(true)}
-                  className="bg-blue-900 hover:bg-blue-900/90"
-                >
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Assign
-                </Button>
-              )}
+      <Card>
+        <CardContent>
+          {/* Actions */}
+          <div className="flex flex-wrap justify-end gap-2 pb-2">
+            {isPending && (
+              <>
+                {canMAssign && (
+                  <Button
+                    type="button"
+                    onClick={() => setAssignOpen(true)}
+                    className="bg-blue-900 hover:bg-blue-900/90 dark:text-white"
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Assign
+                  </Button>
+                )}
 
-              {canMCancel && (
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => setCancelOpen(true)}
-                >
-                  <XCircle className="mr-2 h-4 w-4" />
-                  Cancel
-                </Button>
-              )}
-            </>
-          )}
+                {canMCancel && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={() => setCancelOpen(true)}
+                  >
+                    <XCircle className="mr-2 h-4 w-4" />
+                    Cancel
+                  </Button>
+                )}
+              </>
+            )}
 
-          {canMComplete && isInProgress && (
-            <Button
-              type="button"
-              onClick={() => setCompleteOpen(true)}
-              className="bg-green-700 hover:bg-green-700/90"
-            >
-              <CheckCircle className="mr-2 h-4 w-4" />
-              Complete
-            </Button>
-          )}
-        </div>
+            {canMComplete && isInProgress && (
+              <Button
+                type="button"
+                onClick={() => setCompleteOpen(true)}
+                className="bg-green-700 hover:bg-green-700/90 dark:text-white"
+              >
+                <CheckCircle className="mr-2 h-4 w-4" />
+                Complete
+              </Button>
+            )}
+          </div>
 
-        {/* Details */}
-        <MaintenanceDetails maintenance={maintenance} />
-      </div>
+          {/* Details */}
+          <MaintenanceDetails maintenance={maintenance} />
+        </CardContent>
+      </Card>
 
       {/* Assign */}
       <AssignMaintenanceForm

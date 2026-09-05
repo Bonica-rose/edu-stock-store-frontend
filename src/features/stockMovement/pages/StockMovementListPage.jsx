@@ -13,6 +13,7 @@ import StockMovementTable from "../components/StockMovementTable";
 import StockMovementFilter from "../components/StockMovementFilter";
 
 import { TablePagination, TableToolbar } from "@/shared/components/table";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useStockMovementFormOptions from "@/features/stockMovement/utils/useStockMovementFormOptions";
 import { getToday } from "@/shared/utils/getToday";
@@ -74,135 +75,137 @@ export default function StockMovementListPage() {
     };
 
     return (
-      <div className="rounded-lg border border-muted bg-white p-3">
-        <div className="space-y-4">
-          {/* TOOLBAR */}
-          <TableToolbar>
-            <div className="flex w-full flex-col gap-3">
-              {/* FILTER ROW */}
-              <div className="flex flex-wrap items-center gap-3">
-                <StockMovementFilter
-                  filters={{
-                    inventory: query.inventory,
-                    branch: query.branch,
-                    movementType: query.movementType,
-                    startDate: query.startDate,
-                    endDate: query.endDate,
-                  }}
-                  inventories={inventories}
-                  branches={branches}
-                  onInventoryChange={(value) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      inventory: value,
-                      page: 1,
-                    }))
-                  }
-                  onBranchChange={(value) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      branch: value,
-                      page: 1,
-                    }))
-                  }
-                  onMovementTypeChange={(value) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      movementType: value,
-                      page: 1,
-                    }))
-                  }
-                  onStartDateChange={(value) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      startDate: value,
-                      page: 1,
-                    }))
-                  }
-                  onEndDateChange={(value) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      endDate: value,
-                      page: 1,
-                    }))
-                  }
-                  onReset={() =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      page: 1,
-                      inventory: "all",
-                      branch: "all",
-                      movementType: "all",
-                      startDate: "",
-                      endDate: "",
-                    }))
-                  }
-                />
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            {/* TOOLBAR */}
+            <TableToolbar>
+              <div className="flex w-full flex-col gap-3">
+                {/* FILTER ROW */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <StockMovementFilter
+                    filters={{
+                      inventory: query.inventory,
+                      branch: query.branch,
+                      movementType: query.movementType,
+                      startDate: query.startDate,
+                      endDate: query.endDate,
+                    }}
+                    inventories={inventories}
+                    branches={branches}
+                    onInventoryChange={(value) =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        inventory: value,
+                        page: 1,
+                      }))
+                    }
+                    onBranchChange={(value) =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        branch: value,
+                        page: 1,
+                      }))
+                    }
+                    onMovementTypeChange={(value) =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        movementType: value,
+                        page: 1,
+                      }))
+                    }
+                    onStartDateChange={(value) =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        startDate: value,
+                        page: 1,
+                      }))
+                    }
+                    onEndDateChange={(value) =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        endDate: value,
+                        page: 1,
+                      }))
+                    }
+                    onReset={() =>
+                      setQuery((prev) => ({
+                        ...prev,
+                        page: 1,
+                        inventory: "all",
+                        branch: "all",
+                        movementType: "all",
+                        startDate: "",
+                        endDate: "",
+                      }))
+                    }
+                  />
+                </div>
+
+                {/* STOCK ACTIONS ROW */}
+                <div className="flex flex-wrap items-center justify-start gap-2">
+                  {canStockIn && (
+                    <Button
+                      onClick={handleStockIn}
+                      className="flex items-center gap-2 text-emerald-100 bg-emerald-700 hover:bg-emerald-700/90 border-emerald-700"
+                    >
+                      <ArrowDownToLine className="h-4 w-4" />
+                      Stock In
+                    </Button>
+                  )}
+
+                  {canStockOut && (
+                    <Button
+                      onClick={handleStockOut}
+                      className="flex items-center gap-2 text-red-100 bg-red-700 hover:bg-red-700/90 border-red-700"
+                    >
+                      <ArrowUpFromLine className="h-4 w-4" />
+                      Stock Out
+                    </Button>
+                  )}
+
+                  {canStockTransfer && (
+                    <Button
+                      onClick={handleTransfer}
+                      className="flex items-center gap-2 text-sky-100 bg-sky-700 hover:bg-sky-700/90 border-sky-700"
+                    >
+                      <ArrowLeftRight className="h-4 w-4" />
+                      Transfer
+                    </Button>
+                  )}
+
+                  {canStockAdjustment && (
+                    <Button
+                      onClick={handleAdjustment}
+                      className="flex items-center gap-2 text-purple-100 bg-purple-700 hover:bg-purple-700/90 border-purple-700"
+                    >
+                      <SlidersHorizontal className="h-4 w-4" />
+                      Adjustment
+                    </Button>
+                  )}
+                </div>
               </div>
+            </TableToolbar>
 
-              {/* STOCK ACTIONS ROW */}
-              <div className="flex flex-wrap items-center justify-start gap-2">
-                {canStockIn && (
-                  <Button
-                    onClick={handleStockIn}
-                    className="flex items-center gap-2 text-emerald-100 bg-emerald-700 hover:bg-emerald-700/90 border-emerald-200"
-                  >
-                    <ArrowDownToLine className="h-4 w-4" />
-                    Stock In
-                  </Button>
-                )}
+            {/* TABLE */}
+            <StockMovementTable
+              movements={movements}
+              loading={loading.movements}
+              onView={handleView}
+            />
 
-                {canStockOut && (
-                  <Button
-                    onClick={handleStockOut}
-                    className="flex items-center gap-2 text-red-100 bg-red-700 hover:bg-red-700/90 border-red-200"
-                  >
-                    <ArrowUpFromLine className="h-4 w-4" />
-                    Stock Out
-                  </Button>
-                )}
-
-                {canStockTransfer && (
-                  <Button
-                    onClick={handleTransfer}
-                    className="flex items-center gap-2 text-sky-100 bg-sky-700 hover:bg-sky-700/90 border-sky-200"
-                  >
-                    <ArrowLeftRight className="h-4 w-4" />
-                    Transfer
-                  </Button>
-                )}
-
-                {canStockAdjustment && (
-                  <Button
-                    onClick={handleAdjustment}
-                    className="flex items-center gap-2 text-purple-100 bg-purple-700 hover:bg-purple-700/90 border-purple-200"
-                  >
-                    <SlidersHorizontal className="h-4 w-4" />
-                    Adjustment
-                  </Button>
-                )}
-              </div>
-            </div>
-          </TableToolbar>
-
-          {/* TABLE */}
-          <StockMovementTable
-            movements={movements}
-            loading={loading.movements}
-            onView={handleView}
-          />
-
-          {/* PAGINATION */}
-          <TablePagination
-            pagination={pagination}
-            onPageChange={(page) =>
-              setQuery((prev) => ({
-                ...prev,
-                page,
-              }))
-            }
-          />
-        </div>
-      </div>
+            {/* PAGINATION */}
+            <TablePagination
+              pagination={pagination}
+              onPageChange={(page) =>
+                setQuery((prev) => ({
+                  ...prev,
+                  page,
+                }))
+              }
+            />
+          </div>
+        </CardContent>
+      </Card>
     );
 }
