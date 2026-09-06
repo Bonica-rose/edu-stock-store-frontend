@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchDashboard } from "../redux/dashboardThunks";
+import {
+  fetchDashboard,
+  fetchStockMovementTrend,
+  fetchInventoryByCategory,
+  fetchStockHealth,
+} from "../redux/dashboardThunks";
 import { fetchDashboardAIPredictions } from "@/features/ai/redux/aiThunks";
 
 import SummaryCards from "../components/SummaryCards";
 import RecentActivities from "../components/RecentActivities";
 import AIDashboardSection from "@/features/ai/components/AIDashboardSection";
+import AnalyticsSection from "../components/AnalyticsSection";
 import Loader from "@/shared/components/Loader";
 import { ROLES } from "@/shared/constants/roles";
 
@@ -17,14 +23,24 @@ export default function DashboardPage() {
 
   const { user } = useSelector((state) => state.auth);
 
-  const { summary, recentActivities, loading, error } = useSelector(
-    (state) => state.dashboard,
-  );
+  const {
+    summary,
+    recentActivities,
+    stockMovementTrend,
+    inventoryByCategory,
+    stockHealth,
+    loading,
+    error,
+  } = useSelector((state) => state.dashboard);
 
   const canUseDashboardAI = AI_ROLES.has(user?.role);
 
   useEffect(() => {
     dispatch(fetchDashboard());
+
+    dispatch(fetchStockMovementTrend());
+    dispatch(fetchInventoryByCategory());
+    dispatch(fetchStockHealth());
   }, [dispatch]);
 
   useEffect(() => {
@@ -50,6 +66,12 @@ export default function DashboardPage() {
       <SummaryCards summary={summary} />
 
       {canUseDashboardAI && <AIDashboardSection />}
+
+      <AnalyticsSection
+        stockMovementTrend={stockMovementTrend}
+        inventoryByCategory={inventoryByCategory}
+        stockHealth={stockHealth}
+      />
 
       <RecentActivities activities={recentActivities} />
     </div>

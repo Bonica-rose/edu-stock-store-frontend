@@ -1,138 +1,141 @@
 const API_ENDPOINTS = {
-    SETUP: {
-        INITIALIZE: "/setup",
-        STATUS: "/setup/status",
-    },
+  SETUP: {
+    INITIALIZE: "/setup",
+    STATUS: "/setup/status",
+  },
 
-    AUTH: {
-        LOGIN: "/auth/login",
-        LOGOUT: "/auth/logout",
-        CURRENT_USER: "/auth/me",
-        CHANGE_PASSWORD: "/auth/change-password",
-        FORGOT_PASSWORD: "/auth/forgot-password",
-        RESET_PASSWORD: "/auth/reset-password",
-    },
+  AUTH: {
+    LOGIN: "/auth/login",
+    LOGOUT: "/auth/logout",
+    CURRENT_USER: "/auth/me",
+    CHANGE_PASSWORD: "/auth/change-password",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+    RESET_PASSWORD: "/auth/reset-password",
+  },
 
-    PROFILE: {
-        UPDATE: "users/profile",
-        ACTIVITY: "users/profile/activity",
-    },
+  PROFILE: {
+    UPDATE: "users/profile",
+    ACTIVITY: "users/profile/activity",
+  },
 
-    DASHBOARD: {
-        GET_DASHBOARD: "/dashboard",
-    },
+  DASHBOARD: {
+    GET_DASHBOARD: "/dashboard",
+    GET_STOCK_MOVEMENT_TREND: "/dashboard/stock-movement-trend",
+    GET_INVENTORY_BY_CATEGORY: "/dashboard/inventory-by-category",
+    GET_STOCK_HEALTH: "/dashboard/stock-health",
+  },
 
-    USER: {
-        LIST: "/users",
-        CREATE: "/users",
-        GET: (id) => `/users/${id}`,
-        UPDATE: (id) => `/users/${id}`,
-        DELETE: (id) => `/users/${id}`,
-        CHANGE_STATUS: (id) => `/users/${id}/status`,
-    },
+  USER: {
+    LIST: "/users",
+    CREATE: "/users",
+    GET: (id) => `/users/${id}`,
+    UPDATE: (id) => `/users/${id}`,
+    DELETE: (id) => `/users/${id}`,
+    CHANGE_STATUS: (id) => `/users/${id}/status`,
+  },
 
-    BRANCH: {
-        LIST: "/branches",
-        CREATE: "/branches",
-        GET: (id) => `/branches/${id}`,
-        UPDATE: (id) => `/branches/${id}`,
-        CHANGE_STATUS: (id) => `/branches/${id}/status`,
-    },
+  BRANCH: {
+    LIST: "/branches",
+    CREATE: "/branches",
+    GET: (id) => `/branches/${id}`,
+    UPDATE: (id) => `/branches/${id}`,
+    CHANGE_STATUS: (id) => `/branches/${id}/status`,
+  },
 
-    CATEGORY: {
-        LIST: "/categories",
-        CREATE: "/categories",
-        GET: (id) => `/categories/${id}`,
-        UPDATE: (id) => `/categories/${id}`,
-        DELETE: (id) => `/categories/${id}`,
-        CHANGE_STATUS: (id) => `/categories/${id}/status`,
-    },
+  CATEGORY: {
+    LIST: "/categories",
+    CREATE: "/categories",
+    GET: (id) => `/categories/${id}`,
+    UPDATE: (id) => `/categories/${id}`,
+    DELETE: (id) => `/categories/${id}`,
+    CHANGE_STATUS: (id) => `/categories/${id}/status`,
+  },
 
-    VENDOR: {
-        LIST: "/vendors",
-        CREATE: "/vendors",
-        GET: (id) => `/vendors/${id}`,
-        UPDATE: (id) => `/vendors/${id}`,
-        CHANGE_STATUS: (id) => `/vendors/${id}/status`,
-        DELETE: (id) => `/vendors/${id}`,
-    },
+  VENDOR: {
+    LIST: "/vendors",
+    CREATE: "/vendors",
+    GET: (id) => `/vendors/${id}`,
+    UPDATE: (id) => `/vendors/${id}`,
+    CHANGE_STATUS: (id) => `/vendors/${id}/status`,
+    DELETE: (id) => `/vendors/${id}`,
+  },
 
-    PURCHASE: {
-        LIST: "/purchases",
-        CREATE: "/purchases",
-        GET: (id) => `/purchases/${id}`,
-    },
+  PURCHASE: {
+    LIST: "/purchases",
+    CREATE: "/purchases",
+    GET: (id) => `/purchases/${id}`,
+  },
 
-    INVENTORY: {
-        LIST: "/inventory",
-        CREATE: "/inventory",
-        GET: (id) => `/inventory/${id}`,
-        UPDATE: (id) => `/inventory/${id}`,
-        CHANGE_STATUS: (id) => `/inventory/${id}/status`,
-        DELETE: (id) => `/inventory/${id}`,
-    },
+  INVENTORY: {
+    LIST: "/inventory",
+    CREATE: "/inventory",
+    GET: (id) => `/inventory/${id}`,
+    UPDATE: (id) => `/inventory/${id}`,
+    CHANGE_STATUS: (id) => `/inventory/${id}/status`,
+    DELETE: (id) => `/inventory/${id}`,
+  },
 
-    STOCK_MOVEMENT: {
-        LIST: "/stock-movements",
-        GET: (id) => `/stock-movements/${id}`,
-        STOCK_IN: "/stock-movements/stock-in",
-        STOCK_OUT: "/stock-movements/stock-out",
-        TRANSFER: "/stock-movements/transfer",
-        ADJUSTMENT: "/stock-movements/adjustment",
-    },
+  STOCK_MOVEMENT: {
+    LIST: "/stock-movements",
+    GET: (id) => `/stock-movements/${id}`,
+    STOCK_IN: "/stock-movements/stock-in",
+    STOCK_OUT: "/stock-movements/stock-out",
+    TRANSFER: "/stock-movements/transfer",
+    ADJUSTMENT: "/stock-movements/adjustment",
+  },
 
-    ASSET: {
-        LIST: "/assets",
-        GET: (id) => `/assets/${id}`,
-        CREATE: "/assets",
-        UPDATE: (id) => `/assets/${id}`,
-        CHANGE_STATUS: (id) => `/assets/${id}/status`,
-        DELETE: (id) => `/assets/${id}`,
-        ASSIGN: (id) => `/assets/${id}/assign`,
-        RETURN: (id) => `/assets/${id}/return`,
-    },
+  ASSET: {
+    LIST: "/assets",
+    GET: (id) => `/assets/${id}`,
+    CREATE: "/assets",
+    UPDATE: (id) => `/assets/${id}`,
+    CHANGE_STATUS: (id) => `/assets/${id}/status`,
+    DELETE: (id) => `/assets/${id}`,
+    ASSIGN: (id) => `/assets/${id}/assign`,
+    RETURN: (id) => `/assets/${id}/return`,
+  },
 
-    MAINTENANCE: {
-        LIST: "/maintenance",
-        GET: (id) => `/maintenance/${id}`,
-        CREATE: "/maintenance",
-        ASSIGN: (id) => `/maintenance/${id}/assign`,
-        UPDATE_STATUS: (id) => `/maintenance/${id}/status`,
-        COMPLETE: (id) => `/maintenance/${id}/complete`,
-        DELETE: (id) => `/maintenance/${id}`,
-    },
+  MAINTENANCE: {
+    LIST: "/maintenance",
+    GET: (id) => `/maintenance/${id}`,
+    CREATE: "/maintenance",
+    ASSIGN: (id) => `/maintenance/${id}/assign`,
+    UPDATE_STATUS: (id) => `/maintenance/${id}/status`,
+    COMPLETE: (id) => `/maintenance/${id}/complete`,
+    DELETE: (id) => `/maintenance/${id}`,
+  },
 
-    ACTIVITY: {
-        LIST: "/activity-log",
-        GET: (id) => `/activity-log/${id}`,
-    },
+  ACTIVITY: {
+    LIST: "/activity-log",
+    GET: (id) => `/activity-log/${id}`,
+  },
 
-    REPORT: {
-        DASHBOARD: "/reports/dashboard-summary",
+  REPORT: {
+    DASHBOARD: "/reports/dashboard-summary",
 
-        INVENTORY: "/reports/inventory",
-        INVENTORY_EXPORT: "/reports/inventory/export",
+    INVENTORY: "/reports/inventory",
+    INVENTORY_EXPORT: "/reports/inventory/export",
 
-        LOW_STOCK: "/reports/low-stock",
-        LOW_STOCK_EXPORT: "/reports/low-stock/export",
+    LOW_STOCK: "/reports/low-stock",
+    LOW_STOCK_EXPORT: "/reports/low-stock/export",
 
-        ASSET: "/reports/assets",
-        ASSET_EXPORT: "/reports/assets/export",
+    ASSET: "/reports/assets",
+    ASSET_EXPORT: "/reports/assets/export",
 
-        STOCK_MOVEMENT: "/reports/stock-movements",
-        STOCK_MOVEMENT_EXPORT: "/reports/stock-movements/export",
+    STOCK_MOVEMENT: "/reports/stock-movements",
+    STOCK_MOVEMENT_EXPORT: "/reports/stock-movements/export",
 
-        PURCHASE: "/reports/purchases",
-        PURCHASE_EXPORT: "/reports/purchases/export",
+    PURCHASE: "/reports/purchases",
+    PURCHASE_EXPORT: "/reports/purchases/export",
 
-        MAINTENANCE: "/reports/maintenance",
-        MAINTENANCE_EXPORT: "/reports/maintenance/export",
+    MAINTENANCE: "/reports/maintenance",
+    MAINTENANCE_EXPORT: "/reports/maintenance/export",
 
-        VENDOR: "/reports/vendors",
-        VENDOR_EXPORT: "/reports/vendors/export",
-    },
+    VENDOR: "/reports/vendors",
+    VENDOR_EXPORT: "/reports/vendors/export",
+  },
 
-    SETTINGS: "/settings",
+  SETTINGS: "/settings",
 };
 
 export default API_ENDPOINTS;

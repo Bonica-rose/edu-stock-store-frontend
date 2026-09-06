@@ -11,7 +11,6 @@ import {
   Wrench,
   FileBarChart,
   History as HistoryIcon,
-  ChartColumn,
   PackageSearch,
 } from "lucide-react";
 import { PERMISSIONS } from "@/shared/constants/permissions";
@@ -153,10 +152,5 @@ export const sidebarMenu = [
     path: "/edu/activity-log",
     icon: HistoryIcon,
     permission: PERMISSIONS.ACTIVITY_VIEW,
-  },
-  {
-    label: "Analytics",
-    icon: ChartColumn,
-    path: "/edu/analytics",
   },
 ];
