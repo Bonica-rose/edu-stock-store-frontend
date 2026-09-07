@@ -46,8 +46,10 @@ const branchSlice = createSlice({
             .addCase(fetchBranches.fulfilled, (state, action) => {
                 state.loading.branches = false;
 
+                console.log("Branch Payload", action.payload);
+
                 state.branches = action.payload.data;
-                state.pagination = action.payload.pagination;
+                state.pagination = action.payload.meta;
             })
             .addCase(fetchBranches.rejected, (state, action) => {
                 state.loading.branches = false;

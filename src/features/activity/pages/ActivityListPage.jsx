@@ -10,9 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import ActivityFilters from "../components/ActivityFilters";
 import ActivityTable from "../components/ActivityTable";
-
+import { fetchUsers } from "../../user/redux/userThunks";
 import { fetchActivities } from "../redux/activityThunks";
 import ActivityDetailsSheet from "../components/ActivityDetailsSheet";
+import { ROLES } from "@/shared/constants/roles";
 
 export default function ActivityListPage() {
   const dispatch = useDispatch();
@@ -20,7 +21,10 @@ export default function ActivityListPage() {
   const { activities, pagination, loading, error } = useSelector(
     (state) => state.activity,
   );
-  console.log(activities);
+  const { users } = useSelector((state) => state.user);   
+  const currentUser = useSelector((state) => state.auth.user);
+  
+  const canFilterUsers = [ROLES.SUPER_ADMIN, ROLES.BRANCH_ADMIN].includes(currentUser?.role);
 
   // Query State
   const [search, setSearch] = useState("");
@@ -41,6 +45,10 @@ export default function ActivityListPage() {
 
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+
+  useEffect(() => {
+    if (canFilterUsers) dispatch(fetchUsers());
+  }, [dispatch, canFilterUsers]);  
 
   // Fetch Activities
   const loadActivities = useCallback(() => {
@@ -160,7 +168,7 @@ export default function ActivityListPage() {
       />
       <Card className="mt-2">
         <CardContent>
-          <div className="space-y-4"> 
+          <div className="space-y-4">
             {/* Toolbar */}
             <TableToolbar
               search={search}
@@ -177,13 +185,14 @@ export default function ActivityListPage() {
               startDate={filters.startDate}
               endDate={filters.endDate}
               // User options will come from your user API.
-              users={[]}
+              users={users ?? []}
               onModuleChange={handleModuleChange}
               onActionChange={handleActionChange}
               onUserChange={handleUserChange}
               onStartDateChange={handleStartDateChange}
               onEndDateChange={handleEndDateChange}
               onReset={handleReset}
+              canFilterUser={canFilterUsers}
             />
 
             {/* Table */}
@@ -191,6 +200,7 @@ export default function ActivityListPage() {
               activities={activities}
               loading={loading.list}
               onView={handleView}
+              currentUser={currentUser}
             />
 
             {/* Pagination */}

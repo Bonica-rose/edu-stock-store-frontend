@@ -19,14 +19,17 @@ import { createUserSchema, updateUserSchema } from "../validations/userSchema";
 import { Save, SavePlus, Loader2 } from "lucide-react";
 import PasswordInput from "@/shared/components/PasswordInput";
 import { USER_PASSWORD_BY_SUPER_ADMIN } from "@/shared/constants/user";
+import { ROLES } from "@/shared/constants/roles";
 
 export default function UserForm({
-  mode = 'create',
+  mode = "create",
   initialData,
+  onSuccess,
   onSubmit,
   loading = false,
   roles = [],
   branches = [],
+  currentUser,
 }) {
   const schema = mode === "create" ? createUserSchema : updateUserSchema;
   const {
@@ -51,12 +54,31 @@ export default function UserForm({
     },
   });
 
-  useEffect(() => {
-    register("role");
-    register("branch");
-  }, [register]);
+  const isBranchAdmin = currentUser?.role === ROLES.BRANCH_ADMIN;
 
+  const availableBranches = isBranchAdmin
+    ? branches.filter((branch) => branch._id === currentUser?.branch?._id)
+    : branches;
+  
   useEffect(() => {
+    if (!initialData && !isBranchAdmin) {
+      return;
+    }
+
+    if (isBranchAdmin && currentUser?.branch?._id) {
+      reset({
+        firstName: initialData?.firstName || "",
+        lastName: initialData?.lastName || "",
+        email: initialData?.email || "",
+        phone: initialData?.phone || "",
+        role: initialData?.role || "",
+        branch: currentUser.branch._id,
+        password: USER_PASSWORD_BY_SUPER_ADMIN,
+      });
+
+      return;
+    }
+
     if (initialData) {
       reset({
         firstName: initialData.firstName || "",
@@ -68,7 +90,12 @@ export default function UserForm({
         password: USER_PASSWORD_BY_SUPER_ADMIN,
       });
     }
-  }, [initialData, reset]);
+  }, [initialData, isBranchAdmin, currentUser?.branch?._id, reset]);
+
+  useEffect(() => {
+    register("role");
+    register("branch");
+  }, [register]);
 
   const selectedRole = watch("role");
   const selectedBranch = watch("branch");
@@ -76,6 +103,11 @@ export default function UserForm({
   const submitForm = async (data) => {
     try {
       await onSubmit(data);
+      if (mode === "create") {
+        reset();
+      }
+
+      onSuccess?.();
     } catch (error) {
       if (error.errors?.length) {
         error.errors.forEach((err) => {
@@ -153,9 +185,7 @@ export default function UserForm({
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="phone">
-              Phone
-            </FieldLabel>
+            <FieldLabel htmlFor="phone">Phone</FieldLabel>
 
             <Input
               id="phone"
@@ -207,13 +237,13 @@ export default function UserForm({
             >
               <SelectTrigger aria-invalid={!!errors.branch}>
                 <SelectValue>
-                  {branches.find((b) => b._id === selectedBranch)?.branchName ??
-                    "Select branch"}
+                  {availableBranches.find((b) => b._id === selectedBranch)
+                    ?.branchName ?? "Select branch"}
                 </SelectValue>
               </SelectTrigger>
 
               <SelectContent>
-                {branches.map((branch) => (
+                {availableBranches.map((branch) => (
                   <SelectItem key={branch._id} value={branch._id}>
                     {branch.branchName}
                   </SelectItem>

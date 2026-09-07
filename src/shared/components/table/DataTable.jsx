@@ -40,7 +40,7 @@ export default function DataTable({ columns, data, loading = false }) {
   }  
 
   return (
-    <div className="rounded-lg border relative w-full overflow-auto">
+    <div className="relative w-full min-w-0 rounded-lg border">
       <Table className="min-w-max">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

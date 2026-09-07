@@ -30,7 +30,7 @@ export default function StockMovementListPage() {
     const canStockTransfer = hasPermission(PERMISSIONS.STOCK_TRANSFER_CREATE);
     const canStockAdjustment = hasPermission(PERMISSIONS.STOCK_ADJUSTMENT_CREATE);
 
-    const { movements, pagination, loading } = useSelector((state) => state.stockMovement );
+  const { movements, pagination, loading } = useSelector((state) => state.stockMovement);
 
     const { inventories, branches } = useStockMovementFormOptions();
 

@@ -10,7 +10,7 @@ export default  function Providers({ children }) {
           {children}
           <Toaster
             richColors
-            position="top-left"
+            position="bottom-right"
             toastOptions={{
               style: {
                 borderRadius: "5px",

@@ -39,6 +39,8 @@ const getInventories = async (query = {}) => {
         params.sortOrder = query.sortOrder;
     }
 
+    console.log(params);
+
     const response = await api.get(API_ENDPOINTS.INVENTORY.LIST, {
         params,
     });

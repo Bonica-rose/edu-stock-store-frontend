@@ -8,24 +8,24 @@ import {
 
 export default function RoleFilter({ value, onChange, roles = [] }) {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-48">
-        <SelectValue>
-          {value === "all"
-            ? "All Roles"
-            : (roles.find((role) => role === value) ?? "All Roles")}
-        </SelectValue>
-      </SelectTrigger>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-48">
+          <SelectValue>
+            {value === "all"
+              ? "All Roles"
+              : (roles.find((role) => role === value) ?? "All Roles")}
+          </SelectValue>
+        </SelectTrigger>
 
-      <SelectContent>
-        <SelectItem value="all">All Roles</SelectItem>
+        <SelectContent>
+          <SelectItem value="all">All Roles</SelectItem>
 
-        {roles.map((role) => (
-          <SelectItem key={role} value={role}>
-            {role}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+          {roles.map((role) => (
+            <SelectItem key={role} value={role}>
+              {role}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
   );
 }

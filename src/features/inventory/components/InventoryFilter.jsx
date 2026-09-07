@@ -21,6 +21,7 @@ export default function InventoryFilter({
   onBranchChange,
   onStatusChange,
   onItemTypeChange,
+  showBranchFilter = true,
 }) {
   return (
     <>
@@ -82,7 +83,8 @@ export default function InventoryFilter({
       </Select>
 
       {/* Branch */}
-      <Select value={branch} onValueChange={onBranchChange}>
+      {showBranchFilter && (
+        <Select value={branch} onValueChange={onBranchChange}>
         <SelectTrigger className="w-40">
           <SelectValue>
             {branch === "all"
@@ -101,7 +103,8 @@ export default function InventoryFilter({
             </SelectItem>
           ))}
         </SelectContent>
-      </Select>
+        </Select>
+      )}
 
       {/* Status */}
       <Select value={isActive} onValueChange={onStatusChange}>

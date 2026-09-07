@@ -27,12 +27,13 @@ export default function UsersPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { users, pagination, loading } = useSelector((state) => state.user);  
+  const { users, pagination, loading } = useSelector((state) => state.user); 
   const currentUser = useSelector((state) => state.auth.user);
   const branches = useSelector((state) => state.branch.branches);
   const { hasPermission } = usePermission();
 
   const canCreate = hasPermission(PERMISSIONS.USER_CREATE);
+  const isBranchAdmin = currentUser?.role === ROLES.BRANCH_ADMIN;
 
   const ALLOWED_ROLES =
     currentUser.role === ROLES.BRANCH_ADMIN
@@ -132,28 +133,30 @@ export default function UsersPage() {
             }
             searchPlaceholder="Search users by ID, name, email, ..."
           >
-            <BranchFilter
-              value={query.branch}
-              branches={branches}
-              onChange={(branch) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  branch,
-                  page: 1,
-                }))
-              }
-            />
-            <RoleFilter
-              value={query.role}
-              roles={ALLOWED_ROLES}
-              onChange={(role) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  role,
-                  page: 1,
-                }))
-              }
-            />
+              {!isBranchAdmin && (
+                <BranchFilter
+                  value={query.branch}
+                  branches={branches}
+                  onChange={(branch) =>
+                    setQuery((prev) => ({
+                      ...prev,
+                      branch,
+                      page: 1,
+                    }))
+                  }
+                />
+              )}
+              <RoleFilter
+                value={query.role}
+                roles={ALLOWED_ROLES}
+                onChange={(role) =>
+                  setQuery((prev) => ({
+                    ...prev,
+                    role,
+                    page: 1,
+                  }))
+                }
+              />
 
             {canCreate && (
               <Button

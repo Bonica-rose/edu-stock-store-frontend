@@ -42,14 +42,17 @@ const summaryConfig = {
   inventory: {
     title: "Inventory",
     icon: Boxes,
+    iconClass: "text-blue-800",
   },
   assets: {
     title: "Assets",
     icon: Package,
+    iconClass: "text-lime-600",
   },
   users: {
     title: "Users",
     icon: Users,
+    iconClass: "text-sky-400",
   },
   maintenance: {
     title: "Maintenance",
@@ -59,14 +62,17 @@ const summaryConfig = {
   pending: {
     title: "Pending",
     icon: ClipboardList,
+    iconClass: "text-amber-600",
   },
   inProgress: {
     title: "In Progress",
     icon: Wrench,
+    iconClass: "text-sky-400",
   },
   completed: {
     title: "Completed",
     icon: ClipboardList,
+    iconClass: "text-green-600",
   },
   lowStock: {
     title: "Low Stock",
@@ -76,14 +82,17 @@ const summaryConfig = {
   stockInToday: {
     title: "Stock In",
     icon: ArrowDownToLine,
+    iconClass: "text-sky-600",
   },
   stockOutToday: {
     title: "Stock Out",
     icon: ArrowUpFromLine,
+    iconClass: "text-red-600",
   },
   movements: {
     title: "Stock Movements",
     icon: ArrowUpFromLine,
+    iconClass: "text-blue-600",
   },
 };
 

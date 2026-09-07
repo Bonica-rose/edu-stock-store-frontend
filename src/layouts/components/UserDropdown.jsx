@@ -35,7 +35,8 @@ export default function UserDropdown() {
     const handleLogout = async () => {
         const result = await dispatch(logoutUser());
 
-        if (logoutUser.fulfilled.match(result)) {
+      if (logoutUser.fulfilled.match(result)) {
+          localStorage.setItem("logout", Date.now().toString());
           toast.success(result.payload.message);
           navigate("/login", { replace: true });
         } else {

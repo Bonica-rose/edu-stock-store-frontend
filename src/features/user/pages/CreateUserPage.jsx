@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 import {
   ROLES,
@@ -16,10 +15,13 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/shared/components/PageHeader";
 import Loader from "@/shared/components/Loader";
+import CreationSuccessDialog from "@/shared/components/CreationSuccessDialog";
 
 export default function CreateUserPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const { loading: userLoading } = useSelector((state) => state.user);
   const currentUser = useSelector((state) => state.auth.user);
@@ -38,9 +40,15 @@ export default function CreateUserPage() {
       : USER_CREATE_ROLE_OPTIONS;  
 
   const handleCreateUser = async (data) => {
-      await dispatch(createUser(data)).unwrap();
-      toast.success("User created successfully");
-      navigate("/edu/users");
+    await dispatch(createUser(data)).unwrap();
+  };
+
+  const handleCreateSuccess = () => {
+    setShowSuccessDialog(true);
+  };
+
+  const handleCreateAnother = () => {
+    setShowSuccessDialog(false);
   };
 
   if (branchLoading.branches) {
@@ -73,8 +81,21 @@ export default function CreateUserPage() {
         mode="create"
         roles={ALLOWED_ROLES}
         branches={branches}
+        onSuccess={handleCreateSuccess}
         onSubmit={handleCreateUser}
         loading={userLoading.create}
+        currentUser={currentUser}
+      />
+
+      <CreationSuccessDialog
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        title="User created successfully"
+        description="The user has been created successfully. Would you like to stay here or go back to the users list?"
+        stayLabel="Create another"
+        redirectLabel="Go to Users"
+        onStay={handleCreateAnother}
+        onRedirect={() => navigate("/edu/users")}
       />
     </div>
   );

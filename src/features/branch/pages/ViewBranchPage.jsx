@@ -11,6 +11,7 @@ import PageHeader from "@/shared/components/PageHeader";
 import Loader from "@/shared/components/Loader";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ViewBranchPage() {
     const { id } = useParams();
@@ -22,9 +23,11 @@ export default function ViewBranchPage() {
 
     const { branch, loading, error } = useSelector((state) => state.branch);
 
+    console.log(branch);
+
     useEffect(() => {
         if (id) {
-        dispatch(fetchBranchById(id));
+            dispatch(fetchBranchById(id));
         }
     }, [dispatch, id]);
 
@@ -35,81 +38,59 @@ export default function ViewBranchPage() {
     if (loading.branch) {
         return (
             <div>
-            <Loader />
+                <Loader />
             </div>
         );
     }
 
-    if (error) {
+    if (error || !branch) {
         return (
-        <div className="space-y-4">
-            <div>
-                <h1 className="text-xl font-semibold">Branch Details</h1>
-                <p className="text-sm text-destructive">{error}</p>
-            </div>
+            <Card>
+                <CardContent>
+                    <div className="space-y-4">
+                        <p className="text-sm text-destructive">
+                            {error || "Branch not found."}
+                        </p>
 
-            <Button
-                type="button"
-                variant="secondary"
-                className="text-gray-500"
-                onClick={handleBack}
-            >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Branches
-            </Button>
-        </div>
-        );
-    }
-
-    if (!branch) {
-        return (
-            <div className="space-y-4">
-                <div>
-                    <h1 className="text-xl font-semibold">Branch Details</h1>
-                    <p className="text-sm text-muted-foreground">Branch not found.</p>
-                </div>
-
-                <Button
-                    type="button"
-                    variant="secondary"
-                    className="text-gray-500"
-                    onClick={handleBack}
-                >
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Branches
-                </Button>
-            </div>
+                        <Button variant="outline" onClick={handleBack}>
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Back to Branches
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
         );
     }
 
     return (
         <div className="space-y-3">
-
             {/* Page Header */}
             <PageHeader
                 title="Branch Details"
                 description="View branch information"
                 action={
-                    <div className="flex items-center gap-2">
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            className="text-gray-500"
-                            onClick={() => navigate("/edu/branches")}
-                        >
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to Branches
-                        </Button>
+                <div className="flex items-center gap-2">
+                    <Button
+                    type="button"
+                    variant="secondary"
+                    className="text-gray-500"
+                    onClick={handleBack}
+                    >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Branches
+                    </Button>
 
-                        {canUpdate && <Button
-                            type="button"
-                            onClick={() => navigate(`/edu/branches/${id}/edit`)}
-                            className="rounded-lg"
-                        >
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit Branch
-                        </Button>}
-                    </div>
+                    {canUpdate && (
+                    <Button
+                        type="button"
+                        onClick={() => navigate(`/edu/branches/${id}/edit`)}
+                        className="rounded-lg"
+                    >
+                        <Pencil className="mr-2 h-4 w-4" />
+                        Edit Branch
+                    </Button>
+                    )}
+                </div>
                 }
             />
 

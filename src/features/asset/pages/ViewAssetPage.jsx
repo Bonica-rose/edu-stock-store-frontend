@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
+import { Card, CardContent } from "@/components/ui/card";
 import PageHeader from "@/shared/components/PageHeader";
 import { fetchAssetById, assignAsset, returnAsset } from "../redux/assetThunks";
 
@@ -32,7 +32,7 @@ export default function ViewAssetPage() {
   const canAssetAssign = hasPermission(PERMISSIONS.ASSET_ASSIGN);
   const canAssetReturn = hasPermission(PERMISSIONS.ASSET_RETURN);
 
-  const { asset: currentAsset, loading } = useSelector((state) => state.asset);
+  const { asset: currentAsset, error, loading } = useSelector((state) => state.asset);
 
   /* Change this selector if employees are stored elsewhere in your Redux state.*/
   const employees = useSelector((state) => state.user?.users ?? []);
@@ -82,26 +82,24 @@ export default function ViewAssetPage() {
     );
   }
 
-  if (!currentAsset) {
+  if (error || !currentAsset) {
     return (
-      <div className="space-y-4">
-        <PageHeader title="Asset" description="View asset information." />
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-sm text-destructive">
+              {error || "Asset not found."}
+            </p>
 
-        <div className="rounded-lg border p-8 text-center">
-          <p className="text-sm text-muted-foreground">Asset not found.</p>
-
-          <Button
-            variant="outline"
-            className="mt-4"
-            onClick={() => navigate("/assets")}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Assets
-          </Button>
-        </div>
-      </div>
+            <Button variant="outline" onClick={() => navigate("/edu/assets")}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Assets
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     );
-  }
+  } 
 
   const canAssign =
     currentAsset.status === "Available" &&

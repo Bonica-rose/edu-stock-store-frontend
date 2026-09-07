@@ -7,21 +7,15 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const STOCK_HEALTH_COLORS = {
-  Healthy: "oklch(0.78 0.12 155)", // Soft green
-  "Low Stock": "oklch(0.82 0.13 75)", // Soft orange
-  "Out of Stock": "oklch(0.76 0.14 25)", // Soft red
+    Healthy: "oklch(0.70 0.17 155)",
+    "Low Stock": "oklch(0.72 0.18 75)",
+    "Out of Stock": "oklch(0.66 0.19 25)",
 };
 
 export default function StockHealthChart({ data = {} }) {
-
     const chartData = [
         {
             name: "Healthy",
@@ -37,13 +31,7 @@ export default function StockHealthChart({ data = {} }) {
         },
     ];
 
-    const total = chartData.reduce(
-        (sum, item) => sum + item.value,
-        0
-    );
-
-    console.log(chartData);
-    
+    const total = chartData.reduce((sum, item) => sum + item.value, 0);
 
     return (
         <Card>
@@ -58,10 +46,7 @@ export default function StockHealthChart({ data = {} }) {
                     </div>
                 ) : (
                     <div className="h-75 w-full">
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
+                        <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
                                     data={chartData}
@@ -72,21 +57,26 @@ export default function StockHealthChart({ data = {} }) {
                                     innerRadius={70}
                                     outerRadius={100}
                                     paddingAngle={2}
+                                    stroke="none"
                                     label
                                 >
                                     {chartData.map((entry) => (
                                         <Cell
                                             key={entry.name}
-                                            fill={
-                                                STOCK_HEALTH_COLORS[
-                                                    entry.name
-                                                ]
-                                            }
+                                            fill={STOCK_HEALTH_COLORS[entry.name]}
                                         />
                                     ))}
                                 </Pie>
 
-                                <Tooltip />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: "var(--background)",
+                                        color: "var(--foreground)",
+                                        border: "1px solid var(--border)",
+                                        borderRadius: "var(--radius)",
+                                        padding: "3px 12px",
+                                    }}
+                                />
 
                                 <Legend />
                             </PieChart>
@@ -96,4 +86,4 @@ export default function StockHealthChart({ data = {} }) {
             </CardContent>
         </Card>
     );
-};
+}

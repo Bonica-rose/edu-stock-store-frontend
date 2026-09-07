@@ -4,16 +4,14 @@ import ActivityModuleBadge from "../components/ActivityModuleBadge";
 import ActivityActionBadge from "../components/ActivityActionBadge";
 import { formatDateTime } from "@/shared/utils/dateFormatter";
 
-export const getActivityColumns = ({ onView }) => [
+export const getActivityColumns = ({ onView, canListBranch }) => [
   {
     accessorKey: "createdAt",
     header: "Date & Time",
     cell: ({ row }) => {
       const date = row.original.createdAt;
 
-      if (!date) {
-        return "-";
-      }
+      if (!date) return "-";
 
       return (
         <div>
@@ -35,9 +33,7 @@ export const getActivityColumns = ({ onView }) => [
     cell: ({ row }) => {
       const user = row.original.user;
 
-      if (!user) {
-        return "-";
-      }
+      if (!user) return "-";
 
       const fullName = [user.firstName, user.lastName]
         .filter(Boolean)
@@ -85,29 +81,34 @@ export const getActivityColumns = ({ onView }) => [
     ),
   },
 
-  {
-    accessorKey: "branch",
-    header: "Branch",
-    cell: ({ row }) => {
-      const branch = row.original.branch;
+  // Branch column only for users who can list branches
+  ...(canListBranch
+    ? [
+        {
+          accessorKey: "branch",
+          header: "Branch",
+          cell: ({ row }) => {
+            const branch = row.original.branch;
 
-      if (!branch) {
-        return <span className="text-muted-foreground">Global</span>;
-      }
+            if (!branch) {
+              return <span className="text-muted-foreground">Global</span>;
+            }
 
-      return (
-        <div>
-          <div className="font-medium">{branch.branchName || "-"}</div>
+            return (
+              <div>
+                <div className="font-medium">{branch.branchName || "-"}</div>
 
-          {branch.branchCode && (
-            <div className="text-muted-foreground text-xs">
-              {branch.branchCode}
-            </div>
-          )}
-        </div>
-      );
-    },
-  },
+                {branch.branchCode && (
+                  <div className="text-muted-foreground text-xs">
+                    {branch.branchCode}
+                  </div>
+                )}
+              </div>
+            );
+          },
+        },
+      ]
+    : []),
 
   {
     id: "actions",

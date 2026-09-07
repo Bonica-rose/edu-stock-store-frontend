@@ -8,7 +8,11 @@ import UserForm from "../components/UserForm";
 import { fetchUserById, updateUser } from "../redux/userThunks";
 
 import { fetchBranches } from "../../branch/redux/branchThunks";
-import { ROLE_OPTIONS } from "@/shared/constants/roles";
+import {
+  ROLES,
+  BRANCH_ADMIN_ROLE_OPTIONS,
+  USER_CREATE_ROLE_OPTIONS,
+} from "@/shared/constants/roles";
 
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +25,7 @@ export default function EditUserPage() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.user);
+  const currentUser = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.user.loading);
   const branches = useSelector((state) => state.branch.branches);
 
@@ -45,6 +50,11 @@ export default function EditUserPage() {
     return <div><Loader /></div>;
   }
 
+  const ALLOWED_ROLES =
+      currentUser.role === ROLES.BRANCH_ADMIN
+        ? BRANCH_ADMIN_ROLE_OPTIONS
+        : USER_CREATE_ROLE_OPTIONS;  
+
   return (
     <div className="space-y-3">
       <PageHeader
@@ -66,10 +76,11 @@ export default function EditUserPage() {
       <UserForm
         mode="edit"
         initialData={user}
-        roles={ROLE_OPTIONS}
+        roles={ALLOWED_ROLES}
         branches={branches}
         onSubmit={handleUpdateUser}
         loading={loading.update}
+        currentUser={currentUser}
       />
     </div>
   );

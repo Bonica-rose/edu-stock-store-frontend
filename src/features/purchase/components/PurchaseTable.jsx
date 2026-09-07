@@ -13,5 +13,11 @@ export default function PurchaseTable({ purchases, loading, onView }) {
         canView,
     });
 
-    return <DataTable columns={columns} data={purchases ?? []} loading={loading} />;
+    return (
+          <DataTable
+            columns={columns}
+            data={purchases ?? []}
+            loading={loading}
+          />
+    );
 }

@@ -18,17 +18,21 @@ import useInventoryFormOptions from "../utils/useInventoryFormOptions";
 import InventoryFilter from "../components/InventoryFilter";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROLES } from "@/shared/constants/roles";
 
 export default function InventoryListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { hasPermission } = usePermission();
 
-  const canCreate = hasPermission(PERMISSIONS.INVENTORY_CREATE);
+  const canCreate = hasPermission(PERMISSIONS.INVENTORY_CREATE);  
 
+  const currentUser = useSelector((state) => state.auth.user);
   const { inventories, pagination, loading } = useSelector(
     (state) => state.inventory,
   );
+
+  const isBranchAdmin = currentUser?.role === ROLES.BRANCH_ADMIN;
 
   const { categories, vendors, branches } = useInventoryFormOptions();
 
@@ -139,7 +143,7 @@ export default function InventoryListPage() {
                 itemType={query.itemType}
                 categories={categories}
                 vendors={vendors}
-                branches={branches}
+                branches={isBranchAdmin ? [] : branches}
                 onCategoryChange={(value) =>
                   setQuery((prev) => ({
                     ...prev,
@@ -175,6 +179,7 @@ export default function InventoryListPage() {
                     page: 1,
                   }))
                 }
+                showBranchFilter={!isBranchAdmin}
               />
             }
           >

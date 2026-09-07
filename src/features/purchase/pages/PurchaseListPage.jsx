@@ -15,6 +15,7 @@ import VendorFilter from "@/shared/components/filters/VendorFilter";
 import DatePicker from "@/shared/components/DatePicker";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import { ROLES } from "@/shared/constants/roles";
 
 export default function PurchaseListPage() {
   const dispatch = useDispatch();
@@ -23,11 +24,11 @@ export default function PurchaseListPage() {
 
   const canCreate = hasPermission(PERMISSIONS.PURCHASE_CREATE);
 
-  const { purchases, pagination, loading } = useSelector(
-    (state) => state.purchase,
-  );
+  const { purchases, pagination, loading } = useSelector((state) => state.purchase);
   const branches = useSelector((state) => state.branch.branches);
   const vendors = useSelector((state) => state.vendor.vendors);
+  const currentUser = useSelector((state) => state.auth.user);
+  const isBranchAdmin = currentUser?.role === ROLES.BRANCH_ADMIN;
 
   const [query, setQuery] = useState({
     page: 1,
@@ -95,7 +96,7 @@ export default function PurchaseListPage() {
                 }))
               }
             />
-            <BranchFilter
+            {!isBranchAdmin && <BranchFilter
               value={query.branch}
               branches={branches}
               onChange={(branch) =>
@@ -105,7 +106,7 @@ export default function PurchaseListPage() {
                   page: 1,
                 }))
               }
-            />
+            />}
             {canCreate && (
               <Button
                 onClick={handleCreatePurchase}

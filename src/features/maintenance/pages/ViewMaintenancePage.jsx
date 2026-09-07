@@ -27,7 +27,7 @@ export default function ViewMaintenancePage() {
   const canMComplete = hasPermission(PERMISSIONS.MAINTENANCE_COMPLETE);
   const canMCancel = hasPermission(PERMISSIONS.MAINTENANCE_UPDATE_STATUS);
 
-  const { maintenance, loading } = useSelector((state) => state.maintenance);
+  const { maintenance, error, loading } = useSelector((state) => state.maintenance);
 
   const [assignOpen, setAssignOpen] = useState(false);
   const [completeOpen, setCompleteOpen] = useState(false);
@@ -41,9 +41,27 @@ export default function ViewMaintenancePage() {
     return <div><Loader /></div>;
   }
 
-  if (!maintenance) {
-    return null;
-  }
+  if (error || !maintenance) {
+    return (
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-sm text-destructive">
+              {error || "Maintenance not found."}
+            </p>
+
+            <Button
+              variant="outline"
+              onClick={() => navigate("/edu/maintenance")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Maintenance
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  } 
 
   const isPending = maintenance.status === "Pending";
 

@@ -1,6 +1,6 @@
 import { RotateCcw } from "lucide-react";
 
-import { Field, FieldLabel } from "@/components/ui/field";
+import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import SearchableSelect from "@/shared/components/SearchableSelect";
@@ -26,7 +26,9 @@ export default function ActivityFilters({
   onStartDateChange,
   onEndDateChange,
   onReset,
+  canFilterUser = true,
 }) {
+
   const moduleOptions = [
     {
       value: "all",
@@ -63,11 +65,12 @@ export default function ActivityFilters({
     })),
   ];
 
+  // console.log(userOptions);
+
   return (
     <div className="flex flex-wrap items-end gap-4">
       {/* Module */}
       <Field className="w-full sm:w-45">
-
         <SearchableSelect
           value={module}
           onValueChange={onModuleChange}
@@ -78,7 +81,6 @@ export default function ActivityFilters({
 
       {/* Action */}
       <Field className="w-full sm:w-45">
-
         <SearchableSelect
           value={action}
           onValueChange={onActionChange}
@@ -88,19 +90,19 @@ export default function ActivityFilters({
       </Field>
 
       {/* User */}
-      <Field className="w-full sm:w-55">
-
-        <SearchableSelect
-          value={user}
-          onValueChange={onUserChange}
-          options={userOptions}
-          placeholder="All Users"
-        />
-      </Field>
+      {canFilterUser && (
+        <Field className="w-full sm:w-55">
+          <SearchableSelect
+            value={user}
+            onValueChange={onUserChange}
+            options={userOptions}
+            placeholder="All Users"
+          />
+        </Field>
+      )}
 
       {/* Start Date */}
       <Field className="w-full sm:w-42.5">
-
         <DatePicker
           value={startDate}
           onChange={onStartDateChange}

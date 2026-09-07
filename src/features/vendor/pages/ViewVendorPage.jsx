@@ -10,6 +10,7 @@ import { clearCurrentVendor } from "../redux/vendorSlice";
 import VendorDetails from "../components/VendorDetails";
 import Loader from "@/shared/components/Loader";
 import PageHeader from "@/shared/components/PageHeader";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function ViewVendorPage() {
   const { id } = useParams();
@@ -38,21 +39,24 @@ export default function ViewVendorPage() {
     );
   }
 
-  if (error) {
+  if (error || !vendor) {
     return (
-      <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
-        <p className="text-sm text-destructive">{error}</p>
-      </div>
-    );
-  }
+      <Card>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-sm text-destructive">
+              {error || "Vendor not found."}
+            </p>
 
-  if (!vendor) {
-    return (
-      <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
-        <p className="text-sm text-muted-foreground">Vendor not found.</p>
-      </div>
+            <Button variant="outline" onClick={handleBack}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Vendor List
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     );
-  }
+  }  
 
   return (
     <div className="space-y-4">

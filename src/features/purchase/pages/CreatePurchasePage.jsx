@@ -13,6 +13,7 @@ import { createPurchase } from "../redux/puchaseThunks";
 import { fetchVendors } from "@/features/vendor/redux/vendorThunks";
 import { fetchBranches } from "@/features/branch/redux/branchThunks";
 import { fetchInventories } from "@/features/inventory/redux/inventoryThunks";
+import { ROLES } from "@/shared/constants/roles";
 
 const CreatePurchasePage = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,11 @@ const CreatePurchasePage = () => {
   const { branches } = useSelector((state) => state.branch);
   const { inventories } = useSelector((state) => state.inventory);
   const currentUser = useSelector((state) => state.auth.user);
+  const isBranchAdmin = currentUser?.role === ROLES.BRANCH_ADMIN;
+
+  const availableBranches = isBranchAdmin
+    ? branches.filter((branch) => branch._id === currentUser?.branch?._id)
+    : branches;
 
   useEffect(() => {
     dispatch(
@@ -80,7 +86,7 @@ const CreatePurchasePage = () => {
 
       <PurchaseForm
         vendors={vendors}
-        branches={branches}
+        branches={availableBranches}
         inventories={inventories}
         onSubmit={handleCreatePurchase}
         isSubmitting={isSubmitting}
