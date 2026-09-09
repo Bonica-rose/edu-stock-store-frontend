@@ -65,8 +65,6 @@ export default function ActivityFilters({
     })),
   ];
 
-  // console.log(userOptions);
-
   return (
     <div className="flex flex-wrap items-end gap-4">
       {/* Module */}

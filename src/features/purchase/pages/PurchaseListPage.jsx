@@ -10,12 +10,10 @@ import PurchaseTable from "../components/PurchaseTable";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import BranchFilter from "@/shared/components/filters/BranchFilter";
-import VendorFilter from "@/shared/components/filters/VendorFilter";
-import DatePicker from "@/shared/components/DatePicker";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { ROLES } from "@/shared/constants/roles";
+import PurchaseFilter from "../components/PurchaseFilter";
 
 export default function PurchaseListPage() {
   const dispatch = useDispatch();
@@ -59,64 +57,57 @@ export default function PurchaseListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-1">
           <TableToolbar>
-            <DatePicker
-              value={query.startDate}
-              onChange={(startDate) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  startDate,
-                  page: 1,
-                }))
-              }
-              className="w-40"
-              placeholder="Start Date"
-            />
-            <DatePicker
-              value={query.endDate}
-              onChange={(endDate) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  endDate,
-                  page: 1,
-                }))
-              }
-              className="w-40"
-              placeholder="End Date"
-            />
-            <VendorFilter
-              value={query.vendor}
-              vendors={vendors}
-              onChange={(vendor) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  vendor,
-                  page: 1,
-                }))
-              }
-            />
-            {!isBranchAdmin && <BranchFilter
-              value={query.branch}
-              branches={branches}
-              onChange={(branch) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  branch,
-                  page: 1,
-                }))
-              }
-            />}
             {canCreate && (
               <Button
                 onClick={handleCreatePurchase}
-                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                className="flex items-center gap-2 rounded-lg bg-blue-900 px-2 py-1 text-white hover:bg-blue-900/80"
               >
                 <Plus className="h-4 w-4" />
                 Create Purchase
               </Button>
             )}
           </TableToolbar>
+
+          {/* Filters */}
+          <PurchaseFilter
+            startDate={query.startDate}
+            endDate={query.endDate}
+            vendor={query.vendor}
+            branch={query.branch}
+            vendors={vendors}
+            branches={branches}
+            isBranchAdmin={isBranchAdmin}
+            onStartDateChange={(startDate) =>
+              setQuery((prev) => ({
+                ...prev,
+                startDate,
+                page: 1,
+              }))
+            }
+            onEndDateChange={(endDate) =>
+              setQuery((prev) => ({
+                ...prev,
+                endDate,
+                page: 1,
+              }))
+            }
+            onVendorChange={(vendor) =>
+              setQuery((prev) => ({
+                ...prev,
+                vendor,
+                page: 1,
+              }))
+            }
+            onBranchChange={(branch) =>
+              setQuery((prev) => ({
+                ...prev,
+                branch,
+                page: 1,
+              }))
+            }
+          />
 
           <PurchaseTable
             purchases={purchases}

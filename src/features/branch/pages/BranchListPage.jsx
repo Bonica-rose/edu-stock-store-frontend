@@ -22,6 +22,7 @@ import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import StatusFilter from "@/shared/components/filters/StatusFilter";
 
 export default function BranchListPage() {
   const dispatch = useDispatch();
@@ -92,7 +93,7 @@ export default function BranchListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-1">
           <TableToolbar
             search={query.search}
             searchPlaceholder="Search branches by code, name, city, state, ..."
@@ -104,43 +105,28 @@ export default function BranchListPage() {
               }))
             }
           >
-            <Select
-              value={query.isActive}
-              onValueChange={(value) =>
-                setQuery((prev) => ({
-                  ...prev,
-                  isActive: value,
-                  page: 1,
-                }))
-              }
-            >
-              <SelectTrigger className="w-37.5">
-                <SelectValue>
-                  {query.isActive === "true"
-                    ? "Active"
-                    : query.isActive === "false"
-                      ? "Inactive"
-                      : "All"}
-                </SelectValue>
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="true">Active</SelectItem>
-                <SelectItem value="false">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-
             {canCreate && (
               <Button
                 onClick={handleCreateBranch}
-                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                className="flex items-center gap-2 rounded-lg bg-blue-900 px-2 py-1 text-white hover:bg-blue-900/90"
               >
                 <Plus className="h-4 w-4" />
                 Create Branch
               </Button>
             )}
           </TableToolbar>
+
+          {/* branch Status Filter*/}
+          <StatusFilter
+            value={query.isActive}
+            onChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                isActive: value,
+                page: 1,
+              }))
+            }
+          />
 
           <BranchTable
             branches={branches}

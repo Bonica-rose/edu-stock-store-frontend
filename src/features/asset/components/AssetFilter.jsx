@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 
 import SearchableSelect from "@/shared/components/SearchableSelect";
+import StatusFilter from "@/shared/components/filters/StatusFilter";
 
 export default function AssetFilter({
   filters,
@@ -45,30 +46,22 @@ export default function AssetFilter({
   ];
 
   return (
-    <>
-      {/* Reset */}
-      <button
-        type="button"
-        onClick={onReset}
-        className="inline-flex h-8 items-center gap-2 rounded-md border px-3 text-sm hover:bg-muted"
-      >
-        <RotateCcw className="size-4" />
-        Reset
-      </button>
-
+    <div className="flex flex-wrap items-end gap-1">
       {/* Inventory */}
-      <SearchableSelect
-        value={filters.inventory}
-        onValueChange={onInventoryChange}
-        options={inventoryOptions}
-        placeholder="All Inventories"
-        searchPlaceholder="Search inventory..."
-        emptyMessage="No inventory found."
-      />
+      <div className="w-full sm:w-55">
+        <SearchableSelect
+          value={filters.inventory}
+          onValueChange={onInventoryChange}
+          options={inventoryOptions}
+          placeholder="All Inventories"
+          searchPlaceholder="Search inventory..."
+          emptyMessage="No inventory found."
+        />
+      </div>
 
       {/* Branch */}
       <Select value={filters.branch} onValueChange={onBranchChange}>
-        <SelectTrigger className="w-36">
+        <SelectTrigger className="w-full sm:w-45">
           <SelectValue>
             {filters.branch === "all"
               ? "All Branches"
@@ -90,14 +83,14 @@ export default function AssetFilter({
 
       {/* Status */}
       <Select value={filters.status} onValueChange={onStatusChange}>
-        <SelectTrigger className="w-36">
+        <SelectTrigger className="w-full sm:w-45">
           <SelectValue>
-            {filters.status === "all" ? "All Statuses" : filters.status}
+            {filters.status === "all" ? "All Asset Status" : filters.status}
           </SelectValue>
         </SelectTrigger>
 
         <SelectContent>
-          <SelectItem value="all">All Statuses</SelectItem>
+          <SelectItem value="all">All Asset Status</SelectItem>
           <SelectItem value="Available">Available</SelectItem>
           <SelectItem value="Assigned">Assigned</SelectItem>
           <SelectItem value="Maintenance">Maintenance</SelectItem>
@@ -106,33 +99,29 @@ export default function AssetFilter({
       </Select>
 
       {/* Assigned To */}
-      <SearchableSelect
-        value={filters.assignedTo}
-        onValueChange={onAssignedToChange}
-        options={userOptions}
-        placeholder="All Users"
-        searchPlaceholder="Search user..."
-        emptyMessage="No user found."
-      />
+      <div className="w-full sm:w-55">
+        <SearchableSelect
+          value={filters.assignedTo}
+          onValueChange={onAssignedToChange}
+          options={userOptions}
+          placeholder="All Users"
+          searchPlaceholder="Search user..."
+          emptyMessage="No user found."
+        />
+      </div>
 
       {/* Active Status */}
-      <Select value={filters.isActive} onValueChange={onIsActiveChange}>
-        <SelectTrigger className="w-32">
-          <SelectValue>
-            {filters.isActive === "all"
-              ? "All Status"
-              : filters.isActive === "true"
-                ? "Active"
-                : "Inactive"}
-          </SelectValue>
-        </SelectTrigger>
+      <StatusFilter value={filters.isActive} onChange={onIsActiveChange} />
 
-        <SelectContent>
-          <SelectItem value="all">All Status</SelectItem>
-          <SelectItem value="true">Active</SelectItem>
-          <SelectItem value="false">Inactive</SelectItem>
-        </SelectContent>
-      </Select>
-    </>
+      {/* Reset */}
+      <button
+        type="button"
+        onClick={onReset}
+        className="inline-flex h-8 items-center gap-2 rounded-md border px-3 text-sm bg-secondary"
+      >
+        <RotateCcw className="size-4" />
+        Reset
+      </button>
+    </div>
   );
 }

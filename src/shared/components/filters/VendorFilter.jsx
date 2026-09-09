@@ -10,7 +10,7 @@ export default function VendorFilter({ value, onChange, vendors = [] }) {
   const selectedVendor = vendors.find((vendor) => vendor._id === value);
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-52">
+      <SelectTrigger className="w-full sm:w-45">
         <SelectValue>
           {value === "all"
             ? "All Vendors"

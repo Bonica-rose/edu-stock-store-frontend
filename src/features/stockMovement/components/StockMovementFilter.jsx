@@ -34,30 +34,22 @@ export default function StockMovementFilter({
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-start gap-2">
-      {/* Reset */}
-      <button
-        type="button"
-        onClick={onReset}
-        className="inline-flex h-8 items-center gap-2 rounded-md border px-3 text-sm hover:bg-muted"
-      >
-        <RotateCcw className="size-4" />
-        Reset
-      </button>
-
+    <div className="flex flex-wrap items-end gap-1">
       {/* Inventory */}
-      <SearchableSelect
-        value={filters.inventory}
-        onValueChange={onInventoryChange}
-        options={inventoryOptions}
-        placeholder="All Inventories"
-        searchPlaceholder="Search inventory..."
-        emptyMessage="No inventory found."
-      />
+      <div className="w-full sm:w-55">
+        <SearchableSelect
+          value={filters.inventory}
+          onValueChange={onInventoryChange}
+          options={inventoryOptions}
+          placeholder="All Inventories"
+          searchPlaceholder="Search inventory..."
+          emptyMessage="No inventory found."
+        />
+      </div>
 
       {/* Branch */}
       <Select value={filters.branch} onValueChange={onBranchChange}>
-        <SelectTrigger className="w-36">
+        <SelectTrigger className="w-full sm:w-45">
           <SelectValue>
             {filters.branch === "all"
               ? "All Branches"
@@ -79,7 +71,7 @@ export default function StockMovementFilter({
 
       {/* Movement Type */}
       <Select value={filters.movementType} onValueChange={onMovementTypeChange}>
-        <SelectTrigger className="w-44">
+        <SelectTrigger className="w-full sm:w-45">
           <SelectValue>
             {filters.movementType === "all"
               ? "All Movement Types"
@@ -108,7 +100,7 @@ export default function StockMovementFilter({
       <DatePicker
         value={filters.startDate}
         onChange={onStartDateChange}
-        className="w-40"
+        className="w-full sm:w-45"
         placeholder="Start Date"
       />
 
@@ -116,9 +108,19 @@ export default function StockMovementFilter({
       <DatePicker
         value={filters.endDate}
         onChange={onEndDateChange}
-        className="w-40"
+        className="w-full sm:w-45"
         placeholder="End Date"
       />
+
+      {/* Reset */}
+      <button
+        type="button"
+        onClick={onReset}
+        className="inline-flex h-8 items-center gap-2 rounded-md border px-3 text-sm bg-secondary"
+      >
+        <RotateCcw className="size-4" />
+        Reset
+      </button>
     </div>
   );
 }

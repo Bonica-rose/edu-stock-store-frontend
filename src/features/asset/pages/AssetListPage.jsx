@@ -114,86 +114,82 @@ export default function AssetListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-1">
           {/* TOOLBAR */}
-
           <TableToolbar>
-            <div className="flex w-full gap-3">
-              {/* FILTER ROW */}
-
-              <AssetFilter
-                filters={{
-                  inventory: query.inventory,
-                  branch: query.branch,
-                  status: query.status,
-                  assignedTo: query.assignedTo,
-                  isActive: query.isActive,
-                }}
-                inventories={inventories}
-                branches={branches}
-                users={users}
-                onInventoryChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    inventory: value,
-                    page: 1,
-                  }))
-                }
-                onBranchChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    branch: value,
-                    page: 1,
-                  }))
-                }
-                onStatusChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    status: value,
-                    page: 1,
-                  }))
-                }
-                onAssignedToChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    assignedTo: value,
-                    page: 1,
-                  }))
-                }
-                onIsActiveChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    isActive: value,
-                    page: 1,
-                  }))
-                }
-                onReset={() =>
-                  setQuery((prev) => ({
-                    ...prev,
-
-                    page: 1,
-
-                    inventory: "all",
-                    branch: "all",
-                    status: "all",
-                    assignedTo: "all",
-                    isActive: "all",
-                  }))
-                }
-              />
-
-              {/* ASSET ACTIONS ROW */}
+              {/* CREATE ASSET */}
               {canCreate && (
                 <Button
                   onClick={handleCreate}
-                  className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                  className="flex items-center gap-2 rounded-lg bg-blue-900 px-2 py-1 text-white hover:bg-blue-900/80"
                 >
                   <Plus className="h-4 w-4" />
                   Create Asset
                 </Button>
               )}
-            </div>
           </TableToolbar>
+
+          {/* FILTER ROW */}
+          <AssetFilter
+            filters={{
+              inventory: query.inventory,
+              branch: query.branch,
+              status: query.status,
+              assignedTo: query.assignedTo,
+              isActive: query.isActive,
+            }}
+            inventories={inventories}
+            branches={branches}
+            users={users}
+            onInventoryChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                inventory: value,
+                page: 1,
+              }))
+            }
+            onBranchChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                branch: value,
+                page: 1,
+              }))
+            }
+            onStatusChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                status: value,
+                page: 1,
+              }))
+            }
+            onAssignedToChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                assignedTo: value,
+                page: 1,
+              }))
+            }
+            onIsActiveChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                isActive: value,
+                page: 1,
+              }))
+            }
+            onReset={() =>
+              setQuery((prev) => ({
+                ...prev,
+
+                page: 1,
+
+                inventory: "all",
+                branch: "all",
+                status: "all",
+                assignedTo: "all",
+                isActive: "all",
+              }))
+            }
+          />
 
           {/* TABLE */}
 

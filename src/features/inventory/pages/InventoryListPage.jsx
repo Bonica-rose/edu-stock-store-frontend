@@ -121,7 +121,7 @@ export default function InventoryListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-1">
           {/* TOOLBAR */}
           <TableToolbar
             search={query.search}
@@ -187,7 +187,7 @@ export default function InventoryListPage() {
             {canCreate && (
               <Button
                 onClick={handleCreateInventory}
-                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                className="flex items-center gap-2 rounded-lg bg-blue-900 px-2 py-1 text-white hover:bg-blue-900/80"
               >
                 <Plus className="h-4 w-4" />
                 Add Inventory

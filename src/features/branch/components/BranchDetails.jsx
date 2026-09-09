@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { formatDateTime } from "@/shared/utils/dateFormatter";
 
 function DetailItem({ label, value }) {
   return (
@@ -48,12 +49,12 @@ export default function BranchDetails({ branch }) {
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground">Status</p>
 
-              <Badge variant={branch.isActive ? "default" : "secondary"}>
+              <Badge variant={branch.isActive ? "active" : "inactive"}>
                 {branch.isActive ? "Active" : "Inactive"}
               </Badge>
             </div>
 
-            <DetailItem label="Phone" value={branch.phone} />
+            <DetailItem label="Branch Phone" value={branch.phone} />
 
             <DetailItem label="Email" value={branch.email} />
           </div>
@@ -124,11 +125,7 @@ export default function BranchDetails({ branch }) {
 
             <DetailItem
               label="Created At"
-              value={
-                branch.createdAt
-                  ? new Date(branch.createdAt).toLocaleString()
-                  : "-"
-              }
+              value={formatDateTime(branch.createdAt, "DD MMMM, YYYY h:mm A")}
             />
 
             <DetailItem label="Updated By" value={updatedByName} />
@@ -140,11 +137,10 @@ export default function BranchDetails({ branch }) {
 
             <DetailItem
               label="Updated At"
-              value={
-                branch.updatedAt
-                  ? new Date(branch.updatedAt).toLocaleString()
-                  : "-"
-              }
+              value={branch.updatedAt ? formatDateTime(
+                branch.updatedAt,
+                "DD MMMM, YYYY h:mm A",
+              ): "-"}
             />
           </div>
         </CardContent>

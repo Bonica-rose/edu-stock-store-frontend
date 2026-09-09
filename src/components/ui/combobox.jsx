@@ -75,7 +75,7 @@ function ComboboxInput({
           <InputGroupInput
             disabled={disabled}
             className={cn(
-              "focus-visible:ring-0 focus-visible:border-0",
+              "text-sm focus-visible:ring-0 focus-visible:border-0",
               inputClassName,
             )}
           />

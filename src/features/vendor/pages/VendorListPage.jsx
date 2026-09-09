@@ -11,13 +11,20 @@ import {
 } from "../redux/vendorThunks";
 
 import VendorTable from "../components/VendorTable";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { TablePagination, TableToolbar } from "@/shared/components/table";
 import { Card, CardContent } from "@/components/ui/card";
 import ConfirmationDialog from "@/shared/components/ConfirmationDialog";
 import { Button } from "@/components/ui/button";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import StatusFilter from "@/shared/components/filters/StatusFilter";
 
 export default function VendorsPage() {
   const dispatch = useDispatch();
@@ -111,68 +118,63 @@ export default function VendorsPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
-              {/* Toolbar */}
-              <TableToolbar
-                search={query.search}
-                onSearchChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    search: value,
-                    page: 1,
-                  }))
-                }
-                searchPlaceholder="Search vendors..."
+        <div className="space-y-1">
+          {/* Toolbar */}
+          <TableToolbar
+            search={query.search}
+            onSearchChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                search: value,
+                page: 1,
+              }))
+            }
+            searchPlaceholder="Search vendors..."
+          >
+            {/* Create Vendor */}
+            {canCreate && (
+              <Button
+                onClick={handleCreateVendor}
+                className="flex items-center gap-2 rounded-lg bg-blue-900 px-3 py-1 text-white hover:bg-blue-900/80"
               >
-                {/* Status Filter */}
-                <select
-                  value={query.isActive}
-                  onChange={(event) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      isActive: event.target.value,
-                      page: 1,
-                    }))
-                  }
-                  className="h-9 rounded-md border bg-background px-3 text-sm"
-                >
-                  <option value="all">All Status</option>
-                  <option value="true">Active</option>
-                  <option value="false">Inactive</option>
-                </select>
+                <Plus className="h-4 w-4" />
+                Create Vendor
+              </Button>
+            )}
+          </TableToolbar>
 
-                {/* Create Vendor */}
-                {canCreate && (
-                  <Button
-                    onClick={handleCreateVendor}
-                    className="flex items-center gap-2 rounded-lg bg-blue-950 px-3 py-1 text-white hover:bg-blue-900"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Create Vendor
-                  </Button>
-                )}
-              </TableToolbar>
+          {/* Status Filter */}
+          <StatusFilter
+            value={query.isActive}
+            onChange={(isActive) =>
+              setQuery((prev) => ({
+                ...prev,
+                isActive,
+                page: 1,
+              }))
+            }
+          />
 
-              {/* Vendor Table */}
-              <VendorTable
-                vendors={vendors}
-                loading={loading.vendors}
-                onView={handleView}
-                onEdit={handleEdit}
-                onStatusChange={handleStatusChange}
-                onDelete={handleDelete}
-              />
+          {/* Vendor Table */}
+          <VendorTable
+            vendors={vendors}
+            loading={loading.vendors}
+            onView={handleView}
+            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+          />
 
-              {/* Pagination */}
-              <TablePagination
-                pagination={pagination}
-                onPageChange={(page) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    page,
-                  }))
-                }
-              />
+          {/* Pagination */}
+          <TablePagination
+            pagination={pagination}
+            onPageChange={(page) =>
+              setQuery((prev) => ({
+                ...prev,
+                page,
+              }))
+            }
+          />
         </div>
 
         {/* Delete Confirmation */}
@@ -210,7 +212,7 @@ export default function VendorsPage() {
           loadingText={
             selectedVendor?.isActive ? "Deactivating..." : "Activating..."
           }
-      />
+        />
       </CardContent>
     </Card>
   );

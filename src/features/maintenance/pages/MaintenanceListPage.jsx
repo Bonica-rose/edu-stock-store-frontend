@@ -93,7 +93,7 @@ export default function MaintenanceListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {/* TOOLBAR */}
           <TableToolbar
             search={query.search}
@@ -106,64 +106,63 @@ export default function MaintenanceListPage() {
                 page: 1,
               }))
             }
-            filterRow={
-              <MaintenanceFilter
-                status={query.status}
-                priority={query.priority}
-                assignedTo={query.assignedTo}
-                reportedBy={query.reportedBy}
-                branch={query.branch}
-                assignedStaff={users}
-                branches={branches}
-                onStatusChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    status: value,
-                    page: 1,
-                  }))
-                }
-                onPriorityChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    priority: value,
-                    page: 1,
-                  }))
-                }
-                onAssignedToChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    assignedTo: value,
-                    page: 1,
-                  }))
-                }
-                onReportedByChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    reportedBy: value,
-                    page: 1,
-                  }))
-                }
-                onBranchChange={(value) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    branch: value,
-                    page: 1,
-                  }))
-                }
-              />
-            }
           >
             {/* CREATE MAINTENANCE */}
             {canCreate && (
               <Button
                 onClick={handleCreate}
-                className="flex items-center gap-2 rounded-lg bg-blue-950 px-2 py-1 text-white hover:bg-blue-900"
+                className="flex items-center gap-2 rounded-lg bg-blue-900 px-2 py-1 text-white hover:bg-blue-900/80"
               >
                 <Plus className="h-4 w-4" />
                 New Maintenance
               </Button>
             )}
           </TableToolbar>
+
+          <MaintenanceFilter
+            status={query.status}
+            priority={query.priority}
+            assignedTo={query.assignedTo}
+            reportedBy={query.reportedBy}
+            branch={query.branch}
+            users={users}
+            branches={branches}
+            onStatusChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                status: value,
+                page: 1,
+              }))
+            }
+            onPriorityChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                priority: value,
+                page: 1,
+              }))
+            }
+            onAssignedToChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                assignedTo: value,
+                page: 1,
+              }))
+            }
+            onReportedByChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                reportedBy: value,
+                page: 1,
+              }))
+            }
+            onBranchChange={(value) =>
+              setQuery((prev) => ({
+                ...prev,
+                branch: value,
+                page: 1,
+              }))
+            }
+          />
 
           {/* TABLE */}
           <MaintenanceTable

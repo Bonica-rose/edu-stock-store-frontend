@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -8,10 +7,13 @@ import PageHeader from "@/shared/components/PageHeader";
 import AssetForm from "../components/AssetForm";
 import { createAsset } from "../redux/assetThunks";
 import useAssetFormOptions from "../utils/useAssetFormOptions";
+import CreationSuccessDialog from "@/shared/components/CreationSuccessDialog";
 
 export default function CreateAssetPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const { loading } = useSelector((state) => state.asset);
 
@@ -24,8 +26,14 @@ export default function CreateAssetPage() {
 
   const handleCreateAsset = async (data) => {
     await dispatch(createAsset(data)).unwrap();
-    toast.success("Asset created successfully");
-    navigate("/edu/assets");
+  };
+
+  const handleCreateSuccess = () => {
+    setShowSuccessDialog(true);
+  };
+
+  const handleCreateAnother = () => {
+    setShowSuccessDialog(false);
   };
 
   return (
@@ -53,8 +61,20 @@ export default function CreateAssetPage() {
         inventories={inventories}
         branches={branches}
         users={users}
+        onSuccess={handleCreateSuccess}
         onSubmit={handleCreateAsset}
         loading={loading.create || optionsLoading}
+      />
+
+      <CreationSuccessDialog
+        open={showSuccessDialog}
+        onOpenChange={setShowSuccessDialog}
+        title="Asset created successfully"
+        description="The asset has been created successfully. Would you like to create another asset or go to the asset list?"
+        stayLabel="Create another"
+        redirectLabel="Go to Assets"
+        onStay={handleCreateAnother}
+        onRedirect={() => navigate("/edu/assets")}
       />
     </div>
   );

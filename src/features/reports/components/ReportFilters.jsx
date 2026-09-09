@@ -7,8 +7,8 @@ export default function ReportFilters({
   hasFilters = false,
 }) {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-end gap-3">
+    <div className="flex flex-col gap-1">
+      <div className="flex flex-wrap items-end gap-1">
         {onReset && (
           <Button
             type="button"

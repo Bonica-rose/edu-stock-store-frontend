@@ -1,3 +1,4 @@
+import { Field } from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -8,8 +9,9 @@ import {
 
 export default function RoleFilter({ value, onChange, roles = [] }) {
   return (
+    <Field className="full sm:w-45">
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-48">
+        <SelectTrigger>
           <SelectValue>
             {value === "all"
               ? "All Roles"
@@ -27,5 +29,6 @@ export default function RoleFilter({ value, onChange, roles = [] }) {
           ))}
         </SelectContent>
       </Select>
+    </Field>
   );
 }

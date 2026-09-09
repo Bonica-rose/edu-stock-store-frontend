@@ -23,8 +23,6 @@ export default function ViewBranchPage() {
 
     const { branch, loading, error } = useSelector((state) => state.branch);
 
-    console.log(branch);
-
     useEffect(() => {
         if (id) {
             dispatch(fetchBranchById(id));

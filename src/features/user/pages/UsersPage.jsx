@@ -22,12 +22,13 @@ import { toast } from "sonner";
 import BranchFilter from "@/shared/components/filters/BranchFilter";
 import usePermission from "@/shared/hooks/usePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
+import UserFilter from "../components/UserFilter";
 
 export default function UsersPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { users, pagination, loading } = useSelector((state) => state.user); 
+  const { users, pagination, loading } = useSelector((state) => state.user);
   const currentUser = useSelector((state) => state.auth.user);
   const branches = useSelector((state) => state.branch.branches);
   const { hasPermission } = usePermission();
@@ -38,33 +39,33 @@ export default function UsersPage() {
   const ALLOWED_ROLES =
     currentUser.role === ROLES.BRANCH_ADMIN
       ? BRANCH_ADMIN_ALLOWED_USER_ROLES
-      : ROLE_ARRAY;  
+      : ROLE_ARRAY;
 
   const [query, setQuery] = useState({
-      page: 1,
-      limit: 10,
-      search: "",
-      role: "all",
-      branch: "all",
+    page: 1,
+    limit: 10,
+    search: "",
+    role: "all",
+    branch: "all",
   });
   const [selectedUser, setSelectedUser] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
 
   useEffect(() => {
-      dispatch(fetchUsers(query));
-  }, [dispatch, query]);  
+    dispatch(fetchUsers(query));
+  }, [dispatch, query]);
 
   useEffect(() => {
     dispatch(fetchBranches());
-  }, [dispatch]); 
+  }, [dispatch]);
 
   const handleCreateUser = () => {
-      navigate(`/edu/users/new`);
-  }
+    navigate(`/edu/users/new`);
+  };
 
   const handleEdit = (user) => {
-      navigate(`/edu/users/${user._id}/edit`);
+    navigate(`/edu/users/${user._id}/edit`);
   };
 
   const handleStatusChange = (user) => {
@@ -100,7 +101,7 @@ export default function UsersPage() {
     setSelectedUser(user);
     setOpenDelete(true);
   };
-  
+
   const confirmDelete = async () => {
     if (!selectedUser) return;
 
@@ -121,7 +122,7 @@ export default function UsersPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-1">
           <TableToolbar
             search={query.search}
             onSearchChange={(value) =>
@@ -133,41 +134,38 @@ export default function UsersPage() {
             }
             searchPlaceholder="Search users by ID, name, email, ..."
           >
-              {!isBranchAdmin && (
-                <BranchFilter
-                  value={query.branch}
-                  branches={branches}
-                  onChange={(branch) =>
-                    setQuery((prev) => ({
-                      ...prev,
-                      branch,
-                      page: 1,
-                    }))
-                  }
-                />
-              )}
-              <RoleFilter
-                value={query.role}
-                roles={ALLOWED_ROLES}
-                onChange={(role) =>
-                  setQuery((prev) => ({
-                    ...prev,
-                    role,
-                    page: 1,
-                  }))
-                }
-              />
-
             {canCreate && (
               <Button
                 onClick={handleCreateUser}
-                className="py-1 px-2 rounded-lg bg-blue-950 hover:bg-blue-900 text-white flex items-center gap-2"
+                className="py-1 px-2 rounded-lg bg-blue-900 hover:bg-blue-900/90 text-white flex items-center gap-2"
               >
                 <Plus className="h-4 w-4" />
                 Create User
               </Button>
             )}
           </TableToolbar>
+
+          <UserFilter
+            branch={query.branch}
+            role={query.role}
+            branches={branches}
+            roles={ALLOWED_ROLES}
+            isBranchAdmin={isBranchAdmin}
+            onBranchChange={(branch) =>
+              setQuery((prev) => ({
+                ...prev,
+                branch,
+                page: 1,
+              }))
+            }
+            onRoleChange={(role) =>
+              setQuery((prev) => ({
+                ...prev,
+                role,
+                page: 1,
+              }))
+            }
+          />
 
           <UserTable
             users={users}

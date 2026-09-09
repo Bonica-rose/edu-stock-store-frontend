@@ -9,9 +9,9 @@ export default function TableToolbar({
   filterRow,
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-1">
       {/* Top row: Search + Actions */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         {onSearchChange && (
           <TableSearch
             value={search}
@@ -21,12 +21,14 @@ export default function TableToolbar({
           />
         )}
 
-        <div className="flex items-center gap-2">{children}</div>
+        <div className="flex w-full sm:w-auto items-center sm:items-end">
+          {children}
+        </div>
       </div>
 
       {/* Second row: Filters ONLY */}
       {filterRow && (
-        <div className="flex flex-wrap items-center gap-2">{filterRow}</div>
+        <div className="flex flex-wrap items-center gap-1">{filterRow}</div>
       )}
     </div>
   );

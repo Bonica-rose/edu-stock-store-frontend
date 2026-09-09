@@ -134,3 +134,16 @@
     @apply font-sans;
     }
 }
+
+.table-scroll {
+  scrollbar-width: auto;
+  scrollbar-color: #1e40af #c6d2f9;
+} 
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #1e40af;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #c6d2f9;
+}

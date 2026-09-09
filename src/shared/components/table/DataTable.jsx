@@ -40,13 +40,16 @@ export default function DataTable({ columns, data, loading = false }) {
   }  
 
   return (
-    <div className="relative w-full min-w-0 rounded-lg border">
+    <div className="table-scroll relative w-full min-w-0 rounded-lg border mt-3">
       <Table className="min-w-max">
-        <TableHeader>
+        <TableHeader className="bg-stone-100 dark:bg-slate-900/40">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  className="font-extrabold text-blue-950 dark:text-blue-100"
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -62,7 +65,7 @@ export default function DataTable({ columns, data, loading = false }) {
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className="font-normal">
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

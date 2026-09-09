@@ -36,516 +36,525 @@ const UNIT_OPTIONS = [
 ];
 
 export default function InventoryForm({
-    mode = "create",
-    initialData,
-    onSubmit,
-    loading = false,
-    categories = [],
-    vendors = [],
-    branches = [],
+  mode = "create",
+  initialData,
+  onSuccess,
+  onSubmit,
+  loading = false,
+  categories = [],
+  vendors = [],
+  branches = [],
 }) {
-    const [imagePreview, setImagePreview] = useState(null);
-    const schema = inventorySchema;
+  const [imagePreview, setImagePreview] = useState(null);
+  const schema = inventorySchema;
 
-    const {
-      register,
-      handleSubmit,
-      reset,
-      setValue,
-      setError,
-      watch,
-      control,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(schema),
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    setError,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
 
-      defaultValues: {
-        itemName: "",
-        barcode: "",
-        category: "",
-        vendor: "",
-        branch: "",
-        itemType: "CONSUMABLE",
-        unit: "",
-        purchasePrice: 0,
-        description: "",
+    defaultValues: {
+      itemName: "",
+      barcode: "",
+      category: "",
+      vendor: "",
+      branch: "",
+      itemType: "CONSUMABLE",
+      unit: "",
+      purchasePrice: 0,
+      description: "",
+      itemImageFile: null,
+    },
+  });
+
+  useEffect(() => {
+    register("vendor");
+    register("branch");
+    register("unit");
+  }, [register]);
+
+  const selectedVendor = watch("vendor");
+  const selectedBranch = watch("branch");
+  const selectedItemType = watch("itemType");
+  const selectedUnit = watch("unit");
+  const selectedImage = watch("itemImageFile");
+
+  // Populate form when editing
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        itemName: initialData.itemName || "",
+        barcode: initialData.barcode || "",
+        category: initialData.category?._id || initialData.category || "",
+        vendor: initialData.vendor?._id || initialData.vendor || "",
+        branch: initialData.branch?._id || initialData.branch || "",
+        itemType: initialData.itemType ?? "CONSUMABLE",
+        unit: initialData.unit || "",
+        purchasePrice:
+          initialData.purchasePrice !== undefined
+            ? String(initialData.purchasePrice)
+            : "",
+        minimumStock: initialData.minimumStock || "",
+        description: initialData.description || "",
+        itemImage: initialData.itemImage || "",
         itemImageFile: null,
-      },
-    });
+      });
+    }
+  }, [initialData, reset]);
 
-    useEffect(() => {
-        register("vendor");
-        register("branch");
-        register("unit");
-    }, [register]);
+  useEffect(() => {
+    const file = selectedImage?.[0];
+    if (!file) {
+      setImagePreview(null);
+      return;
+    }
 
-    const selectedVendor = watch("vendor");
-    const selectedBranch = watch("branch");
-    const selectedItemType = watch("itemType");
-    const selectedUnit = watch("unit");
-    const selectedImage = watch("itemImageFile");
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreview(previewUrl);
 
-    // Populate form when editing
-    useEffect(() => {
-        if (initialData) {
-        reset({
-          itemName: initialData.itemName || "",
-          barcode: initialData.barcode || "",
-          category: initialData.category?._id || initialData.category || "",
-          vendor: initialData.vendor?._id || initialData.vendor || "",
-          branch: initialData.branch?._id || initialData.branch || "",
-          itemType: initialData.itemType ?? "CONSUMABLE",
-          unit: initialData.unit || "",
-          purchasePrice:
-            initialData.purchasePrice !== undefined
-              ? String(initialData.purchasePrice)
-              : "",
-          minimumStock: initialData.minimumStock || "",
-          description: initialData.description || "",
-          itemImage: initialData.itemImage || "",
-          itemImageFile: null,
-        });
-        }
-    }, [initialData, reset]);
-
-    useEffect(() => {       
-        
-        const file = selectedImage?.[0];
-        if (!file) {
-            setImagePreview(null);
-            return;
-        }
-
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreview(previewUrl);
-
-        return () => {
-            URL.revokeObjectURL(previewUrl);
-        };
-    }, [selectedImage]);
-
-    const submitForm = async (data) => {
-        try {
-          const formData = new FormData();
-
-          // Append normal form fields
-          formData.append("itemName", data.itemName);
-          formData.append("barcode", data.barcode || "");
-          formData.append("category", data.category);
-          formData.append("vendor", data.vendor);
-          formData.append("branch", data.branch);
-          formData.append("itemType", data.itemType);
-          formData.append("unit", data.unit);
-          if (mode==='create') {
-            formData.append("purchasePrice", data.purchasePrice);
-          } else {
-            formData.append("minimumStock", data.minimumStock);
-          }
-          
-          formData.append("description", data.description || "");
-
-          // Append image file
-          if (data.itemImageFile instanceof File) {
-            formData.append("itemImageFile", data.itemImageFile);
-          }
-
-          await onSubmit(formData);
-        } catch (error) {
-            // Handle backend validation errors
-            if (error.errors?.length) {
-                error.errors.forEach((err) => {
-                setError(err.path, {
-                    type: "server",
-                    message: err.msg,
-                });
-                });
-
-                return;
-            }
-
-            const errorMsg = mode === "create" ? "Failed to create inventory" : "Failed to update inventory";
-
-            toast.error(error?.message ?? errorMsg);
-        }
+    return () => {
+      URL.revokeObjectURL(previewUrl);
     };
+  }, [selectedImage]);
 
-    return (
-      <Card>
-        <CardContent>
-          <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
-            {/* ITEM INFORMATION */}
-            <div className="space-y-3">
-              <div>
-                <h3 className="text-[16px] font-semibold text-blue-900">
-                  Item Information
-                </h3>
+  const submitForm = async (data) => {
+    try {
+      const formData = new FormData();
 
-                <p className="text-[13px] text-muted-foreground">
-                  Enter the basic information about the inventory item.
-                </p>
-              </div>
+      // Append normal form fields
+      formData.append("itemName", data.itemName);
+      formData.append("barcode", data.barcode || "");
+      formData.append("category", data.category);
+      formData.append("vendor", data.vendor);
+      formData.append("branch", data.branch);
+      formData.append("itemType", data.itemType);
+      formData.append("unit", data.unit);
+      if (mode === "create") {
+        formData.append("purchasePrice", data.purchasePrice);
+      } else {
+        formData.append("minimumStock", data.minimumStock);
+      }
 
-              {/* Item Name */}
-              <Field>
-                <FieldLabel htmlFor="itemName">
-                  Item Name <span className="text-destructive">*</span>
-                </FieldLabel>
+      formData.append("description", data.description || "");
 
-                <Input
-                  id="itemName"
-                  {...register("itemName")}
-                  placeholder="Enter item name"
-                  aria-invalid={!!errors.itemName}
-                />
+      // Append image file
+      if (data.itemImageFile instanceof File) {
+        formData.append("itemImageFile", data.itemImageFile);
+      }
 
-                <FieldError>{errors.itemName?.message}</FieldError>
-              </Field>
+      await onSubmit(formData);
 
-              {/* Barcode */}
-              <Field>
-                <FieldLabel htmlFor="barcode">Barcode</FieldLabel>
+      if (mode === "create") {
+        reset();
+      }
 
-                <Input
-                  id="barcode"
-                  {...register("barcode")}
-                  placeholder="Enter barcode"
-                  aria-invalid={!!errors.barcode}
-                />
+      onSuccess?.();
+    } catch (error) {
+      // Handle backend validation errors
+      if (error.errors?.length) {
+        error.errors.forEach((err) => {
+          setError(err.path, {
+            type: "server",
+            message: err.msg,
+          });
+        });
 
-                <FieldError>{errors.barcode?.message}</FieldError>
+        return;
+      }
 
-                <p className="text-[13px] text-muted-foreground">
-                  Optional. Barcode must be unique.
-                </p>
-              </Field>
+      const errorMsg =
+        mode === "create"
+          ? "Failed to create inventory"
+          : "Failed to update inventory";
 
-              {/* Category */}
-              <Field>
-                <FieldLabel htmlFor="category">
-                  Category <span className="text-destructive">*</span>
-                </FieldLabel>
+      toast.error(error?.message ?? errorMsg);
+    }
+  };
 
-                <Controller
-                  name="category"
-                  control={control}
-                  render={({ field }) => (
-                    <SearchableSelect
-                      id="category"
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      error={!!errors.category}
-                      placeholder="Select category"
-                      searchPlaceholder="Search category..."
-                      emptyMessage="No categories found."
-                      options={categories.map((category) => ({
-                        value: category._id,
-                        label: category.categoryName,
-                      }))}
-                    />
-                  )}
-                />
+  return (
+    <Card>
+      <CardContent>
+        <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
+          {/* ITEM INFORMATION */}
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-[16px] font-semibold text-blue-900">
+                Item Information
+              </h3>
 
-                <FieldError>{errors.category?.message}</FieldError>
-              </Field>
-
-              {/* Vendor */}
-              <Field>
-                <FieldLabel htmlFor="vendor">
-                  Vendor <span className="text-destructive">*</span>
-                </FieldLabel>
-
-                <Select
-                  value={selectedVendor}
-                  onValueChange={(value) =>
-                    setValue("vendor", value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <SelectTrigger id="vendor" aria-invalid={!!errors.vendor}>
-                    <SelectValue placeholder="Select vendor">
-                      {vendors.find((v) => v._id === selectedVendor)
-                        ?.vendorName ?? "Select vendor"}
-                    </SelectValue>
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectItem value="" disabled>
-                      Choose a vendor
-                    </SelectItem>
-                    {vendors.map((vendor) => (
-                      <SelectItem key={vendor._id} value={vendor._id}>
-                        {vendor.vendorName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <FieldError>{errors.vendor?.message}</FieldError>
-              </Field>
-
-              {/* Branch */}
-              <Field>
-                <FieldLabel htmlFor="branch">
-                  Branch <span className="text-destructive">*</span>
-                </FieldLabel>
-
-                <Select
-                  value={selectedBranch}
-                  onValueChange={(value) =>
-                    setValue("branch", value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <SelectTrigger id="branch" aria-invalid={!!errors.branch}>
-                    <SelectValue placeholder="Select branch">
-                      {branches.find((b) => b._id === selectedBranch)
-                        ?.branchName ?? "Select branch"}
-                    </SelectValue>
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    <SelectItem value="" disabled>
-                      Choose a branch
-                    </SelectItem>
-                    {branches.map((branch) => (
-                      <SelectItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <FieldError>{errors.branch?.message}</FieldError>
-              </Field>
-
-              {/* ItemType */}
-              <Field>
-                <FieldLabel htmlFor="itemType">
-                  Item Type <span className="text-destructive">*</span>
-                </FieldLabel>
-
-                <Select
-                  value={selectedItemType}
-                  onValueChange={(value) =>
-                    setValue("itemType", value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <SelectTrigger
-                    id="itemType"
-                    aria-invalid={!!errors.itemType}
-                    disabled={mode === "edit" && initialData.currentStock > 0}
-                  >
-                    <SelectValue placeholder="Select item type">
-                      {
-                        ITEM_TYPE_OPTIONS.find(
-                          (itemType) => itemType.value === selectedItemType,
-                        )?.label
-                      }
-                    </SelectValue>
-                  </SelectTrigger>
-
-                  <SelectContent>
-                    {ITEM_TYPE_OPTIONS.map((itemtype) => (
-                      <SelectItem key={itemtype.value} value={itemtype.value}>
-                        {itemtype.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <FieldError>{errors.itemType?.message}</FieldError>
-              </Field>
+              <p className="text-[13px] text-muted-foreground">
+                Enter the basic information about the inventory item.
+              </p>
             </div>
 
-            {/* PURCHASE INFORMATION */}
-            <div className="space-y-3">
-              <div>
-                <h3 className="text-[16px] font-semibold text-blue-900">
-                  Purchase Information
-                </h3>
+            {/* Item Name */}
+            <Field>
+              <FieldLabel htmlFor="itemName">
+                Item Name <span className="text-destructive">*</span>
+              </FieldLabel>
 
-                <p className="text-[13px] text-muted-foreground">
-                  Enter the unit and purchase price information.
-                </p>
-              </div>
+              <Input
+                id="itemName"
+                {...register("itemName")}
+                placeholder="Enter item name"
+                aria-invalid={!!errors.itemName}
+              />
 
-              {/* Unit */}
-              <Field>
-                <FieldLabel htmlFor="unit">
-                  Unit <span className="text-destructive">*</span>
-                </FieldLabel>
+              <FieldError>{errors.itemName?.message}</FieldError>
+            </Field>
 
-                <Select
-                  value={selectedUnit}
-                  onValueChange={(value) =>
-                    setValue("unit", value, {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                    })
-                  }
-                >
-                  <SelectTrigger id="unit" aria-invalid={!!errors.unit}>
-                    <SelectValue placeholder="Select unit" />
-                  </SelectTrigger>
+            {/* Barcode */}
+            <Field>
+              <FieldLabel htmlFor="barcode">Barcode</FieldLabel>
 
-                  <SelectContent>
-                    <SelectItem value="" disabled>
-                      Select unit
-                    </SelectItem>
-                    {UNIT_OPTIONS.map((unit) => (
-                      <SelectItem key={unit.value} value={unit.value}>
-                        {unit.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <Input
+                id="barcode"
+                {...register("barcode")}
+                placeholder="Enter barcode"
+                aria-invalid={!!errors.barcode}
+              />
 
-                <FieldError>{errors.unit?.message}</FieldError>
-              </Field>
+              <FieldError>{errors.barcode?.message}</FieldError>
 
-              {/* Minimum Stock */}
-              {mode === "edit" && (
-                <Field>
-                  <FieldLabel htmlFor="minimumStock">
-                    Minimum Stock <span className="text-destructive">*</span>
-                  </FieldLabel>
+              <p className="text-[13px] text-muted-foreground">
+                Optional. Barcode must be unique.
+              </p>
+            </Field>
 
-                  <Input
-                    id="minimumStock"
-                    type="number"
-                    min="0"
-                    step="1"
-                    {...register("minimumStock")}
-                    aria-invalid={!!errors.minimumStock}
-                    placeholder="Enter minimum stock"
+            {/* Category */}
+            <Field>
+              <FieldLabel htmlFor="category">
+                Category <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <SearchableSelect
+                    id="category"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    error={!!errors.category}
+                    placeholder="Select category"
+                    searchPlaceholder="Search category..."
+                    emptyMessage="No categories found."
+                    options={categories.map((category) => ({
+                      value: category._id,
+                      label: category.categoryName,
+                    }))}
                   />
+                )}
+              />
 
-                  {errors.minimumStock && (
-                    <FieldError>{errors.minimumStock.message}</FieldError>
-                  )}
-                </Field>
-              )}
+              <FieldError>{errors.category?.message}</FieldError>
+            </Field>
 
-              {/* Purchase Price */}
+            {/* Vendor */}
+            <Field>
+              <FieldLabel htmlFor="vendor">
+                Vendor <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Select
+                value={selectedVendor}
+                onValueChange={(value) =>
+                  setValue("vendor", value, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              >
+                <SelectTrigger id="vendor" aria-invalid={!!errors.vendor}>
+                  <SelectValue placeholder="Select vendor">
+                    {vendors.find((v) => v._id === selectedVendor)
+                      ?.vendorName ?? "Select vendor"}
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="" disabled>
+                    Choose a vendor
+                  </SelectItem>
+                  {vendors.map((vendor) => (
+                    <SelectItem key={vendor._id} value={vendor._id}>
+                      {vendor.vendorName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FieldError>{errors.vendor?.message}</FieldError>
+            </Field>
+
+            {/* Branch */}
+            <Field>
+              <FieldLabel htmlFor="branch">
+                Branch <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Select
+                value={selectedBranch}
+                onValueChange={(value) =>
+                  setValue("branch", value, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              >
+                <SelectTrigger id="branch" aria-invalid={!!errors.branch}>
+                  <SelectValue placeholder="Select branch">
+                    {branches.find((b) => b._id === selectedBranch)
+                      ?.branchName ?? "Select branch"}
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="" disabled>
+                    Choose a branch
+                  </SelectItem>
+                  {branches.map((branch) => (
+                    <SelectItem key={branch._id} value={branch._id}>
+                      {branch.branchName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FieldError>{errors.branch?.message}</FieldError>
+            </Field>
+
+            {/* ItemType */}
+            <Field>
+              <FieldLabel htmlFor="itemType">
+                Item Type <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Select
+                value={selectedItemType}
+                onValueChange={(value) =>
+                  setValue("itemType", value, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              >
+                <SelectTrigger
+                  id="itemType"
+                  aria-invalid={!!errors.itemType}
+                  disabled={mode === "edit" && initialData.currentStock > 0}
+                >
+                  <SelectValue placeholder="Select item type">
+                    {
+                      ITEM_TYPE_OPTIONS.find(
+                        (itemType) => itemType.value === selectedItemType,
+                      )?.label
+                    }
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  {ITEM_TYPE_OPTIONS.map((itemtype) => (
+                    <SelectItem key={itemtype.value} value={itemtype.value}>
+                      {itemtype.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FieldError>{errors.itemType?.message}</FieldError>
+            </Field>
+          </div>
+
+          {/* PURCHASE INFORMATION */}
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-[16px] font-semibold text-blue-900">
+                Purchase Information
+              </h3>
+
+              <p className="text-[13px] text-muted-foreground">
+                Enter the unit and purchase price information.
+              </p>
+            </div>
+
+            {/* Unit */}
+            <Field>
+              <FieldLabel htmlFor="unit">
+                Unit <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Select
+                value={selectedUnit}
+                onValueChange={(value) =>
+                  setValue("unit", value, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  })
+                }
+              >
+                <SelectTrigger id="unit" aria-invalid={!!errors.unit}>
+                  <SelectValue placeholder="Select unit" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="" disabled>
+                    Select unit
+                  </SelectItem>
+                  {UNIT_OPTIONS.map((unit) => (
+                    <SelectItem key={unit.value} value={unit.value}>
+                      {unit.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <FieldError>{errors.unit?.message}</FieldError>
+            </Field>
+
+            {/* Minimum Stock */}
+            {mode === "edit" && (
               <Field>
-                <FieldLabel htmlFor="purchasePrice">
-                  Current Purchase Price{" "}
-                  <span className="text-destructive">*</span>
+                <FieldLabel htmlFor="minimumStock">
+                  Minimum Stock <span className="text-destructive">*</span>
                 </FieldLabel>
 
                 <Input
-                  id="purchasePrice"
+                  id="minimumStock"
                   type="number"
                   min="0"
-                  step="0.01"
-                  {...register("purchasePrice")}
-                  placeholder="Enter purchase price"
-                  aria-invalid={!!errors.purchasePrice}
-                  readOnly={mode === "edit"}
+                  step="1"
+                  {...register("minimumStock")}
+                  aria-invalid={!!errors.minimumStock}
+                  placeholder="Enter minimum stock"
                 />
 
-                <FieldError>{errors.purchasePrice?.message}</FieldError>
-
-                <p className="text-[13px] text-muted-foreground">
-                  Price per unit.
-                </p>
-              </Field>
-            </div>
-
-            {/* DESCRIPTION */}
-            <div className="space-y-2">
-              <Field>
-                <FieldLabel htmlFor="description">Description</FieldLabel>
-
-                <Textarea
-                  id="description"
-                  {...register("description")}
-                  placeholder="Enter inventory description"
-                  rows={4}
-                  aria-invalid={!!errors.description}
-                />
-
-                <FieldError>{errors.description?.message}</FieldError>
-
-                <p className="text-[13px] text-muted-foreground">
-                  Maximum 500 characters.
-                </p>
-              </Field>
-            </div>
-
-            {/* ITEM IMAGE */}
-            <div className="space-y-2">
-              <Field>
-                <FieldLabel htmlFor="itemImageFile">Item Image</FieldLabel>
-
-                <Input
-                  id="itemImageFile"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  {...register("itemImageFile")}
-                  aria-invalid={!!errors.itemImageFile}
-                />
-
-                <FieldError>{errors.itemImageFile?.message}</FieldError>
-
-                <p className="text-[13px] text-muted-foreground">
-                  JPG, PNG or WebP. Maximum 2 MB.
-                </p>
-                {/* Image Preview */}
-                {imagePreview ? (
-                  <div className="mt-3">
-                    <img
-                      src={imagePreview}
-                      alt="Selected inventory item"
-                      className="h-32 w-32 rounded-lg border object-cover"
-                    />
-                  </div>
-                ) : initialData?.itemImage ? (
-                  <div className="mt-3">
-                    <img
-                      src={initialData?.itemImage}
-                      alt={initialData.itemName}
-                      className="h-32 w-32 rounded-lg border object-cover"
-                    />
-                  </div>
-                ) : null}
-              </Field>
-            </div>
-
-            {/* SUBMIT */}
-            <div className="flex gap-3">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="gap-2 rounded-lg"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : initialData ? (
-                  <>
-                    <SavePlus className="h-4 w-4" />
-                    Update Inventory
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    Create Inventory
-                  </>
+                {errors.minimumStock && (
+                  <FieldError>{errors.minimumStock.message}</FieldError>
                 )}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    );
+              </Field>
+            )}
+
+            {/* Purchase Price */}
+            <Field>
+              <FieldLabel htmlFor="purchasePrice">
+                Current Purchase Price{" "}
+                <span className="text-destructive">*</span>
+              </FieldLabel>
+
+              <Input
+                id="purchasePrice"
+                type="number"
+                min="0"
+                step="0.01"
+                {...register("purchasePrice")}
+                placeholder="Enter purchase price"
+                aria-invalid={!!errors.purchasePrice}
+                readOnly={mode === "edit"}
+              />
+
+              <FieldError>{errors.purchasePrice?.message}</FieldError>
+
+              <p className="text-[13px] text-muted-foreground">
+                Price per unit.
+              </p>
+            </Field>
+          </div>
+
+          {/* DESCRIPTION */}
+          <div className="space-y-2">
+            <Field>
+              <FieldLabel htmlFor="description">Description</FieldLabel>
+
+              <Textarea
+                id="description"
+                {...register("description")}
+                placeholder="Enter inventory description"
+                rows={4}
+                aria-invalid={!!errors.description}
+              />
+
+              <FieldError>{errors.description?.message}</FieldError>
+
+              <p className="text-[13px] text-muted-foreground">
+                Maximum 500 characters.
+              </p>
+            </Field>
+          </div>
+
+          {/* ITEM IMAGE */}
+          <div className="space-y-2">
+            <Field>
+              <FieldLabel htmlFor="itemImageFile">Item Image</FieldLabel>
+
+              <Input
+                id="itemImageFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                {...register("itemImageFile")}
+                aria-invalid={!!errors.itemImageFile}
+              />
+
+              <FieldError>{errors.itemImageFile?.message}</FieldError>
+
+              <p className="text-[13px] text-muted-foreground">
+                JPG, PNG or WebP. Maximum 2 MB.
+              </p>
+              {/* Image Preview */}
+              {imagePreview ? (
+                <div className="mt-3">
+                  <img
+                    src={imagePreview}
+                    alt="Selected inventory item"
+                    className="h-32 w-32 rounded-lg border object-cover"
+                  />
+                </div>
+              ) : initialData?.itemImage ? (
+                <div className="mt-3">
+                  <img
+                    src={initialData?.itemImage}
+                    alt={initialData.itemName}
+                    className="h-32 w-32 rounded-lg border object-cover"
+                  />
+                </div>
+              ) : null}
+            </Field>
+          </div>
+
+          {/* SUBMIT */}
+          <div className="flex gap-3">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="gap-2 rounded-lg"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : initialData ? (
+                <>
+                  <SavePlus className="h-4 w-4" />
+                  Update Inventory
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4" />
+                  Create Inventory
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
 }
