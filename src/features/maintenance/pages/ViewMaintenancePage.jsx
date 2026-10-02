@@ -132,25 +132,25 @@ export default function ViewMaintenancePage() {
       </Card>
 
       {/* Assign */}
-      <AssignMaintenanceForm
+      {canMAssign && <AssignMaintenanceForm
         open={assignOpen}
         onOpenChange={setAssignOpen}
         maintenance={maintenance}
-      />
+      />}
 
       {/* Complete */}
-      <CompleteMaintenanceForm
+      {canMComplete && isInProgress && <CompleteMaintenanceForm
         open={completeOpen}
         onOpenChange={setCompleteOpen}
         maintenance={maintenance}
-      />
+      />}
 
       {/* Cancel */}
-      <CancelMaintenanceDialog
+      {canMCancel && <CancelMaintenanceDialog
         open={cancelOpen}
         onOpenChange={setCancelOpen}
         maintenance={maintenance}
-      />
+      />}
     </div>
   );
 }

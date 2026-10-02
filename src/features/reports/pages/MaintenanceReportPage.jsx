@@ -7,7 +7,7 @@ import TablePagination from "@/shared/components/table/TablePagination";
 import ReportPageHeader from "../components/ReportPageHeader";
 import MaintenanceReportFilters from "../components/maintenance/MaintenanceReportFilters";
 import MaintenanceReportTable from "../components/maintenance/MaintenanceReportTable";
-import useInventoryFormOptions from "../../inventory/utils/useInventoryFormOptions";
+import { useMaintenanceReportFormOptions } from "../utils/useMaintenanceReportFormOptions"
 
 import { fetchMaintenanceReport } from "../redux/reportThunks";
 import {
@@ -28,7 +28,7 @@ export default function MaintenanceReportPage() {
     (state) => state.reports.maintenance,
   );
 
-  const user = useSelector((state) => state.auth.user);
+  const loggedUser = useSelector((state) => state.auth.user);
 
   const { hasPermission } = usePermission();
 
@@ -45,8 +45,10 @@ export default function MaintenanceReportPage() {
   });
 
   const [exporting, setExporting] = useState(false);
-  const isBranchAdmin = user?.role === ROLES.BRANCH_ADMIN;
+  // const isBranchAdmin = loggedUser?.role === ROLES.BRANCH_ADMIN;
   const canExport = hasPermission(PERMISSIONS.REPORT_MAINTENANCE_EXPORT);
+
+  const { vendors, branches, canViewBranchFilter } = useMaintenanceReportFormOptions();
 
   /* Fetch report */
   const fetchReport = useCallback(() => {
@@ -74,7 +76,7 @@ export default function MaintenanceReportPage() {
     }
   }, [error, dispatch]);
 
-  const { vendors, branches } = useInventoryFormOptions();
+  
 
   /* Filter change */
   const handleFilterChange = (name, value) => {
@@ -143,12 +145,13 @@ export default function MaintenanceReportPage() {
             onReset={handleReset}
             vendors={vendors}
             branches={branches}
+            showBranchFilter={canViewBranchFilter}
           />
 
           <MaintenanceReportTable
             rows={rows}
             loading={loading}
-            showBranch={!isBranchAdmin}
+            showBranch={canViewBranchFilter}
           />
 
           {pagination && (

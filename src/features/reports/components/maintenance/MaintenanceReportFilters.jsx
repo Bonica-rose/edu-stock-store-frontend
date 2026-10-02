@@ -5,7 +5,7 @@ import TableSearch from "@/shared/components/table/TableSearch";
 import SearchableSelect from "@/shared/components/SearchableSelect";
 import DatePicker from "@/shared/components/DatePicker";
 
-import { ROLES } from "@/shared/constants/roles";
+// import { ROLES } from "@/shared/constants/roles";
 
 const STATUS_OPTIONS = [
   { value: "all", label: "All Status" },
@@ -20,7 +20,6 @@ const PRIORITY_OPTIONS = [
   { value: "Low", label: "Low" },
   { value: "Medium", label: "Medium" },
   { value: "High", label: "High" },
-  { value: "Urgent", label: "Urgent" },
 ];
 
 export default function MaintenanceReportFilters({
@@ -29,10 +28,11 @@ export default function MaintenanceReportFilters({
   onReset,
   vendors = [],
   branches = [],
+  showBranchFilter,
 }) {
   const user = useSelector((state) => state.auth.user);
 
-  const isBranchAdmin = user?.role === ROLES.BRANCH_ADMIN;
+  // const isBranchAdmin = user?.role === ROLES.BRANCH_ADMIN;
 
   const vendorOptions = vendors.map((vendor) => ({
     value: vendor._id,
@@ -86,7 +86,7 @@ export default function MaintenanceReportFilters({
       />
 
       {/* Branch */}
-      {!isBranchAdmin && (
+      {showBranchFilter && (
         <SearchableSelect
           value={filters.branch || ""}
           onValueChange={(value) => onFilterChange("branch", value)}

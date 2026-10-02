@@ -168,7 +168,7 @@ export default function ActivityListPage() {
       />
       <Card className="mt-2">
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-1">
             {/* Toolbar */}
             <TableToolbar
               search={search}

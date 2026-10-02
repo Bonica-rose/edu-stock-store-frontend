@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { TableColumnHeader } from "@/shared/components/table";
 import UserActions from "../components/UserActions";
+import { ROLES } from "@/shared/constants/roles";
 
 export const getUserColumns = ({ onEdit, onStatusChange, onDelete }) => [
   {
@@ -27,7 +28,10 @@ export const getUserColumns = ({ onEdit, onStatusChange, onDelete }) => [
   },
 
   {
-    accessorFn: (row) => row.branch?.branchName ?? "-",
+    accessorFn: (row) =>
+      row.role === ROLES.SUPER_ADMIN
+        ? "System"
+        : (row.branch?.branchName ?? "-"),
     id: "branch",
     header: ({ column }) => (
       <TableColumnHeader column={column} title="Branch" />

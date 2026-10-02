@@ -20,21 +20,6 @@ import SearchableSelect from "@/shared/components/SearchableSelect";
 import { createMaintenanceSchema } from "../validations/maintenanceSchema";
 import { MAINTENANCE_PRIORITY_OPTIONS } from "../utils/maintenanceConstants";
 
-// const PRIORITY_OPTIONS = [
-//   {
-//     value: "Low",
-//     label: "Low",
-//   },
-//   {
-//     value: "Medium",
-//     label: "Medium",
-//   },
-//   {
-//     value: "High",
-//     label: "High",
-//   },
-// ];
-
 export default function CreateMaintenanceForm({
     assets = [],
     onSubmit,

@@ -66,7 +66,7 @@ export default function ActivityFilters({
   ];
 
   return (
-    <div className="flex flex-wrap items-end gap-4">
+    <div className="flex flex-wrap items-end gap-1">
       {/* Module */}
       <Field className="w-full sm:w-45">
         <SearchableSelect

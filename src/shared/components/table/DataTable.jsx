@@ -48,7 +48,7 @@ export default function DataTable({ columns, data, loading = false }) {
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="font-extrabold text-blue-950 dark:text-blue-100"
+                  className="font-medium text-blue-950 dark:text-blue-100"
                 >
                   {header.isPlaceholder
                     ? null

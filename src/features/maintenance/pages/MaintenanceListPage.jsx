@@ -25,18 +25,15 @@ export default function MaintenanceListPage() {
 
   const canCreate = hasPermission(PERMISSIONS.MAINTENANCE_CREATE);
 
-  const { maintenances, pagination, loading } = useSelector(
-    (state) => state.maintenance,
-  );  
+  const { maintenances, pagination, loading } = useSelector((state) => state.maintenance);  
 
-  const { users, branches } = useMaintenanceFormOptions(); 
+  const { users, branches, optionsLoading, canViewMaintenanceFilters } =
+    useMaintenanceFormOptions(); 
 
   const [query, setQuery] = useState({
     page: 1,
     limit: 10,
-
     search: "",
-
     status: "all",
     priority: "all",
     assignedTo: "all",
@@ -93,7 +90,7 @@ export default function MaintenanceListPage() {
   return (
     <Card>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {/* TOOLBAR */}
           <TableToolbar
             search={query.search}
@@ -127,6 +124,7 @@ export default function MaintenanceListPage() {
             branch={query.branch}
             users={users}
             branches={branches}
+            canViewMaintenanceFilters={canViewMaintenanceFilters}
             onStatusChange={(value) =>
               setQuery((prev) => ({
                 ...prev,

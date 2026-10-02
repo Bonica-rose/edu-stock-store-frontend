@@ -24,6 +24,8 @@ export default function MaintenanceFilter({
   users = [],
   branches = [],
 
+  canViewMaintenanceFilters,
+
   onStatusChange,
   onPriorityChange,
   onAssignedToChange,
@@ -68,69 +70,73 @@ export default function MaintenanceFilter({
         </SelectContent>
       </Select>
 
-      {/* Reported By */}
-      <div className="w-full sm:w-55">
-        <SearchableSelect
-          value={reportedBy}
-          onValueChange={onReportedByChange}
-          placeholder="All Reported By"
-          options={[
-            {
-              value: "all",
-              label: "All Reported By",
-            },
-            ...users.map((user) => ({
-              value: user._id,
-              label: `${user.firstName} ${user.lastName}`,
-            })),
-          ]}
-        />
-      </div>
+      {canViewMaintenanceFilters && (
+        <>
+          {/* Reported By */}
+          <div className="w-full sm:w-55">
+            <SearchableSelect
+              value={reportedBy}
+              onValueChange={onReportedByChange}
+              placeholder="All Reported By"
+              options={[
+                {
+                  value: "all",
+                  label: "All Reported By",
+                },
+                ...users.map((user) => ({
+                  value: user._id,
+                  label: `${user.firstName} ${user.lastName}`,
+                })),
+              ]}
+            />
+          </div>
 
-      {/* Assigned Staff */}
-      <div className="w-full sm:w-55">
-        <SearchableSelect
-          value={assignedTo}
-          onValueChange={onAssignedToChange}
-          placeholder="All Assigned Staff"
-          searchPlaceholder="Search staff..."
-          emptyMessage="No staff found."
-          options={[
-            {
-              value: "all",
-              label: "All Assigned Staff",
-            },
-            ...users
-              .filter((staff) => staff.role === ROLES.MAINTENANCE_STAFF)
-              .map((staff) => ({
-                value: staff._id,
-                label: `${staff.firstName} ${staff.lastName} - ${staff.branch?.branchName}`,
-              })),
-          ]}
-        />
-      </div>
+          {/* Assigned Staff */}
+          <div className="w-full sm:w-55">
+            <SearchableSelect
+              value={assignedTo}
+              onValueChange={onAssignedToChange}
+              placeholder="All Assigned Staff"
+              searchPlaceholder="Search staff..."
+              emptyMessage="No staff found."
+              options={[
+                {
+                  value: "all",
+                  label: "All Assigned Staff",
+                },
+                ...users
+                  .filter((staff) => staff.role === ROLES.MAINTENANCE_STAFF)
+                  .map((staff) => ({
+                    value: staff._id,
+                    label: `${staff.firstName} ${staff.lastName} - ${staff.branch?.branchName}`,
+                  })),
+              ]}
+            />
+          </div>
 
-      {/* Branch */}
-      <Select value={branch} onValueChange={onBranchChange}>
-        <SelectTrigger className="w-full sm:w-45">
-          <SelectValue>
-            {branch === "all"
-              ? "All Branches"
-              : (branches.find((b) => b._id === branch)?.branchName ??
-                "All Branches")}
-          </SelectValue>
-        </SelectTrigger>
+          {/* Branch */}
+          <Select value={branch} onValueChange={onBranchChange}>
+            <SelectTrigger className="w-full sm:w-45">
+              <SelectValue>
+                {branch === "all"
+                  ? "All Branches"
+                  : (branches.find((b) => b._id === branch)?.branchName ??
+                    "All Branches")}
+              </SelectValue>
+            </SelectTrigger>
 
-        <SelectContent>
-          <SelectItem value="all">All Branches</SelectItem>
+            <SelectContent>
+              <SelectItem value="all">All Branches</SelectItem>
 
-          {branches.map((item) => (
-            <SelectItem key={item._id} value={item._id}>
-              {item.branchName}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+              {branches.map((item) => (
+                <SelectItem key={item._id} value={item._id}>
+                  {item.branchName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </>
+      )}
     </div>
   );
 }

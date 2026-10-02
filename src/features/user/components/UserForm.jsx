@@ -213,7 +213,9 @@ export default function UserForm({
               </SelectTrigger>
 
               <SelectContent>
-                {roles.map((role) => (
+                {roles
+                  .filter((role) => role.value !== ROLES.SUPER_ADMIN)
+                  .map((role) => (
                   <SelectItem key={role.value} value={role.value}>
                     {role.label}
                   </SelectItem>
